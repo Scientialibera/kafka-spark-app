@@ -2,7 +2,7 @@
     "device_name": "sensor_001",
     "schema": {
         "temperature": "float",
-        "humidity": "float",
+        "gh": "float",
         "timestamp": "string"
     }
 }
