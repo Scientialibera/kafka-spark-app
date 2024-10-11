@@ -1,0 +1,8 @@
+{
+    "device_name": "sensor_001",
+    "schema": {
+        "temperature": "float",
+        "humidity": "float",
+        "timestamp": "string"
+    }
+}
