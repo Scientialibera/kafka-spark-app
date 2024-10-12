@@ -56,3 +56,41 @@ async def update_device_schema(device: RegisterDeviceRequest):
         raise HTTPException(status_code=500, detail=f"Failed to update device schema: {e}")
 
     return {"message": f"Schema for {device.device_name} updated successfully!"}
+
+
+@router.delete("/delete-device/{device_id}")
+async def delete_device(device_id: str):
+    # Check if the device exists and raise error if not found
+    device_exists(SCHEMA_SAVE_PATH, device_id, raise_error_if_not_found=True)
+
+    # Construct the file path and delete the file
+    schema_file_path = os.path.join(SCHEMA_SAVE_PATH, f"{device_id}.json")
+    try:
+        os.remove(schema_file_path)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete device schema: {e}")
+
+    return {"message": f"Device '{device_id}' deleted successfully."}
+
+
+@router.get("/devices")
+async def get_all_devices():
+    """Gets a list of all devices stored in the schema directory."""
+    create_folder(SCHEMA_SAVE_PATH)  # Ensure folder exists
+    
+    devices = []
+    try:
+        for filename in os.listdir(SCHEMA_SAVE_PATH):
+            if filename.endswith(".json"):
+                devices.append(filename.replace(".json", ""))  # Remove .json extension
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to list devices: {e}")
+    
+    return {"devices": devices}
+
+
+@router.get("/device/{device_id}")
+async def get_device_schema(device_id: str):
+    """Get the schema for a specific device by ID."""
+    device_schema = device_exists(SCHEMA_SAVE_PATH, device_id, raise_error_if_not_found=True)
+    return {"device_name": device_id, "schema": device_schema}

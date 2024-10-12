@@ -27,10 +27,17 @@ def load_json_file(file_path: str):
         raise HTTPException(status_code=500, detail=f"Failed to load JSON file: {e}")
 
 
-def device_exists(schema_path: str, device_name: str):
-    """Checks if a device with the given name exists and returns the schema if it does."""
+def device_exists(schema_path: str, device_name: str, raise_error_if_not_found: bool = False):
+    """
+    Checks if a device with the given name exists and returns the schema if it does.
+    Optionally raises an HTTPException if the device is not found.
+    """
     schema_file_path = os.path.join(schema_path, f"{device_name}.json")
+    
     if os.path.exists(schema_file_path):
-        existing_schema = load_json_file(schema_file_path)  # Load existing schema
-        return existing_schema
+        return load_json_file(schema_file_path)
+    
+    if raise_error_if_not_found:
+        raise HTTPException(status_code=404, detail=f"Device '{device_name}' not found.")
+    
     return None
