@@ -1,0 +1,8 @@
+# Backend Dependencies
+fastapi
+pydantic
+uvicorn
+python-dotenv
+pyspark
+pytest
+jsonschema
