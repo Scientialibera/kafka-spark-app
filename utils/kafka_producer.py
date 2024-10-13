@@ -1,7 +1,6 @@
 from kafka import KafkaProducer
 import json
 
-
 class KafkaProducerWrapper:
     def __init__(self, bootstrap_servers="localhost:9092"):
         self.producer = KafkaProducer(
@@ -17,4 +16,10 @@ class KafkaProducerWrapper:
 
     def close(self):
         self.producer.close()
+
+def send_data_to_kafka(producer: KafkaProducerWrapper, topic: str, data: dict):
+    """
+    Sends data to Kafka using the provided Kafka producer.
+    """
+    producer.send(topic, value=data)
 
