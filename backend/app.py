@@ -1,10 +1,12 @@
 from fastapi import FastAPI
-from backend.api.register_device import router as register_device_router  # Import the router
+from backend.api.register_device import router as register_device_router
+from backend.api.send_stream import router as send_stream_router
 
 app = FastAPI()
 
-# Include the router for register_device
+# Include all routers
 app.include_router(register_device_router)
+app.include_router(send_stream_router)
 
 @app.get("/")
 def read_root():

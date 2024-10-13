@@ -1,0 +1,27 @@
+[
+    {
+        "temperature": 23.72,
+        "humidity": 30.72,
+        "timestamp": "2024-10-13T18:31:46.934714"
+    },
+    {
+        "temperature": 23.75,
+        "humidity": 48.23,
+        "timestamp": "2024-10-13T18:35:24.056988"
+    },
+    {
+        "temperature": 21.26,
+        "humidity": 31.35,
+        "timestamp": "2024-10-13T18:35:30.072337"
+    },
+    {
+        "temperature": 29.64,
+        "humidity": 37.23,
+        "timestamp": "2024-10-13T18:36:12.589268"
+    },
+    {
+        "temperature": 22.61,
+        "humidity": 44.22,
+        "timestamp": "2024-10-13T18:36:18.611241"
+    }
+]

@@ -1,32 +1,20 @@
-from kafka import KafkaProducer, KafkaConsumer
-
-producer = None
-streams = {}
-
-def start_kafka_stream(device_id: str):
-    """Starts Kafka stream by creating a Kafka topic for the device."""
-    global producer
-    if not producer:
-        producer = KafkaProducer(bootstrap_servers='localhost:9092')
-    streams[device_id] = []  # Initialize stream buffer for the device
+from kafka import KafkaProducer
+import json
 
 
-def stop_kafka_stream(device_id: str) -> list:
-    """Stops Kafka stream and returns the data that was streamed."""
-    if device_id in streams:
-        data_stream = streams.pop(device_id)
-        return data_stream
-    else:
-        raise Exception(f"No active stream found for device '{device_id}'")
+class KafkaProducerWrapper:
+    def __init__(self, bootstrap_servers="localhost:9092"):
+        self.producer = KafkaProducer(
+            bootstrap_servers=bootstrap_servers,
+            value_serializer=lambda v: json.dumps(v).encode("utf-8"),
+        )
 
+    def send(self, topic: str, value: dict):
+        self.producer.send(topic, value=value)
 
-def send_to_kafka(device_id: str, data: dict):
-    """Send data to Kafka for the device."""
-    if device_id not in streams:
-        raise Exception(f"No active stream found for device '{device_id}'")
-    
-    # Append data to the in-memory stream
-    streams[device_id].append(data)
+    def flush(self):
+        self.producer.flush()
 
-    # Simulate Kafka sending (can actually send to a Kafka topic here)
-    print(f"Sent to Kafka (topic: {device_id}): {data}")
+    def close(self):
+        self.producer.close()
+

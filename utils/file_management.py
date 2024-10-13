@@ -41,3 +41,31 @@ def device_exists(schema_path: str, device_name: str, raise_error_if_not_found: 
         raise HTTPException(status_code=404, detail=f"Device '{device_name}' not found.")
     
     return None
+
+def validate_data(data: dict, schema: dict) -> bool:
+    """
+    Validates the data against the provided schema.
+    Returns True if data is valid, False otherwise.
+    """
+    # Check for extra or missing keys
+    if set(data.keys()) != set(schema.keys()):
+        return False
+
+    for key, data_type in schema.items():
+        if key not in data:
+            return False
+
+        if data_type == "float":
+            if not isinstance(data[key], (float, int)):
+                return False
+        elif data_type == "int":
+            if not isinstance(data[key], int):
+                return False
+        elif data_type == "string":
+            if not isinstance(data[key], str):
+                return False
+        else:
+            # Unsupported data type
+            return False
+
+    return True
