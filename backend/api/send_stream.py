@@ -57,26 +57,16 @@ async def handle_websocket_disconnect(device_id: str, run_id: str ,data_list: li
 async def send_stream(websocket: WebSocket, device_id: str, run_id: str):
     await websocket.accept()
     data_list = []
+    producer = None  # Define producer here for final cleanup in 'finally'
     
     try:
-        # Retrieve device schema
         device_schema = device_exists(SCHEMA_SAVE_PATH, device_id, raise_error_if_not_found=True)
-
-        # Extract the actual schema for validation
         schema_fields = device_schema["schema"]
-
-        # Initialize Kafka producer
         producer = KafkaProducerWrapper()
 
         while True:
-            try:
-                data_text = await websocket.receive_text()
-                data = json.loads(data_text)
-            except json.JSONDecodeError:
-                await websocket.send_text("Invalid JSON format.")
-                continue
-
-            # Process the received data
+            data_text = await websocket.receive_text()
+            data = json.loads(data_text)
             await process_received_data(websocket, device_id, run_id, data, schema_fields, producer, data_list)
 
     except WebSocketDisconnect:
@@ -85,7 +75,7 @@ async def send_stream(websocket: WebSocket, device_id: str, run_id: str):
         print(f"Error in send_stream: {e}")
         await websocket.close(code=1006)
     finally:
-        # Close Kafka producer and handle disconnection
-        producer.flush()
-        producer.close()
+        if producer:
+            producer.flush()
+            producer.close()
         await handle_websocket_disconnect(device_id, run_id, data_list)
