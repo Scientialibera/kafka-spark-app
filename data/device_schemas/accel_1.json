@@ -1,5 +1,5 @@
 {
-    "device_name": "accel",
+    "device_name": "accel_1",
     "schema": {
         "acceleration_x": "float",
         "acceleration_y": "float",

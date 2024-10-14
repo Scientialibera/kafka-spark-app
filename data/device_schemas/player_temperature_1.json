@@ -1,8 +1,7 @@
 {
-    "device_name": "sensor_001",
+    "device_name": "player_temperature_1",
     "schema": {
         "temperature": "float",
-        "humidity": "float",
         "timestamp": "string"
     }
 }

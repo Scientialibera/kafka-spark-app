@@ -1,5 +1,5 @@
 {
-    "device_name": "wind",
+    "device_name": "wind_1",
     "schema": {
         "speed": "float",
         "direction": "float",

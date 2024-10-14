@@ -1,0 +1,9 @@
+{
+    "device_name": "accel_2",
+    "schema": {
+        "acceleration_x": "float",
+        "acceleration_y": "float",
+        "acceleration_z": "float",
+        "timestamp": "string"
+    }
+}
