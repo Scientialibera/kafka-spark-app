@@ -1,5 +1,0 @@
-{
-    "temperature": "float",
-    "humidity": "float",
-    "timestamp": "string"
-}

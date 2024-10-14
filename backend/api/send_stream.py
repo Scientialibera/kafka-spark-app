@@ -13,9 +13,9 @@ router = APIRouter()
 
 SCHEMA_SAVE_PATH = os.path.join("data", "device_schemas")
 HISTORICAL_DATA_PATH = os.path.join("data", "historical", "devices")
-ENDPOINT_WEBSOCKET = "/send-stream/{device_id}"
+ENDPOINT_WEBSOCKET = "/send-stream/{device_id}/{run_id}"
 
-async def process_received_data(websocket: WebSocket, device_id: str, data: dict, schema_fields: dict, producer: KafkaProducerWrapper, data_list: list):
+async def process_received_data(websocket: WebSocket, device_id: str, run_id: str,data: dict, schema_fields: dict, producer: KafkaProducerWrapper, data_list: list):
     """
     Processes the data received from the WebSocket, validates it, and sends it to Kafka if valid.
     """
@@ -25,19 +25,20 @@ async def process_received_data(websocket: WebSocket, device_id: str, data: dict
         return
 
     # Send data to Kafka
-    send_data_to_kafka(producer, device_id, data)
+    kafka_topic = f"{device_id}_{run_id}"
+    send_data_to_kafka(producer, kafka_topic, data)
 
     # Collect data for historical saving
     data_list.append(data)
 
 
-async def handle_websocket_disconnect(device_id: str, data_list: list):
+async def handle_websocket_disconnect(device_id: str, run_id: str ,data_list: list):
     """
     Handles WebSocket disconnection, including saving historical data.
     """
     # Save historical data after disconnection
-    create_folder(HISTORICAL_DATA_PATH)
-    historical_file = os.path.join(HISTORICAL_DATA_PATH, f"{device_id}.json")
+    create_folder(os.path.join(HISTORICAL_DATA_PATH, device_id, run_id))
+    historical_file = os.path.join(HISTORICAL_DATA_PATH, device_id, run_id, f"{device_id}.json")
 
     try:
         if os.path.exists(historical_file):
@@ -53,7 +54,7 @@ async def handle_websocket_disconnect(device_id: str, data_list: list):
 
 
 @router.websocket(ENDPOINT_WEBSOCKET)
-async def send_stream(websocket: WebSocket, device_id: str):
+async def send_stream(websocket: WebSocket, device_id: str, run_id: str):
     await websocket.accept()
     data_list = []
     
@@ -76,7 +77,7 @@ async def send_stream(websocket: WebSocket, device_id: str):
                 continue
 
             # Process the received data
-            await process_received_data(websocket, device_id, data, schema_fields, producer, data_list)
+            await process_received_data(websocket, device_id, run_id, data, schema_fields, producer, data_list)
 
     except WebSocketDisconnect:
         print(f"WebSocket disconnected for device '{device_id}'.")
@@ -87,4 +88,4 @@ async def send_stream(websocket: WebSocket, device_id: str):
         # Close Kafka producer and handle disconnection
         producer.flush()
         producer.close()
-        await handle_websocket_disconnect(device_id, data_list)
+        await handle_websocket_disconnect(device_id, run_id, data_list)
