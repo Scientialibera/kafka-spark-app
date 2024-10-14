@@ -1,0 +1,1977 @@
+[
+    {
+        "temperature": 29.18,
+        "humidity": 36.06,
+        "timestamp": "2024-10-14T10:47:00.785670"
+    },
+    {
+        "temperature": 27.57,
+        "humidity": 40.56,
+        "timestamp": "2024-10-14T10:47:00.886322"
+    },
+    {
+        "temperature": 27.13,
+        "humidity": 47.35,
+        "timestamp": "2024-10-14T10:47:00.986685"
+    },
+    {
+        "temperature": 22.86,
+        "humidity": 46.49,
+        "timestamp": "2024-10-14T10:47:01.086977"
+    },
+    {
+        "temperature": 29.12,
+        "humidity": 37.99,
+        "timestamp": "2024-10-14T10:47:01.185364"
+    },
+    {
+        "temperature": 20.5,
+        "humidity": 36.9,
+        "timestamp": "2024-10-14T10:47:01.292387"
+    },
+    {
+        "temperature": 20.52,
+        "humidity": 46.78,
+        "timestamp": "2024-10-14T10:47:01.404326"
+    },
+    {
+        "temperature": 26.42,
+        "humidity": 46.61,
+        "timestamp": "2024-10-14T10:47:01.510925"
+    },
+    {
+        "temperature": 25.61,
+        "humidity": 42.07,
+        "timestamp": "2024-10-14T10:47:01.611322"
+    },
+    {
+        "temperature": 25.61,
+        "humidity": 30.66,
+        "timestamp": "2024-10-14T10:47:01.711985"
+    },
+    {
+        "temperature": 20.37,
+        "humidity": 33.68,
+        "timestamp": "2024-10-14T10:47:01.813373"
+    },
+    {
+        "temperature": 20.92,
+        "humidity": 37.13,
+        "timestamp": "2024-10-14T10:47:01.915398"
+    },
+    {
+        "temperature": 25.63,
+        "humidity": 33.21,
+        "timestamp": "2024-10-14T10:47:02.015808"
+    },
+    {
+        "temperature": 28.6,
+        "humidity": 47.93,
+        "timestamp": "2024-10-14T10:47:02.118389"
+    },
+    {
+        "temperature": 23.11,
+        "humidity": 49.48,
+        "timestamp": "2024-10-14T10:47:02.220136"
+    },
+    {
+        "temperature": 21.42,
+        "humidity": 36.82,
+        "timestamp": "2024-10-14T10:47:02.320988"
+    },
+    {
+        "temperature": 21.02,
+        "humidity": 30.69,
+        "timestamp": "2024-10-14T10:47:02.422593"
+    },
+    {
+        "temperature": 25.56,
+        "humidity": 30.1,
+        "timestamp": "2024-10-14T10:47:02.523506"
+    },
+    {
+        "temperature": 22.9,
+        "humidity": 30.71,
+        "timestamp": "2024-10-14T10:47:02.624290"
+    },
+    {
+        "temperature": 27.24,
+        "humidity": 45.93,
+        "timestamp": "2024-10-14T10:47:02.726065"
+    },
+    {
+        "temperature": 22.79,
+        "humidity": 36.7,
+        "timestamp": "2024-10-14T10:47:02.828565"
+    },
+    {
+        "temperature": 26.66,
+        "humidity": 37.07,
+        "timestamp": "2024-10-14T10:47:02.929268"
+    },
+    {
+        "temperature": 28.3,
+        "humidity": 41.28,
+        "timestamp": "2024-10-14T10:47:03.029589"
+    },
+    {
+        "temperature": 23.48,
+        "humidity": 45.36,
+        "timestamp": "2024-10-14T10:47:03.131044"
+    },
+    {
+        "temperature": 25.59,
+        "humidity": 38.73,
+        "timestamp": "2024-10-14T10:47:03.232073"
+    },
+    {
+        "temperature": 29.13,
+        "humidity": 33.42,
+        "timestamp": "2024-10-14T10:47:03.332307"
+    },
+    {
+        "temperature": 27.98,
+        "humidity": 40.34,
+        "timestamp": "2024-10-14T10:47:03.434507"
+    },
+    {
+        "temperature": 27.15,
+        "humidity": 42.47,
+        "timestamp": "2024-10-14T10:47:03.535409"
+    },
+    {
+        "temperature": 26.83,
+        "humidity": 48.74,
+        "timestamp": "2024-10-14T10:47:03.637009"
+    },
+    {
+        "temperature": 20.58,
+        "humidity": 40.32,
+        "timestamp": "2024-10-14T10:47:03.737641"
+    },
+    {
+        "temperature": 27.11,
+        "humidity": 43.13,
+        "timestamp": "2024-10-14T10:47:03.837901"
+    },
+    {
+        "temperature": 29.92,
+        "humidity": 46.35,
+        "timestamp": "2024-10-14T10:47:03.939132"
+    },
+    {
+        "temperature": 28.03,
+        "humidity": 34.93,
+        "timestamp": "2024-10-14T10:47:04.040752"
+    },
+    {
+        "temperature": 26.51,
+        "humidity": 35.31,
+        "timestamp": "2024-10-14T10:47:04.141095"
+    },
+    {
+        "temperature": 23.06,
+        "humidity": 40.31,
+        "timestamp": "2024-10-14T10:47:04.242762"
+    },
+    {
+        "temperature": 26.87,
+        "humidity": 40.43,
+        "timestamp": "2024-10-14T10:47:04.344289"
+    },
+    {
+        "temperature": 29.46,
+        "humidity": 40.73,
+        "timestamp": "2024-10-14T10:47:04.444907"
+    },
+    {
+        "temperature": 20.24,
+        "humidity": 33.43,
+        "timestamp": "2024-10-14T10:47:04.545581"
+    },
+    {
+        "temperature": 20.4,
+        "humidity": 42.13,
+        "timestamp": "2024-10-14T10:47:04.648304"
+    },
+    {
+        "temperature": 28.3,
+        "humidity": 41.73,
+        "timestamp": "2024-10-14T10:47:04.749025"
+    },
+    {
+        "temperature": 23.82,
+        "humidity": 36.64,
+        "timestamp": "2024-10-14T10:47:04.850798"
+    },
+    {
+        "temperature": 26.74,
+        "humidity": 31.55,
+        "timestamp": "2024-10-14T10:47:04.951916"
+    },
+    {
+        "temperature": 23.83,
+        "humidity": 48.18,
+        "timestamp": "2024-10-14T10:47:05.052791"
+    },
+    {
+        "temperature": 29.83,
+        "humidity": 42.19,
+        "timestamp": "2024-10-14T10:47:05.154797"
+    },
+    {
+        "temperature": 23.41,
+        "humidity": 40.56,
+        "timestamp": "2024-10-14T10:47:05.255635"
+    },
+    {
+        "temperature": 20.57,
+        "humidity": 40.46,
+        "timestamp": "2024-10-14T10:47:05.356360"
+    },
+    {
+        "temperature": 28.53,
+        "humidity": 41.36,
+        "timestamp": "2024-10-14T10:47:05.457871"
+    },
+    {
+        "temperature": 29.0,
+        "humidity": 46.89,
+        "timestamp": "2024-10-14T10:47:05.559790"
+    },
+    {
+        "temperature": 23.76,
+        "humidity": 43.92,
+        "timestamp": "2024-10-14T10:47:05.660329"
+    },
+    {
+        "temperature": 20.36,
+        "humidity": 31.68,
+        "timestamp": "2024-10-14T10:47:05.761974"
+    },
+    {
+        "temperature": 24.49,
+        "humidity": 47.86,
+        "timestamp": "2024-10-14T10:47:05.865145"
+    },
+    {
+        "temperature": 26.03,
+        "humidity": 39.8,
+        "timestamp": "2024-10-14T10:47:05.965448"
+    },
+    {
+        "temperature": 20.83,
+        "humidity": 40.81,
+        "timestamp": "2024-10-14T10:47:06.068231"
+    },
+    {
+        "temperature": 26.4,
+        "humidity": 42.36,
+        "timestamp": "2024-10-14T10:47:06.170616"
+    },
+    {
+        "temperature": 25.71,
+        "humidity": 48.57,
+        "timestamp": "2024-10-14T10:47:06.270640"
+    },
+    {
+        "temperature": 29.61,
+        "humidity": 43.77,
+        "timestamp": "2024-10-14T10:47:06.372841"
+    },
+    {
+        "temperature": 25.09,
+        "humidity": 35.78,
+        "timestamp": "2024-10-14T10:47:06.473150"
+    },
+    {
+        "temperature": 26.59,
+        "humidity": 35.71,
+        "timestamp": "2024-10-14T10:47:06.575288"
+    },
+    {
+        "temperature": 24.39,
+        "humidity": 36.95,
+        "timestamp": "2024-10-14T10:47:06.675373"
+    },
+    {
+        "temperature": 28.32,
+        "humidity": 32.42,
+        "timestamp": "2024-10-14T10:47:06.776615"
+    },
+    {
+        "temperature": 23.89,
+        "humidity": 33.38,
+        "timestamp": "2024-10-14T10:47:06.878156"
+    },
+    {
+        "temperature": 27.76,
+        "humidity": 46.97,
+        "timestamp": "2024-10-14T10:47:06.978525"
+    },
+    {
+        "temperature": 22.03,
+        "humidity": 40.09,
+        "timestamp": "2024-10-14T10:47:07.064616"
+    },
+    {
+        "temperature": 25.7,
+        "humidity": 46.05,
+        "timestamp": "2024-10-14T10:47:07.172270"
+    },
+    {
+        "temperature": 25.49,
+        "humidity": 36.67,
+        "timestamp": "2024-10-14T10:47:07.274596"
+    },
+    {
+        "temperature": 26.05,
+        "humidity": 44.25,
+        "timestamp": "2024-10-14T10:47:07.375818"
+    },
+    {
+        "temperature": 25.42,
+        "humidity": 48.39,
+        "timestamp": "2024-10-14T10:47:07.476183"
+    },
+    {
+        "temperature": 28.93,
+        "humidity": 48.98,
+        "timestamp": "2024-10-14T10:47:07.578012"
+    },
+    {
+        "temperature": 21.91,
+        "humidity": 41.48,
+        "timestamp": "2024-10-14T10:47:07.678515"
+    },
+    {
+        "temperature": 21.82,
+        "humidity": 48.06,
+        "timestamp": "2024-10-14T10:47:07.779686"
+    },
+    {
+        "temperature": 20.49,
+        "humidity": 49.18,
+        "timestamp": "2024-10-14T10:47:07.880516"
+    },
+    {
+        "temperature": 20.79,
+        "humidity": 34.94,
+        "timestamp": "2024-10-14T10:47:07.981931"
+    },
+    {
+        "temperature": 20.73,
+        "humidity": 43.82,
+        "timestamp": "2024-10-14T10:47:08.083473"
+    },
+    {
+        "temperature": 23.89,
+        "humidity": 38.26,
+        "timestamp": "2024-10-14T10:47:08.184694"
+    },
+    {
+        "temperature": 23.64,
+        "humidity": 44.01,
+        "timestamp": "2024-10-14T10:47:08.285183"
+    },
+    {
+        "temperature": 21.0,
+        "humidity": 40.74,
+        "timestamp": "2024-10-14T10:47:08.387086"
+    },
+    {
+        "temperature": 29.6,
+        "humidity": 49.96,
+        "timestamp": "2024-10-14T10:47:08.488036"
+    },
+    {
+        "temperature": 27.66,
+        "humidity": 31.09,
+        "timestamp": "2024-10-14T10:47:08.589776"
+    },
+    {
+        "temperature": 29.58,
+        "humidity": 36.03,
+        "timestamp": "2024-10-14T10:47:08.690211"
+    },
+    {
+        "temperature": 25.28,
+        "humidity": 39.41,
+        "timestamp": "2024-10-14T10:47:08.790565"
+    },
+    {
+        "temperature": 27.91,
+        "humidity": 36.2,
+        "timestamp": "2024-10-14T10:47:08.890829"
+    },
+    {
+        "temperature": 23.53,
+        "humidity": 48.53,
+        "timestamp": "2024-10-14T10:47:08.992571"
+    },
+    {
+        "temperature": 20.61,
+        "humidity": 37.98,
+        "timestamp": "2024-10-14T10:47:09.092922"
+    },
+    {
+        "temperature": 22.27,
+        "humidity": 41.5,
+        "timestamp": "2024-10-14T10:47:09.194448"
+    },
+    {
+        "temperature": 28.41,
+        "humidity": 33.33,
+        "timestamp": "2024-10-14T10:47:09.294587"
+    },
+    {
+        "temperature": 29.14,
+        "humidity": 42.14,
+        "timestamp": "2024-10-14T10:47:09.397067"
+    },
+    {
+        "temperature": 21.88,
+        "humidity": 47.59,
+        "timestamp": "2024-10-14T10:47:09.498829"
+    },
+    {
+        "temperature": 28.76,
+        "humidity": 38.15,
+        "timestamp": "2024-10-14T10:47:09.600465"
+    },
+    {
+        "temperature": 21.05,
+        "humidity": 35.41,
+        "timestamp": "2024-10-14T10:47:09.702183"
+    },
+    {
+        "temperature": 22.49,
+        "humidity": 37.97,
+        "timestamp": "2024-10-14T10:47:09.804448"
+    },
+    {
+        "temperature": 20.05,
+        "humidity": 41.29,
+        "timestamp": "2024-10-14T10:47:09.905924"
+    },
+    {
+        "temperature": 24.34,
+        "humidity": 33.4,
+        "timestamp": "2024-10-14T10:47:10.007876"
+    },
+    {
+        "temperature": 28.38,
+        "humidity": 42.34,
+        "timestamp": "2024-10-14T10:47:10.108110"
+    },
+    {
+        "temperature": 28.06,
+        "humidity": 46.69,
+        "timestamp": "2024-10-14T10:47:10.210540"
+    },
+    {
+        "temperature": 21.52,
+        "humidity": 47.24,
+        "timestamp": "2024-10-14T10:47:10.310584"
+    },
+    {
+        "temperature": 20.96,
+        "humidity": 38.81,
+        "timestamp": "2024-10-14T10:47:10.412479"
+    },
+    {
+        "temperature": 25.05,
+        "humidity": 43.77,
+        "timestamp": "2024-10-14T10:47:10.512616"
+    },
+    {
+        "temperature": 28.37,
+        "humidity": 46.52,
+        "timestamp": "2024-10-14T10:47:10.612633"
+    },
+    {
+        "temperature": 27.19,
+        "humidity": 49.45,
+        "timestamp": "2024-10-14T10:47:10.712849"
+    },
+    {
+        "temperature": 23.38,
+        "humidity": 46.64,
+        "timestamp": "2024-10-14T10:47:10.797878"
+    },
+    {
+        "temperature": 23.99,
+        "humidity": 31.03,
+        "timestamp": "2024-10-14T10:47:10.906409"
+    },
+    {
+        "temperature": 23.71,
+        "humidity": 37.97,
+        "timestamp": "2024-10-14T10:47:11.007793"
+    },
+    {
+        "temperature": 20.19,
+        "humidity": 32.22,
+        "timestamp": "2024-10-14T10:47:11.108217"
+    },
+    {
+        "temperature": 23.52,
+        "humidity": 42.0,
+        "timestamp": "2024-10-14T10:47:11.208483"
+    },
+    {
+        "temperature": 27.14,
+        "humidity": 38.7,
+        "timestamp": "2024-10-14T10:47:11.309688"
+    },
+    {
+        "temperature": 20.56,
+        "humidity": 36.22,
+        "timestamp": "2024-10-14T10:47:11.410155"
+    },
+    {
+        "temperature": 21.22,
+        "humidity": 47.71,
+        "timestamp": "2024-10-14T10:47:11.512236"
+    },
+    {
+        "temperature": 26.13,
+        "humidity": 49.88,
+        "timestamp": "2024-10-14T10:47:11.613765"
+    },
+    {
+        "temperature": 22.46,
+        "humidity": 30.71,
+        "timestamp": "2024-10-14T10:47:11.715544"
+    },
+    {
+        "temperature": 26.06,
+        "humidity": 47.53,
+        "timestamp": "2024-10-14T10:47:11.816869"
+    },
+    {
+        "temperature": 21.87,
+        "humidity": 48.21,
+        "timestamp": "2024-10-14T10:47:11.918507"
+    },
+    {
+        "temperature": 20.09,
+        "humidity": 34.07,
+        "timestamp": "2024-10-14T10:47:12.018549"
+    },
+    {
+        "temperature": 24.69,
+        "humidity": 33.86,
+        "timestamp": "2024-10-14T10:47:12.119825"
+    },
+    {
+        "temperature": 26.44,
+        "humidity": 38.64,
+        "timestamp": "2024-10-14T10:47:12.220161"
+    },
+    {
+        "temperature": 28.67,
+        "humidity": 31.95,
+        "timestamp": "2024-10-14T10:47:12.321274"
+    },
+    {
+        "temperature": 27.63,
+        "humidity": 41.79,
+        "timestamp": "2024-10-14T10:47:12.421750"
+    },
+    {
+        "temperature": 20.06,
+        "humidity": 49.72,
+        "timestamp": "2024-10-14T10:47:12.523157"
+    },
+    {
+        "temperature": 26.78,
+        "humidity": 44.75,
+        "timestamp": "2024-10-14T10:47:12.625111"
+    },
+    {
+        "temperature": 29.0,
+        "humidity": 46.69,
+        "timestamp": "2024-10-14T10:47:12.726330"
+    },
+    {
+        "temperature": 25.9,
+        "humidity": 30.68,
+        "timestamp": "2024-10-14T10:47:12.827106"
+    },
+    {
+        "temperature": 20.62,
+        "humidity": 47.33,
+        "timestamp": "2024-10-14T10:47:12.928472"
+    },
+    {
+        "temperature": 27.61,
+        "humidity": 39.45,
+        "timestamp": "2024-10-14T10:47:13.028791"
+    },
+    {
+        "temperature": 28.5,
+        "humidity": 31.82,
+        "timestamp": "2024-10-14T10:47:13.130553"
+    },
+    {
+        "temperature": 29.51,
+        "humidity": 45.77,
+        "timestamp": "2024-10-14T10:47:13.231890"
+    },
+    {
+        "temperature": 22.7,
+        "humidity": 36.33,
+        "timestamp": "2024-10-14T10:47:13.333184"
+    },
+    {
+        "temperature": 26.84,
+        "humidity": 43.03,
+        "timestamp": "2024-10-14T10:47:13.433317"
+    },
+    {
+        "temperature": 27.29,
+        "humidity": 43.71,
+        "timestamp": "2024-10-14T10:47:13.534549"
+    },
+    {
+        "temperature": 22.67,
+        "humidity": 45.07,
+        "timestamp": "2024-10-14T10:47:13.635985"
+    },
+    {
+        "temperature": 27.8,
+        "humidity": 31.29,
+        "timestamp": "2024-10-14T10:47:13.738149"
+    },
+    {
+        "temperature": 26.17,
+        "humidity": 49.12,
+        "timestamp": "2024-10-14T10:47:13.840077"
+    },
+    {
+        "temperature": 27.65,
+        "humidity": 46.66,
+        "timestamp": "2024-10-14T10:47:13.941152"
+    },
+    {
+        "temperature": 21.26,
+        "humidity": 44.48,
+        "timestamp": "2024-10-14T10:47:14.042120"
+    },
+    {
+        "temperature": 28.88,
+        "humidity": 47.46,
+        "timestamp": "2024-10-14T10:47:14.144532"
+    },
+    {
+        "temperature": 29.55,
+        "humidity": 47.97,
+        "timestamp": "2024-10-14T10:47:14.245893"
+    },
+    {
+        "temperature": 22.66,
+        "humidity": 43.41,
+        "timestamp": "2024-10-14T10:47:14.347532"
+    },
+    {
+        "temperature": 29.45,
+        "humidity": 36.29,
+        "timestamp": "2024-10-14T10:47:14.448999"
+    },
+    {
+        "temperature": 21.76,
+        "humidity": 49.58,
+        "timestamp": "2024-10-14T10:47:14.551877"
+    },
+    {
+        "temperature": 26.47,
+        "humidity": 48.08,
+        "timestamp": "2024-10-14T10:47:14.654381"
+    },
+    {
+        "temperature": 24.6,
+        "humidity": 41.97,
+        "timestamp": "2024-10-14T10:47:14.755689"
+    },
+    {
+        "temperature": 23.97,
+        "humidity": 37.51,
+        "timestamp": "2024-10-14T10:47:14.856595"
+    },
+    {
+        "temperature": 22.21,
+        "humidity": 37.59,
+        "timestamp": "2024-10-14T10:47:14.958481"
+    },
+    {
+        "temperature": 24.19,
+        "humidity": 49.76,
+        "timestamp": "2024-10-14T10:47:15.059293"
+    },
+    {
+        "temperature": 28.4,
+        "humidity": 35.47,
+        "timestamp": "2024-10-14T10:47:15.161170"
+    },
+    {
+        "temperature": 26.22,
+        "humidity": 42.1,
+        "timestamp": "2024-10-14T10:47:15.262368"
+    },
+    {
+        "temperature": 20.88,
+        "humidity": 41.12,
+        "timestamp": "2024-10-14T10:47:15.363603"
+    },
+    {
+        "temperature": 21.31,
+        "humidity": 40.8,
+        "timestamp": "2024-10-14T10:47:15.464309"
+    },
+    {
+        "temperature": 26.37,
+        "humidity": 33.27,
+        "timestamp": "2024-10-14T10:47:15.565346"
+    },
+    {
+        "temperature": 23.32,
+        "humidity": 39.99,
+        "timestamp": "2024-10-14T10:47:15.666516"
+    },
+    {
+        "temperature": 22.51,
+        "humidity": 42.46,
+        "timestamp": "2024-10-14T10:47:15.767744"
+    },
+    {
+        "temperature": 29.54,
+        "humidity": 36.55,
+        "timestamp": "2024-10-14T10:47:15.870279"
+    },
+    {
+        "temperature": 24.5,
+        "humidity": 40.34,
+        "timestamp": "2024-10-14T10:47:15.972446"
+    },
+    {
+        "temperature": 23.49,
+        "humidity": 42.62,
+        "timestamp": "2024-10-14T10:47:16.074473"
+    },
+    {
+        "temperature": 21.16,
+        "humidity": 31.0,
+        "timestamp": "2024-10-14T10:47:16.176434"
+    },
+    {
+        "temperature": 29.8,
+        "humidity": 46.65,
+        "timestamp": "2024-10-14T10:47:16.276512"
+    },
+    {
+        "temperature": 23.68,
+        "humidity": 43.12,
+        "timestamp": "2024-10-14T10:47:16.378125"
+    },
+    {
+        "temperature": 24.76,
+        "humidity": 38.57,
+        "timestamp": "2024-10-14T10:47:16.478420"
+    },
+    {
+        "temperature": 28.68,
+        "humidity": 46.47,
+        "timestamp": "2024-10-14T10:47:16.578524"
+    },
+    {
+        "temperature": 22.39,
+        "humidity": 49.53,
+        "timestamp": "2024-10-14T10:47:16.680367"
+    },
+    {
+        "temperature": 29.03,
+        "humidity": 31.64,
+        "timestamp": "2024-10-14T10:47:16.781779"
+    },
+    {
+        "temperature": 22.08,
+        "humidity": 40.07,
+        "timestamp": "2024-10-14T10:47:16.884774"
+    },
+    {
+        "temperature": 21.73,
+        "humidity": 46.56,
+        "timestamp": "2024-10-14T10:47:16.970030"
+    },
+    {
+        "temperature": 25.02,
+        "humidity": 47.04,
+        "timestamp": "2024-10-14T10:47:17.079110"
+    },
+    {
+        "temperature": 25.47,
+        "humidity": 34.7,
+        "timestamp": "2024-10-14T10:47:17.181426"
+    },
+    {
+        "temperature": 28.79,
+        "humidity": 32.05,
+        "timestamp": "2024-10-14T10:47:17.282691"
+    },
+    {
+        "temperature": 25.53,
+        "humidity": 37.65,
+        "timestamp": "2024-10-14T10:47:17.382975"
+    },
+    {
+        "temperature": 25.44,
+        "humidity": 42.21,
+        "timestamp": "2024-10-14T10:47:17.484573"
+    },
+    {
+        "temperature": 29.8,
+        "humidity": 39.61,
+        "timestamp": "2024-10-14T10:47:17.586359"
+    },
+    {
+        "temperature": 22.57,
+        "humidity": 38.46,
+        "timestamp": "2024-10-14T10:47:17.687529"
+    },
+    {
+        "temperature": 30.0,
+        "humidity": 32.78,
+        "timestamp": "2024-10-14T10:47:17.790359"
+    },
+    {
+        "temperature": 20.47,
+        "humidity": 38.57,
+        "timestamp": "2024-10-14T10:47:17.890938"
+    },
+    {
+        "temperature": 25.4,
+        "humidity": 33.89,
+        "timestamp": "2024-10-14T10:47:17.992048"
+    },
+    {
+        "temperature": 21.79,
+        "humidity": 45.09,
+        "timestamp": "2024-10-14T10:47:18.096864"
+    },
+    {
+        "temperature": 29.0,
+        "humidity": 35.63,
+        "timestamp": "2024-10-14T10:47:18.199554"
+    },
+    {
+        "temperature": 26.09,
+        "humidity": 35.07,
+        "timestamp": "2024-10-14T10:47:18.301466"
+    },
+    {
+        "temperature": 20.32,
+        "humidity": 43.56,
+        "timestamp": "2024-10-14T10:47:18.401569"
+    },
+    {
+        "temperature": 25.12,
+        "humidity": 35.87,
+        "timestamp": "2024-10-14T10:47:18.502986"
+    },
+    {
+        "temperature": 23.84,
+        "humidity": 47.97,
+        "timestamp": "2024-10-14T10:47:18.607140"
+    },
+    {
+        "temperature": 24.88,
+        "humidity": 46.71,
+        "timestamp": "2024-10-14T10:47:18.708809"
+    },
+    {
+        "temperature": 28.2,
+        "humidity": 44.68,
+        "timestamp": "2024-10-14T10:47:18.808924"
+    },
+    {
+        "temperature": 23.87,
+        "humidity": 38.36,
+        "timestamp": "2024-10-14T10:47:18.911058"
+    },
+    {
+        "temperature": 26.86,
+        "humidity": 42.47,
+        "timestamp": "2024-10-14T10:47:19.012288"
+    },
+    {
+        "temperature": 26.56,
+        "humidity": 37.04,
+        "timestamp": "2024-10-14T10:47:19.113460"
+    },
+    {
+        "temperature": 26.5,
+        "humidity": 33.05,
+        "timestamp": "2024-10-14T10:47:19.215514"
+    },
+    {
+        "temperature": 27.27,
+        "humidity": 45.16,
+        "timestamp": "2024-10-14T10:47:19.315826"
+    },
+    {
+        "temperature": 27.17,
+        "humidity": 43.68,
+        "timestamp": "2024-10-14T10:47:19.418140"
+    },
+    {
+        "temperature": 29.17,
+        "humidity": 36.65,
+        "timestamp": "2024-10-14T10:47:19.518422"
+    },
+    {
+        "temperature": 24.17,
+        "humidity": 42.95,
+        "timestamp": "2024-10-14T10:47:19.619349"
+    },
+    {
+        "temperature": 23.12,
+        "humidity": 35.64,
+        "timestamp": "2024-10-14T10:47:19.727921"
+    },
+    {
+        "temperature": 28.64,
+        "humidity": 38.43,
+        "timestamp": "2024-10-14T10:47:19.812598"
+    },
+    {
+        "temperature": 24.75,
+        "humidity": 30.08,
+        "timestamp": "2024-10-14T10:47:19.914337"
+    },
+    {
+        "temperature": 25.21,
+        "humidity": 46.09,
+        "timestamp": "2024-10-14T10:47:20.014836"
+    },
+    {
+        "temperature": 23.21,
+        "humidity": 34.06,
+        "timestamp": "2024-10-14T10:47:20.117676"
+    },
+    {
+        "temperature": 27.49,
+        "humidity": 40.57,
+        "timestamp": "2024-10-14T10:47:20.218962"
+    },
+    {
+        "temperature": 20.75,
+        "humidity": 49.57,
+        "timestamp": "2024-10-14T10:47:20.320571"
+    },
+    {
+        "temperature": 23.53,
+        "humidity": 36.97,
+        "timestamp": "2024-10-14T10:47:20.420846"
+    },
+    {
+        "temperature": 29.01,
+        "humidity": 46.19,
+        "timestamp": "2024-10-14T10:47:20.522806"
+    },
+    {
+        "temperature": 25.23,
+        "humidity": 35.87,
+        "timestamp": "2024-10-14T10:47:20.622920"
+    },
+    {
+        "temperature": 28.85,
+        "humidity": 43.12,
+        "timestamp": "2024-10-14T10:47:20.724394"
+    },
+    {
+        "temperature": 29.56,
+        "humidity": 31.96,
+        "timestamp": "2024-10-14T10:47:20.825084"
+    },
+    {
+        "temperature": 28.08,
+        "humidity": 42.2,
+        "timestamp": "2024-10-14T10:47:20.926481"
+    },
+    {
+        "temperature": 22.63,
+        "humidity": 40.67,
+        "timestamp": "2024-10-14T10:47:21.029285"
+    },
+    {
+        "temperature": 20.53,
+        "humidity": 42.17,
+        "timestamp": "2024-10-14T10:47:21.129880"
+    },
+    {
+        "temperature": 27.84,
+        "humidity": 31.12,
+        "timestamp": "2024-10-14T10:47:21.230641"
+    },
+    {
+        "temperature": 22.31,
+        "humidity": 47.47,
+        "timestamp": "2024-10-14T10:47:21.325866"
+    },
+    {
+        "temperature": 21.09,
+        "humidity": 38.09,
+        "timestamp": "2024-10-14T10:47:21.427190"
+    },
+    {
+        "temperature": 29.28,
+        "humidity": 41.83,
+        "timestamp": "2024-10-14T10:47:21.529141"
+    },
+    {
+        "temperature": 21.64,
+        "humidity": 41.85,
+        "timestamp": "2024-10-14T10:47:21.629170"
+    },
+    {
+        "temperature": 23.04,
+        "humidity": 43.78,
+        "timestamp": "2024-10-14T10:47:21.730255"
+    },
+    {
+        "temperature": 28.78,
+        "humidity": 33.86,
+        "timestamp": "2024-10-14T10:47:21.832319"
+    },
+    {
+        "temperature": 29.44,
+        "humidity": 37.78,
+        "timestamp": "2024-10-14T10:47:21.932719"
+    },
+    {
+        "temperature": 25.17,
+        "humidity": 35.05,
+        "timestamp": "2024-10-14T10:47:22.034276"
+    },
+    {
+        "temperature": 22.55,
+        "humidity": 47.41,
+        "timestamp": "2024-10-14T10:47:22.135520"
+    },
+    {
+        "temperature": 29.56,
+        "humidity": 42.8,
+        "timestamp": "2024-10-14T10:47:22.236970"
+    },
+    {
+        "temperature": 25.12,
+        "humidity": 40.75,
+        "timestamp": "2024-10-14T10:47:22.341131"
+    },
+    {
+        "temperature": 22.84,
+        "humidity": 38.1,
+        "timestamp": "2024-10-14T10:47:22.448217"
+    },
+    {
+        "temperature": 29.14,
+        "humidity": 44.87,
+        "timestamp": "2024-10-14T10:47:22.557082"
+    },
+    {
+        "temperature": 28.8,
+        "humidity": 42.95,
+        "timestamp": "2024-10-14T10:47:22.649954"
+    },
+    {
+        "temperature": 21.74,
+        "humidity": 49.46,
+        "timestamp": "2024-10-14T10:47:22.765552"
+    },
+    {
+        "temperature": 27.39,
+        "humidity": 37.52,
+        "timestamp": "2024-10-14T10:47:22.864390"
+    },
+    {
+        "temperature": 25.37,
+        "humidity": 47.37,
+        "timestamp": "2024-10-14T10:47:22.963126"
+    },
+    {
+        "temperature": 23.7,
+        "humidity": 30.77,
+        "timestamp": "2024-10-14T10:47:23.055282"
+    },
+    {
+        "temperature": 21.44,
+        "humidity": 41.91,
+        "timestamp": "2024-10-14T10:47:23.141397"
+    },
+    {
+        "temperature": 23.77,
+        "humidity": 33.72,
+        "timestamp": "2024-10-14T10:47:23.241866"
+    },
+    {
+        "temperature": 21.31,
+        "humidity": 43.8,
+        "timestamp": "2024-10-14T10:47:23.342336"
+    },
+    {
+        "temperature": 22.62,
+        "humidity": 46.57,
+        "timestamp": "2024-10-14T10:47:23.444370"
+    },
+    {
+        "temperature": 22.7,
+        "humidity": 49.23,
+        "timestamp": "2024-10-14T10:47:23.544685"
+    },
+    {
+        "temperature": 23.93,
+        "humidity": 35.82,
+        "timestamp": "2024-10-14T10:47:23.646366"
+    },
+    {
+        "temperature": 28.04,
+        "humidity": 46.04,
+        "timestamp": "2024-10-14T10:47:23.747749"
+    },
+    {
+        "temperature": 25.03,
+        "humidity": 34.18,
+        "timestamp": "2024-10-14T10:47:23.848440"
+    },
+    {
+        "temperature": 25.56,
+        "humidity": 30.56,
+        "timestamp": "2024-10-14T10:47:23.950439"
+    },
+    {
+        "temperature": 23.63,
+        "humidity": 31.72,
+        "timestamp": "2024-10-14T10:47:24.051688"
+    },
+    {
+        "temperature": 26.49,
+        "humidity": 46.97,
+        "timestamp": "2024-10-14T10:47:24.152451"
+    },
+    {
+        "temperature": 29.34,
+        "humidity": 45.57,
+        "timestamp": "2024-10-14T10:47:24.255344"
+    },
+    {
+        "temperature": 26.52,
+        "humidity": 30.54,
+        "timestamp": "2024-10-14T10:47:24.357210"
+    },
+    {
+        "temperature": 21.23,
+        "humidity": 35.61,
+        "timestamp": "2024-10-14T10:47:24.458160"
+    },
+    {
+        "temperature": 20.35,
+        "humidity": 44.72,
+        "timestamp": "2024-10-14T10:47:24.558789"
+    },
+    {
+        "temperature": 25.87,
+        "humidity": 36.06,
+        "timestamp": "2024-10-14T10:47:24.660407"
+    },
+    {
+        "temperature": 29.23,
+        "humidity": 43.97,
+        "timestamp": "2024-10-14T10:47:24.760830"
+    },
+    {
+        "temperature": 21.83,
+        "humidity": 49.11,
+        "timestamp": "2024-10-14T10:47:24.863400"
+    },
+    {
+        "temperature": 22.96,
+        "humidity": 44.69,
+        "timestamp": "2024-10-14T10:47:24.964504"
+    },
+    {
+        "temperature": 21.64,
+        "humidity": 48.33,
+        "timestamp": "2024-10-14T10:47:25.066792"
+    },
+    {
+        "temperature": 24.58,
+        "humidity": 37.13,
+        "timestamp": "2024-10-14T10:47:25.169859"
+    },
+    {
+        "temperature": 22.97,
+        "humidity": 42.55,
+        "timestamp": "2024-10-14T10:47:25.271963"
+    },
+    {
+        "temperature": 21.84,
+        "humidity": 49.92,
+        "timestamp": "2024-10-14T10:47:25.373425"
+    },
+    {
+        "temperature": 23.96,
+        "humidity": 30.21,
+        "timestamp": "2024-10-14T10:47:25.475126"
+    },
+    {
+        "temperature": 24.83,
+        "humidity": 35.08,
+        "timestamp": "2024-10-14T10:47:25.578862"
+    },
+    {
+        "temperature": 29.44,
+        "humidity": 30.75,
+        "timestamp": "2024-10-14T10:47:25.678938"
+    },
+    {
+        "temperature": 23.49,
+        "humidity": 35.1,
+        "timestamp": "2024-10-14T10:47:25.781178"
+    },
+    {
+        "temperature": 22.67,
+        "humidity": 44.86,
+        "timestamp": "2024-10-14T10:47:25.882400"
+    },
+    {
+        "temperature": 28.64,
+        "humidity": 38.47,
+        "timestamp": "2024-10-14T10:47:25.982634"
+    },
+    {
+        "temperature": 24.37,
+        "humidity": 49.82,
+        "timestamp": "2024-10-14T10:47:26.084823"
+    },
+    {
+        "temperature": 29.92,
+        "humidity": 45.42,
+        "timestamp": "2024-10-14T10:47:26.187628"
+    },
+    {
+        "temperature": 23.14,
+        "humidity": 34.41,
+        "timestamp": "2024-10-14T10:47:26.287912"
+    },
+    {
+        "temperature": 26.79,
+        "humidity": 35.79,
+        "timestamp": "2024-10-14T10:47:26.389225"
+    },
+    {
+        "temperature": 27.56,
+        "humidity": 31.99,
+        "timestamp": "2024-10-14T10:47:26.490435"
+    },
+    {
+        "temperature": 29.5,
+        "humidity": 48.32,
+        "timestamp": "2024-10-14T10:47:26.591007"
+    },
+    {
+        "temperature": 22.68,
+        "humidity": 40.36,
+        "timestamp": "2024-10-14T10:47:26.692455"
+    },
+    {
+        "temperature": 20.09,
+        "humidity": 33.75,
+        "timestamp": "2024-10-14T10:47:26.794463"
+    },
+    {
+        "temperature": 23.01,
+        "humidity": 49.85,
+        "timestamp": "2024-10-14T10:47:26.894790"
+    },
+    {
+        "temperature": 27.92,
+        "humidity": 43.02,
+        "timestamp": "2024-10-14T10:47:26.997693"
+    },
+    {
+        "temperature": 26.44,
+        "humidity": 48.37,
+        "timestamp": "2024-10-14T10:47:27.098264"
+    },
+    {
+        "temperature": 23.49,
+        "humidity": 35.59,
+        "timestamp": "2024-10-14T10:47:27.199461"
+    },
+    {
+        "temperature": 26.67,
+        "humidity": 35.63,
+        "timestamp": "2024-10-14T10:47:27.301172"
+    },
+    {
+        "temperature": 22.59,
+        "humidity": 42.64,
+        "timestamp": "2024-10-14T10:47:27.403463"
+    },
+    {
+        "temperature": 24.58,
+        "humidity": 48.06,
+        "timestamp": "2024-10-14T10:47:27.504961"
+    },
+    {
+        "temperature": 24.05,
+        "humidity": 47.64,
+        "timestamp": "2024-10-14T10:47:27.606208"
+    },
+    {
+        "temperature": 21.69,
+        "humidity": 44.99,
+        "timestamp": "2024-10-14T10:47:27.707757"
+    },
+    {
+        "temperature": 22.45,
+        "humidity": 40.21,
+        "timestamp": "2024-10-14T10:47:27.808250"
+    },
+    {
+        "temperature": 25.42,
+        "humidity": 37.26,
+        "timestamp": "2024-10-14T10:47:27.909886"
+    },
+    {
+        "temperature": 25.62,
+        "humidity": 36.87,
+        "timestamp": "2024-10-14T10:47:28.011793"
+    },
+    {
+        "temperature": 29.55,
+        "humidity": 46.31,
+        "timestamp": "2024-10-14T10:47:28.111965"
+    },
+    {
+        "temperature": 26.05,
+        "humidity": 38.14,
+        "timestamp": "2024-10-14T10:47:28.213088"
+    },
+    {
+        "temperature": 24.72,
+        "humidity": 47.52,
+        "timestamp": "2024-10-14T10:47:28.314419"
+    },
+    {
+        "temperature": 27.22,
+        "humidity": 36.27,
+        "timestamp": "2024-10-14T10:47:28.415007"
+    },
+    {
+        "temperature": 29.38,
+        "humidity": 30.83,
+        "timestamp": "2024-10-14T10:47:28.517799"
+    },
+    {
+        "temperature": 20.35,
+        "humidity": 38.5,
+        "timestamp": "2024-10-14T10:47:28.620236"
+    },
+    {
+        "temperature": 28.46,
+        "humidity": 39.26,
+        "timestamp": "2024-10-14T10:47:28.727641"
+    },
+    {
+        "temperature": 20.56,
+        "humidity": 37.47,
+        "timestamp": "2024-10-14T10:47:28.813169"
+    },
+    {
+        "temperature": 26.04,
+        "humidity": 37.28,
+        "timestamp": "2024-10-14T10:47:28.915926"
+    },
+    {
+        "temperature": 21.4,
+        "humidity": 44.23,
+        "timestamp": "2024-10-14T10:47:29.017614"
+    },
+    {
+        "temperature": 27.12,
+        "humidity": 43.51,
+        "timestamp": "2024-10-14T10:47:29.119099"
+    },
+    {
+        "temperature": 29.29,
+        "humidity": 48.53,
+        "timestamp": "2024-10-14T10:47:29.205557"
+    },
+    {
+        "temperature": 28.71,
+        "humidity": 49.81,
+        "timestamp": "2024-10-14T10:47:29.312792"
+    },
+    {
+        "temperature": 23.01,
+        "humidity": 38.61,
+        "timestamp": "2024-10-14T10:47:29.414566"
+    },
+    {
+        "temperature": 20.99,
+        "humidity": 40.08,
+        "timestamp": "2024-10-14T10:47:29.516297"
+    },
+    {
+        "temperature": 21.13,
+        "humidity": 31.0,
+        "timestamp": "2024-10-14T10:47:29.617506"
+    },
+    {
+        "temperature": 25.46,
+        "humidity": 33.41,
+        "timestamp": "2024-10-14T10:47:29.719306"
+    },
+    {
+        "temperature": 28.63,
+        "humidity": 40.44,
+        "timestamp": "2024-10-14T10:47:29.821083"
+    },
+    {
+        "temperature": 26.24,
+        "humidity": 30.46,
+        "timestamp": "2024-10-14T10:47:29.922108"
+    },
+    {
+        "temperature": 24.36,
+        "humidity": 30.56,
+        "timestamp": "2024-10-14T10:47:30.022361"
+    },
+    {
+        "temperature": 22.96,
+        "humidity": 42.74,
+        "timestamp": "2024-10-14T10:47:30.124246"
+    },
+    {
+        "temperature": 27.29,
+        "humidity": 44.49,
+        "timestamp": "2024-10-14T10:47:30.225537"
+    },
+    {
+        "temperature": 20.25,
+        "humidity": 43.19,
+        "timestamp": "2024-10-14T10:47:30.327429"
+    },
+    {
+        "temperature": 28.42,
+        "humidity": 30.9,
+        "timestamp": "2024-10-14T10:47:30.427884"
+    },
+    {
+        "temperature": 25.21,
+        "humidity": 43.22,
+        "timestamp": "2024-10-14T10:47:30.529009"
+    },
+    {
+        "temperature": 27.18,
+        "humidity": 31.8,
+        "timestamp": "2024-10-14T10:47:30.629692"
+    },
+    {
+        "temperature": 25.31,
+        "humidity": 33.15,
+        "timestamp": "2024-10-14T10:47:30.731961"
+    },
+    {
+        "temperature": 25.1,
+        "humidity": 40.85,
+        "timestamp": "2024-10-14T10:47:30.833262"
+    },
+    {
+        "temperature": 29.19,
+        "humidity": 34.1,
+        "timestamp": "2024-10-14T10:47:30.935771"
+    },
+    {
+        "temperature": 26.03,
+        "humidity": 31.49,
+        "timestamp": "2024-10-14T10:47:31.038125"
+    },
+    {
+        "temperature": 23.22,
+        "humidity": 49.61,
+        "timestamp": "2024-10-14T10:47:31.140058"
+    },
+    {
+        "temperature": 29.33,
+        "humidity": 36.73,
+        "timestamp": "2024-10-14T10:47:31.240764"
+    },
+    {
+        "temperature": 29.07,
+        "humidity": 44.95,
+        "timestamp": "2024-10-14T10:47:31.341907"
+    },
+    {
+        "temperature": 27.41,
+        "humidity": 38.66,
+        "timestamp": "2024-10-14T10:47:31.443509"
+    },
+    {
+        "temperature": 29.1,
+        "humidity": 45.34,
+        "timestamp": "2024-10-14T10:47:31.545250"
+    },
+    {
+        "temperature": 24.76,
+        "humidity": 40.9,
+        "timestamp": "2024-10-14T10:47:31.646937"
+    },
+    {
+        "temperature": 23.42,
+        "humidity": 30.89,
+        "timestamp": "2024-10-14T10:47:31.748737"
+    },
+    {
+        "temperature": 23.92,
+        "humidity": 47.48,
+        "timestamp": "2024-10-14T10:47:31.850472"
+    },
+    {
+        "temperature": 21.25,
+        "humidity": 33.31,
+        "timestamp": "2024-10-14T10:47:31.951761"
+    },
+    {
+        "temperature": 27.99,
+        "humidity": 35.55,
+        "timestamp": "2024-10-14T10:47:32.052956"
+    },
+    {
+        "temperature": 23.36,
+        "humidity": 32.0,
+        "timestamp": "2024-10-14T10:47:32.154688"
+    },
+    {
+        "temperature": 27.02,
+        "humidity": 35.15,
+        "timestamp": "2024-10-14T10:47:32.254840"
+    },
+    {
+        "temperature": 27.44,
+        "humidity": 33.31,
+        "timestamp": "2024-10-14T10:47:32.356020"
+    },
+    {
+        "temperature": 20.61,
+        "humidity": 42.02,
+        "timestamp": "2024-10-14T10:47:32.457286"
+    },
+    {
+        "temperature": 25.62,
+        "humidity": 35.3,
+        "timestamp": "2024-10-14T10:47:32.559447"
+    },
+    {
+        "temperature": 26.98,
+        "humidity": 47.46,
+        "timestamp": "2024-10-14T10:47:32.660045"
+    },
+    {
+        "temperature": 23.9,
+        "humidity": 32.18,
+        "timestamp": "2024-10-14T10:47:32.762287"
+    },
+    {
+        "temperature": 26.89,
+        "humidity": 46.06,
+        "timestamp": "2024-10-14T10:47:32.864381"
+    },
+    {
+        "temperature": 25.84,
+        "humidity": 49.47,
+        "timestamp": "2024-10-14T10:47:32.965889"
+    },
+    {
+        "temperature": 22.53,
+        "humidity": 43.46,
+        "timestamp": "2024-10-14T10:47:33.067252"
+    },
+    {
+        "temperature": 26.75,
+        "humidity": 43.6,
+        "timestamp": "2024-10-14T10:47:33.168618"
+    },
+    {
+        "temperature": 28.14,
+        "humidity": 44.23,
+        "timestamp": "2024-10-14T10:47:33.270677"
+    },
+    {
+        "temperature": 29.8,
+        "humidity": 43.66,
+        "timestamp": "2024-10-14T10:47:33.372925"
+    },
+    {
+        "temperature": 29.68,
+        "humidity": 35.94,
+        "timestamp": "2024-10-14T10:47:33.473334"
+    },
+    {
+        "temperature": 25.1,
+        "humidity": 40.07,
+        "timestamp": "2024-10-14T10:47:33.575550"
+    },
+    {
+        "temperature": 27.56,
+        "humidity": 47.75,
+        "timestamp": "2024-10-14T10:47:33.677960"
+    },
+    {
+        "temperature": 24.56,
+        "humidity": 45.6,
+        "timestamp": "2024-10-14T10:47:33.779658"
+    },
+    {
+        "temperature": 20.89,
+        "humidity": 38.35,
+        "timestamp": "2024-10-14T10:47:33.881539"
+    },
+    {
+        "temperature": 23.81,
+        "humidity": 38.2,
+        "timestamp": "2024-10-14T10:47:33.983530"
+    },
+    {
+        "temperature": 27.98,
+        "humidity": 44.0,
+        "timestamp": "2024-10-14T10:47:34.085483"
+    },
+    {
+        "temperature": 23.4,
+        "humidity": 30.73,
+        "timestamp": "2024-10-14T10:47:34.187653"
+    },
+    {
+        "temperature": 20.05,
+        "humidity": 32.45,
+        "timestamp": "2024-10-14T10:47:34.288915"
+    },
+    {
+        "temperature": 27.5,
+        "humidity": 41.06,
+        "timestamp": "2024-10-14T10:47:34.390816"
+    },
+    {
+        "temperature": 26.51,
+        "humidity": 35.55,
+        "timestamp": "2024-10-14T10:47:34.493082"
+    },
+    {
+        "temperature": 27.98,
+        "humidity": 47.6,
+        "timestamp": "2024-10-14T10:47:34.594097"
+    },
+    {
+        "temperature": 28.06,
+        "humidity": 33.93,
+        "timestamp": "2024-10-14T10:47:34.694271"
+    },
+    {
+        "temperature": 22.62,
+        "humidity": 40.65,
+        "timestamp": "2024-10-14T10:47:34.796090"
+    },
+    {
+        "temperature": 26.56,
+        "humidity": 34.04,
+        "timestamp": "2024-10-14T10:47:34.897746"
+    },
+    {
+        "temperature": 26.68,
+        "humidity": 41.09,
+        "timestamp": "2024-10-14T10:47:34.999242"
+    },
+    {
+        "temperature": 25.6,
+        "humidity": 44.28,
+        "timestamp": "2024-10-14T10:47:35.100556"
+    },
+    {
+        "temperature": 21.5,
+        "humidity": 47.09,
+        "timestamp": "2024-10-14T10:47:35.202985"
+    },
+    {
+        "temperature": 20.86,
+        "humidity": 46.31,
+        "timestamp": "2024-10-14T10:47:35.305217"
+    },
+    {
+        "temperature": 29.61,
+        "humidity": 40.05,
+        "timestamp": "2024-10-14T10:47:35.406663"
+    },
+    {
+        "temperature": 20.29,
+        "humidity": 49.85,
+        "timestamp": "2024-10-14T10:47:35.507912"
+    },
+    {
+        "temperature": 22.84,
+        "humidity": 37.29,
+        "timestamp": "2024-10-14T10:47:35.609422"
+    },
+    {
+        "temperature": 27.62,
+        "humidity": 40.32,
+        "timestamp": "2024-10-14T10:47:35.710112"
+    },
+    {
+        "temperature": 24.09,
+        "humidity": 42.03,
+        "timestamp": "2024-10-14T10:47:35.812763"
+    },
+    {
+        "temperature": 22.43,
+        "humidity": 40.63,
+        "timestamp": "2024-10-14T10:47:35.912874"
+    },
+    {
+        "temperature": 24.1,
+        "humidity": 32.97,
+        "timestamp": "2024-10-14T10:47:36.014028"
+    },
+    {
+        "temperature": 26.18,
+        "humidity": 36.46,
+        "timestamp": "2024-10-14T10:47:36.115188"
+    },
+    {
+        "temperature": 23.71,
+        "humidity": 30.63,
+        "timestamp": "2024-10-14T10:47:36.218099"
+    },
+    {
+        "temperature": 24.45,
+        "humidity": 49.6,
+        "timestamp": "2024-10-14T10:47:36.319339"
+    },
+    {
+        "temperature": 22.13,
+        "humidity": 32.64,
+        "timestamp": "2024-10-14T10:47:36.420823"
+    },
+    {
+        "temperature": 28.36,
+        "humidity": 44.08,
+        "timestamp": "2024-10-14T10:47:36.521224"
+    },
+    {
+        "temperature": 24.1,
+        "humidity": 39.9,
+        "timestamp": "2024-10-14T10:47:36.624456"
+    },
+    {
+        "temperature": 29.59,
+        "humidity": 42.88,
+        "timestamp": "2024-10-14T10:47:36.725962"
+    },
+    {
+        "temperature": 25.72,
+        "humidity": 40.92,
+        "timestamp": "2024-10-14T10:47:36.827493"
+    },
+    {
+        "temperature": 21.48,
+        "humidity": 38.83,
+        "timestamp": "2024-10-14T10:47:36.927721"
+    },
+    {
+        "temperature": 24.02,
+        "humidity": 31.26,
+        "timestamp": "2024-10-14T10:47:37.029044"
+    },
+    {
+        "temperature": 26.88,
+        "humidity": 44.88,
+        "timestamp": "2024-10-14T10:47:37.130775"
+    },
+    {
+        "temperature": 29.29,
+        "humidity": 30.98,
+        "timestamp": "2024-10-14T10:47:37.232073"
+    },
+    {
+        "temperature": 23.88,
+        "humidity": 48.38,
+        "timestamp": "2024-10-14T10:47:37.334062"
+    },
+    {
+        "temperature": 24.72,
+        "humidity": 41.93,
+        "timestamp": "2024-10-14T10:47:37.435768"
+    },
+    {
+        "temperature": 22.27,
+        "humidity": 48.1,
+        "timestamp": "2024-10-14T10:47:37.537183"
+    },
+    {
+        "temperature": 28.03,
+        "humidity": 44.12,
+        "timestamp": "2024-10-14T10:47:37.641726"
+    },
+    {
+        "temperature": 24.83,
+        "humidity": 49.06,
+        "timestamp": "2024-10-14T10:47:37.741841"
+    },
+    {
+        "temperature": 28.25,
+        "humidity": 46.49,
+        "timestamp": "2024-10-14T10:47:37.842063"
+    },
+    {
+        "temperature": 28.47,
+        "humidity": 40.76,
+        "timestamp": "2024-10-14T10:47:37.943376"
+    },
+    {
+        "temperature": 29.62,
+        "humidity": 42.39,
+        "timestamp": "2024-10-14T10:47:38.045619"
+    },
+    {
+        "temperature": 24.11,
+        "humidity": 43.08,
+        "timestamp": "2024-10-14T10:47:38.146462"
+    },
+    {
+        "temperature": 27.63,
+        "humidity": 35.8,
+        "timestamp": "2024-10-14T10:47:38.248567"
+    },
+    {
+        "temperature": 27.43,
+        "humidity": 46.6,
+        "timestamp": "2024-10-14T10:47:38.350273"
+    },
+    {
+        "temperature": 24.12,
+        "humidity": 39.88,
+        "timestamp": "2024-10-14T10:47:38.451371"
+    },
+    {
+        "temperature": 26.21,
+        "humidity": 43.81,
+        "timestamp": "2024-10-14T10:47:38.553361"
+    },
+    {
+        "temperature": 22.11,
+        "humidity": 39.61,
+        "timestamp": "2024-10-14T10:47:38.654486"
+    },
+    {
+        "temperature": 26.01,
+        "humidity": 40.89,
+        "timestamp": "2024-10-14T10:47:38.756216"
+    },
+    {
+        "temperature": 20.99,
+        "humidity": 43.2,
+        "timestamp": "2024-10-14T10:47:38.856991"
+    },
+    {
+        "temperature": 24.78,
+        "humidity": 45.82,
+        "timestamp": "2024-10-14T10:47:38.957645"
+    },
+    {
+        "temperature": 24.58,
+        "humidity": 41.86,
+        "timestamp": "2024-10-14T10:47:39.059515"
+    },
+    {
+        "temperature": 27.9,
+        "humidity": 49.98,
+        "timestamp": "2024-10-14T10:47:39.161455"
+    },
+    {
+        "temperature": 25.71,
+        "humidity": 43.85,
+        "timestamp": "2024-10-14T10:47:39.264715"
+    },
+    {
+        "temperature": 22.56,
+        "humidity": 33.16,
+        "timestamp": "2024-10-14T10:47:39.359866"
+    },
+    {
+        "temperature": 21.86,
+        "humidity": 44.79,
+        "timestamp": "2024-10-14T10:47:39.461954"
+    },
+    {
+        "temperature": 28.65,
+        "humidity": 37.0,
+        "timestamp": "2024-10-14T10:47:39.570066"
+    },
+    {
+        "temperature": 25.2,
+        "humidity": 43.37,
+        "timestamp": "2024-10-14T10:47:39.671107"
+    },
+    {
+        "temperature": 25.21,
+        "humidity": 40.89,
+        "timestamp": "2024-10-14T10:47:39.778290"
+    },
+    {
+        "temperature": 23.31,
+        "humidity": 36.16,
+        "timestamp": "2024-10-14T10:47:39.880606"
+    },
+    {
+        "temperature": 26.82,
+        "humidity": 32.22,
+        "timestamp": "2024-10-14T10:47:39.982747"
+    },
+    {
+        "temperature": 25.49,
+        "humidity": 33.62,
+        "timestamp": "2024-10-14T10:47:40.083344"
+    },
+    {
+        "temperature": 28.79,
+        "humidity": 45.7,
+        "timestamp": "2024-10-14T10:47:40.184432"
+    },
+    {
+        "temperature": 20.54,
+        "humidity": 44.53,
+        "timestamp": "2024-10-14T10:47:40.284500"
+    },
+    {
+        "temperature": 21.52,
+        "humidity": 49.02,
+        "timestamp": "2024-10-14T10:47:40.386188"
+    },
+    {
+        "temperature": 21.77,
+        "humidity": 44.71,
+        "timestamp": "2024-10-14T10:47:40.488015"
+    },
+    {
+        "temperature": 25.23,
+        "humidity": 49.23,
+        "timestamp": "2024-10-14T10:47:40.590272"
+    },
+    {
+        "temperature": 22.78,
+        "humidity": 32.17,
+        "timestamp": "2024-10-14T10:47:40.691904"
+    }
+]
