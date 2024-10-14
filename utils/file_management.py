@@ -45,27 +45,38 @@ def device_exists(schema_path: str, device_name: str, raise_error_if_not_found: 
 def validate_data(data: dict, schema: dict) -> bool:
     """
     Validates the data against the provided schema.
+    Prints expected vs. received data types for each key.
     Returns True if data is valid, False otherwise.
     """
     # Check for extra or missing keys
     if set(data.keys()) != set(schema.keys()):
+        print("Mismatch in keys: ", f"Expected {set(schema.keys())}, but got {set(data.keys())}")
         return False
 
-    for key, data_type in schema.items():
+    for key, expected_data_type in schema.items():
         if key not in data:
+            print(f"Missing key: {key} in data")
             return False
 
-        if data_type == "float":
-            if not isinstance(data[key], (float, int)):
+        received_value = data[key]
+        received_data_type = type(received_value).__name__
+
+        if expected_data_type == "float":
+            if not isinstance(received_value, (float, int)):  # Allow int for float
+                print(f"Key: '{key}', Expected: float, Received: {received_data_type}")
                 return False
-        elif data_type == "int":
-            if not isinstance(data[key], int):
+        elif expected_data_type == "int":
+            if not isinstance(received_value, int):
+                print(f"Key: '{key}', Expected: int, Received: {received_data_type}")
                 return False
-        elif data_type == "string":
-            if not isinstance(data[key], str):
+        elif expected_data_type == "string":
+            if not isinstance(received_value, str):
+                print(f"Key: '{key}', Expected: string, Received: {received_data_type}")
                 return False
         else:
-            # Unsupported data type
+            # Unsupported data type in schema
+            print(f"Key: '{key}' has an unsupported type: {expected_data_type}")
             return False
 
+    # If all keys and data types match
     return True
