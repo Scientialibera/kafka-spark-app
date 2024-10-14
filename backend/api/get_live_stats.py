@@ -6,12 +6,13 @@ router = APIRouter()
 
 GET_AVERAGE_ENDPOINT = "/get-average/{device_id}/{run_id}"
 GET_MAX_ENDPOINT = "/get-max/{device_id}/{run_id}"
+DEVICE_SCHEMA_PATH = "data/device_schemas"
 
 # Generic endpoint function for getting aggregated stats
 def get_aggregated_stats(device_id: str, run_id: str, agg_type: str):
     try:
         # Retrieve the device schema from file
-        device_schema = device_exists("data/device_schemas", device_id, raise_error_if_not_found=True)
+        device_schema = device_exists(DEVICE_SCHEMA_PATH, device_id, raise_error_if_not_found=True)
         schema_fields = device_schema["schema"]  # Extract actual schema fields
 
         # Get the Kafka stream and apply dynamic aggregation
