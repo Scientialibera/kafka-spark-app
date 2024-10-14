@@ -1,19 +1,17 @@
 import requests
 import matplotlib.pyplot as plt
 import time
+import itertools
 
-def update_coordinates(device_id: str, run_id: str, interval: float = 1.0):
+def update_coordinates(sensors: list, interval: float = 1.0):
     """
-    Continuously fetches the latest GPS data from the Kafka stream and updates the plot with the new x, y coordinate.
+    Continuously fetches the latest GPS data from the Kafka stream for multiple teammates
+    and updates the plot with their respective coordinates in different shades of blue.
 
     Args:
-    - device_id: The ID of the device to fetch data for.
-    - run_id: The run ID to fetch data for.
+    - sensors: List of tuples with (device_id, run_id) for each teammate.
     - interval: How often (in seconds) to fetch new data from the API.
     """
-    # Define the base URL for the FastAPI endpoint, fetching only the latest message
-    base_url = f"http://localhost:8000/get-topic-messages/{device_id}/{run_id}?limit=1"
-
     # Football pitch boundaries
     PITCH_LAT_MIN = 40.0
     PITCH_LAT_MAX = 40.0009  # Approx. 100m in latitude degrees
@@ -30,61 +28,74 @@ def update_coordinates(device_id: str, run_id: str, interval: float = 1.0):
     ax.set_xlim(PITCH_LON_MIN, PITCH_LON_MAX)
     ax.set_ylim(PITCH_LAT_MIN, PITCH_LAT_MAX)
 
-    scatter_plot, = ax.plot([], [], 'bo')  # Blue dot for GPS coordinate
+    # Generate different shades of blue for each teammate
+    colors = itertools.cycle(['#0000FF', '#1E90FF', '#00BFFF', '#87CEFA'])  # Different shades of blue
 
-    # Add variables to track previous coordinates
-    previous_x, previous_y = None, None
+    # Initialize scatter plots for each teammate
+    scatter_plots = []
+    for sensor in sensors:
+        color = next(colors)
+        scatter_plot, = ax.plot([], [], 'o', color=color)  # Create a scatter plot for each sensor
+        scatter_plots.append(scatter_plot)
+
+    # Add variables to track previous coordinates for each sensor
+    previous_coordinates = [None] * len(sensors)
 
     while True:
-        try:
-            # Fetch the latest data from the API
-            response = requests.get(base_url)
-            if response.status_code == 200:
-                messages = response.json().get('messages', [])
-                if not messages:
-                    print("No new message.")
-                    time.sleep(interval)
-                    continue
+        for i, (device_id, run_id) in enumerate(sensors):
+            try:
+                # Define the base URL for the FastAPI endpoint, fetching only the latest message
+                base_url = f"http://localhost:8000/get-topic-messages/{device_id}/{run_id}?limit=1"
 
-                # Extract the latest message
-                latest_message = messages[-1]
+                # Fetch the latest data from the API
+                response = requests.get(base_url)
+                if response.status_code == 200:
+                    messages = response.json().get('messages', [])
+                    if not messages:
+                        print(f"No new message for {device_id}, {run_id}.")
+                        continue
 
-                # Extract latitude and longitude from the message
-                current_x = latest_message['longitude']
-                current_y = latest_message['latitude']
+                    # Extract the latest message
+                    latest_message = messages[-1]
 
-                # Log the received coordinates for debugging
-                print(f"Received coordinates: Longitude = {current_x}, Latitude = {current_y}")
+                    # Extract latitude and longitude from the message
+                    current_x = latest_message['longitude']
+                    current_y = latest_message['latitude']
 
-                # Check if the coordinates have changed before updating the plot
-                if previous_x == current_x and previous_y == current_y:
-                    print("Coordinates have not changed.")
+                    # Log the received coordinates for debugging
+                    print(f"Received coordinates for {device_id}, {run_id}: Longitude = {current_x}, Latitude = {current_y}")
+
+                    # Check if the coordinates have changed before updating the plot
+                    if previous_coordinates[i] == (current_x, current_y):
+                        print(f"Coordinates for {device_id}, {run_id} have not changed.")
+                    else:
+                        # Update the plot data with the new coordinate for this sensor
+                        scatter_plots[i].set_xdata([current_x])
+                        scatter_plots[i].set_ydata([current_y])
+
+                        # Update previous coordinates
+                        previous_coordinates[i] = (current_x, current_y)
+
                 else:
-                    # Update the plot data with the new coordinate
-                    scatter_plot.set_xdata([current_x])
-                    scatter_plot.set_ydata([current_y])
+                    print(f"Failed to get the latest message for {device_id}, {run_id}: {response.status_code}")
+                    print(f"Error: {response.text}")
 
-                    # Recompute limits if needed (optional)
-                    ax.relim()
-                    ax.autoscale_view()  # Automatically adjust the view limits
-                    plt.draw()  # Redraw the figure
-                    plt.pause(0.5)  # Pause to allow the plot to update
+            except Exception as e:
+                print(f"Error while fetching data for {device_id}, {run_id}: {e}")
 
-                    # Update previous coordinates
-                    previous_x, previous_y = current_x, current_y
+        # Recompute limits if needed (optional)
+        ax.relim()
+        ax.autoscale_view()  # Automatically adjust the view limits
+        plt.draw()  # Redraw the figure
+        plt.pause(0.1)  # Pause to allow the plot to update
 
-            else:
-                print(f"Failed to get the latest message: {response.status_code}")
-                print(f"Error: {response.text}")
-
-            time.sleep(interval)  # Wait before fetching new data
-
-        except Exception as e:
-            print(f"Error while fetching data: {e}")
-            break
+        time.sleep(interval)  # Wait before fetching new data
 
     plt.ioff()  # Turn off interactive mode
     plt.show()  # Keep the plot open when the loop ends
 
+
 if __name__ == "__main__":
-    update_coordinates("gps_1", "run_001", interval=1.0)
+    # Example usage with two teammates
+    teammates = [("gps_1", "run_001"), ("gps_1", "run_002")]
+    update_coordinates(teammates, interval=.1)
