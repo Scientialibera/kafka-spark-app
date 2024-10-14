@@ -30,7 +30,7 @@ def get_kafka_messages(device_id: str, run_id: str, schema_fields: dict, limit: 
     consumer = KafkaConsumer(
         topic,
         bootstrap_servers=[KAFKA_BROKER_URL],
-        auto_offset_reset='earliest',
+        auto_offset_reset='latest',
         enable_auto_commit=True,
         group_id=f"{device_id}_group",
         value_deserializer=lambda x: json.loads(x.decode('utf-8'))
