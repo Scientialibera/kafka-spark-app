@@ -24,15 +24,19 @@ def convert_schema_to_structtype(schema_fields):
 
 
 def get_spark_session():
-    """Create and return a Spark session."""
-    return SparkSession.builder \
-        .appName("Kafka Streaming Stats") \
-        .master("local[*]") \
-        .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
-        .config("spark.sql.warehouse.dir", "/tmp") \
-        .config("spark.hadoop.fs.defaultFS", "file:///") \
-        .config("spark.hadoop.io.nativeio.disable", "true") \
-        .getOrCreate()
+    """Create or get an existing Spark session."""
+    spark = SparkSession.getActiveSession()  # Check if a session exists
+    if not spark:  # If no session exists, create a new one
+        spark = SparkSession.builder \
+            .appName("Kafka Streaming Stats") \
+            .master("local[*]") \
+            .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
+            .config("spark.sql.warehouse.dir", "/tmp") \
+            .config("spark.hadoop.fs.defaultFS", "file:///") \
+            .config("spark.hadoop.io.nativeio.disable", "true") \
+            .getOrCreate()
+    return spark
+
 
 
 def get_aggregation_function(agg_type):
