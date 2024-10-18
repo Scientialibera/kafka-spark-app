@@ -167,7 +167,6 @@ def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_se
     return query
 
 
-
 def get_aggregation_function(agg_type):
     """Return the appropriate aggregation function based on the aggregation type."""
     if agg_type == 'average':
@@ -212,35 +211,6 @@ def get_kafka_batch_aggregates(device_id: str, schema_fields: dict, agg_type: st
         raise HTTPException(status_code=500, detail=f"Error processing Kafka batch: {str(e)}")
 
 
-
-def get_kafka_batch_with_threshold_check(device_id: str, schema_fields: dict, rate: float, window_seconds: int, triggers: dict):
-    try:
-        # Read the processed Kafka DataFrame using the new utility function with the time window
-        data_df = read_kafka_data(device_id, schema_fields, time_window_seconds=window_seconds)
-
-        # Evaluate each column against min and max triggers
-        status_results = {}
-        for field, (min_val, max_val) in triggers.items():
-            if field in schema_fields and schema_fields[field] in ["float", "int"]:
-                # Check if any value is below min or above max
-                min_check = data_df.filter(col(field) < min_val).count()
-                max_check = data_df.filter(col(field) > max_val).count()
-
-                if min_check > 0:
-                    status_results[field] = "low"
-                elif max_check > 0:
-                    status_results[field] = "high"
-                else:
-                    status_results[field] = "normal"
-            else:
-                status_results[field] = "N/A"  # Not applicable for non-numeric fields
-
-        return status_results
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing Kafka batch with thresholds: {str(e)}")
-
-
 def get_latest_stats(device_id: str):
     """
     Retrieve the latest stats from the in-memory table for the given device ID.
@@ -254,7 +224,7 @@ def get_latest_stats(device_id: str):
 
     # Check if the view exists before querying
     if not spark.catalog.tableExists(view_name):
-        raise Exception(f"The table or view `{view_name}` cannot be found.")
+        raise Exception(f"The table or view {view_name} cannot be found.")
 
     # Query the in-memory table for the latest result
     stats_df = spark.sql(f"SELECT * FROM {view_name}")
