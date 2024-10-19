@@ -16,7 +16,6 @@ SCHEMA_SAVE_PATH: str = os.path.join("data", "device_schemas")
 # Kafka Admin client
 admin_client = AdminClient({'bootstrap.servers': KAFKA_BROKER_URL})
 
-
 @router.get("/get-topic-messages/{device_id}/{run_id}")
 async def get_topic_messages(
     device_id: str,
@@ -42,7 +41,20 @@ async def get_topic_messages(
 
         messages = await get_kafka_messages(device_id, run_id, schema_fields, limit)
 
-        return {"device_id": device_id, "run_id": run_id, "messages": messages}
+        # If no messages were retrieved, return an empty list
+        if not messages or not isinstance(messages, list):
+            messages = []
+
+        # Ensure each message is a dictionary with the expected types
+        validated_messages = []
+        for msg in messages:
+            if isinstance(msg, dict):
+                validated_msg = {k: v for k, v in msg.items() if isinstance(v, (str, int, float, bool))}
+                validated_messages.append(validated_msg)
+
+        response = {"device_id": device_id, "run_id": run_id, "messages": validated_messages}
+
+        return response
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get messages: {str(e)}")

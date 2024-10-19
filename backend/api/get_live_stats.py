@@ -17,7 +17,7 @@ START_STREAM_ENDPOINT: str = "/start-stream/{device_id}/{run_id}"
 DEVICE_SCHEMA_PATH: str = "data/device_schemas"
 
 
-@router.post("/start-stream/{device_id}/{run_id}")
+@router.post(START_STREAM_ENDPOINT)
 async def start_stream(
     device_id: str,
     run_id: str,
@@ -56,7 +56,7 @@ async def start_stream(
         raise HTTPException(status_code=500, detail=f"Failed to start streaming: {str(e)}")
 
 
-@router.get("/get-latest-stats/{device_id}/{run_id}")
+@router.get(GET_LATEST_STATS_ENDPOINT)
 async def get_latest_stats_endpoint(
     device_id: str,
     run_id: str,
