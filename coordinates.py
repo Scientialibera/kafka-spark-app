@@ -52,7 +52,7 @@ async def update_coordinates(sensors: list, interval: float, runtime: float):
     ax.set_ylim(PITCH_LAT_MIN, PITCH_LAT_MAX)
 
     # Generate different shades of blue for each sensor
-    colors = itertools.cycle(['#0000FF', '#1E90FF', '#00BFFF', '#87CEFA', '#4682B4', '#6495ED', '#4169E1', '#B0C4DE', '#5F9EA0', '#0F52BA'])
+    colors = itertools.cycle(['#0000FF', '#1E90FF', '#00BFFF', '#87CEFA'])
 
     # Initialize scatter plots for each sensor
     scatter_plots = []
@@ -93,7 +93,7 @@ async def update_coordinates(sensors: list, interval: float, runtime: float):
 
 if __name__ == "__main__":
     # Define the 10 sensors (device_id: "gps_1", run_id: "run_001" to "run_010")
-    sensors = [(f"gps_1", f"run_{str(i).zfill(3)}") for i in range(1, 11)]
+    sensors = [(f"gps_1", f"run_{str(i).zfill(3)}") for i in range(1, 5)]
 
     # Define parameters
     runtime = 60  # Total running time in seconds

@@ -1,5 +1,69 @@
-from kafka import KafkaProducer
 import json
+import asyncio
+from typing import Optional, List, Dict, Union
+
+from fastapi import HTTPException
+from aiokafka import AIOKafkaConsumer
+from kafka import KafkaProducer
+
+from backend.config.config import KAFKA_BROKER_URL
+
+async def get_kafka_messages(
+    device_id: str,
+    run_id: str,
+    schema_fields: Dict[str, Union[type, str]],
+    limit: Optional[int] = None
+) -> Union[List[Dict[str, Union[str, int, float, bool]]], Dict[str, str]]:
+    """
+    Asynchronously reads messages from the Kafka topic corresponding to the device_id and run_id.
+    Retrieves only the latest message(s) without maintaining a bookmark in Kafka, with a 5-second timeout if no new messages.
+
+    Args:
+        device_id (str): The ID of the device.
+        run_id (str): The ID of the run associated with the device.
+        schema_fields (Dict[str, Union[type, str]]): A dictionary representing the schema fields of the messages.
+        limit (Optional[int], optional): The maximum number of messages to retrieve. Defaults to None.
+
+    Returns:
+        Union[List[Dict[str, Union[str, int, float, bool]]], Dict[str, str]]: 
+        A list of messages if successful, or a message indicating no new data if timed out.
+    """
+    topic: str = f"{device_id}_{run_id}"
+
+    consumer = AIOKafkaConsumer(
+        topic,
+        bootstrap_servers=KAFKA_BROKER_URL,
+        auto_offset_reset='latest',
+        enable_auto_commit=False,
+        group_id=None,
+        value_deserializer=lambda x: json.loads(x.decode('utf-8'))
+    )
+
+    await consumer.start()
+    messages: List[Dict[str, Union[str, int, float, bool]]] = []
+    timeout_seconds: int = 5
+
+    try:
+        try:
+            message = await asyncio.wait_for(consumer.getone(), timeout=timeout_seconds)
+            value = message.value
+
+            if set(value.keys()) != set(schema_fields.keys()):
+                raise ValueError(f"Invalid message schema for message: {value}")
+
+            messages.append(value)
+
+        except asyncio.TimeoutError:
+            return {"message": "No new data", "device_id": device_id, "run_id": run_id}
+
+        return messages
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reading from Kafka topic: {str(e)}")
+
+    finally:
+        await consumer.stop()
+
 
 class KafkaProducerWrapper:
     def __init__(self, bootstrap_servers="localhost:9092"):

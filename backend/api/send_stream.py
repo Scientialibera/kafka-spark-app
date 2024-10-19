@@ -1,47 +1,80 @@
+import os
+import json
+from typing import List, Dict
+
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+
 from utils.kafka_producer import KafkaProducerWrapper, send_data_to_kafka
 from utils.file_management import (
     create_folder,
     save_json_file,
     device_exists,
-    validate_data
+    validate_data,
 )
-import os
-import json
 
 router = APIRouter()
 
-SCHEMA_SAVE_PATH = os.path.join("data", "device_schemas")
-HISTORICAL_DATA_PATH = os.path.join("data", "historical", "devices")
-ENDPOINT_WEBSOCKET = "/send-stream/{device_id}/{run_id}"
+# Constants
+SCHEMA_SAVE_PATH: str = os.path.join("data", "device_schemas")
+HISTORICAL_DATA_PATH: str = os.path.join("data", "historical", "devices")
+ENDPOINT_WEBSOCKET: str = "/send-stream/{device_id}/{run_id}"
 
-async def process_received_data(websocket: WebSocket, device_id: str, run_id: str, data: dict, schema_fields: dict, producer: KafkaProducerWrapper, data_list: list):
+
+async def process_received_data(
+    websocket: WebSocket,
+    device_id: str,
+    run_id: str,
+    data: Dict,
+    schema_fields: Dict,
+    producer: KafkaProducerWrapper,
+    data_list: List[Dict]
+) -> bool:
     """
     Processes the data received from the WebSocket, validates it, and sends it to Kafka if valid.
+
+    Args:
+        websocket (WebSocket): The WebSocket connection.
+        device_id (str): The ID of the device.
+        run_id (str): The ID of the run associated with the device.
+        data (Dict): The data received from the WebSocket.
+        schema_fields (Dict): The expected schema fields for validation.
+        producer (KafkaProducerWrapper): Kafka producer instance for sending data.
+        data_list (List[Dict]): List to collect validated data for historical saving.
+
+    Returns:
+        bool: True if the data is valid and processed successfully, otherwise False.
     """
-    # Validate the data format against the actual schema
     if not validate_data(data, schema_fields):
-        # Send an error message back through WebSocket when validation fails
         await websocket.send_text("Validation failed. Data does not match the schema.")
         print(f"Validation failed for device {device_id}, run {run_id}. Data: {data}")
-        return False  # Return false to stop further processing
-    
-    # Send data to Kafka if valid
-    kafka_topic = f"{device_id}_{run_id}"
-    send_data_to_kafka(producer, kafka_topic, data)
+        return False
 
-    # Collect data for historical saving
+    kafka_topic: str = f"{device_id}_{run_id}"
+    send_data_to_kafka(producer, kafka_topic, data)
     data_list.append(data)
 
-    return True  # Indicate successful processing
+    return True
 
-async def handle_websocket_disconnect(device_id: str, run_id: str ,data_list: list):
+
+async def handle_websocket_disconnect(
+    device_id: str,
+    run_id: str,
+    data_list: List[Dict]
+) -> None:
     """
     Handles WebSocket disconnection, including saving historical data.
+
+    Args:
+        device_id (str): The ID of the device.
+        run_id (str): The ID of the run associated with the device.
+        data_list (List[Dict]): The list of data collected during the WebSocket connection.
+
+    Returns:
+        None
     """
-    # Save historical data after disconnection
-    create_folder(os.path.join(HISTORICAL_DATA_PATH, device_id, run_id))
-    historical_file = os.path.join(HISTORICAL_DATA_PATH, device_id, run_id, f"{device_id}.json")
+    device_run_path: str = os.path.join(HISTORICAL_DATA_PATH, device_id, run_id)
+    create_folder(device_run_path)
+    historical_file: str = os.path.join(device_run_path, f"{device_id}.json")
 
     try:
         if os.path.exists(historical_file):
@@ -57,11 +90,29 @@ async def handle_websocket_disconnect(device_id: str, run_id: str ,data_list: li
 
 
 @router.websocket(ENDPOINT_WEBSOCKET)
-async def send_stream(websocket: WebSocket, device_id: str, run_id: str):
+async def send_stream(
+    websocket: WebSocket,
+    device_id: str,
+    run_id: str
+) -> None:
+    """
+    WebSocket endpoint to send a stream of data for a device and run.
+
+    This endpoint listens for data from the WebSocket, validates it, and sends it to Kafka.
+    It also handles disconnections and stores historical data upon WebSocket closure.
+
+    Args:
+        websocket (WebSocket): The WebSocket connection.
+        device_id (str): The ID of the device.
+        run_id (str): The ID of the run associated with the device.
+
+    Returns:
+        None
+    """
     await websocket.accept()
-    data_list = []
-    producer = None  # Define producer here for final cleanup in 'finally'
-    
+    data_list: List[Dict] = []
+    producer: KafkaProducerWrapper = None
+
     try:
         device_schema = device_exists(SCHEMA_SAVE_PATH, device_id, raise_error_if_not_found=True)
         schema_fields = device_schema["schema"]
@@ -71,20 +122,18 @@ async def send_stream(websocket: WebSocket, device_id: str, run_id: str):
             data_text = await websocket.receive_text()
             data = json.loads(data_text)
 
-            # Process the data and check for validation errors
             valid = await process_received_data(websocket, device_id, run_id, data, schema_fields, producer, data_list)
 
             if not valid:
-                # If validation fails, stop further processing and close the WebSocket connection
                 await websocket.send_text("Closing connection due to validation error.")
-                await websocket.close(code=1003)  # Close with code indicating unsupported data
+                await websocket.close(code=1003)
                 break
 
     except WebSocketDisconnect:
         print(f"WebSocket disconnected for device '{device_id}'.")
     except Exception as e:
         print(f"Error in send_stream: {e}")
-        await websocket.close(code=1006)  # General error code
+        await websocket.close(code=1006)
     finally:
         if producer:
             producer.flush()

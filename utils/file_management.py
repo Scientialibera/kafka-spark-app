@@ -2,6 +2,11 @@ import os
 import json
 from fastapi import HTTPException
 
+def kafka_topic_name(device_id: str, run_id: str) -> str:
+    """Returns the Kafka topic name based on the device_id and run_id."""
+    return f"{device_id}_{run_id}"
+
+
 def create_folder(folder_path: str):
     """Create a folder if it does not exist."""
     os.makedirs(folder_path, exist_ok=True)

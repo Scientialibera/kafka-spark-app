@@ -1,8 +1,19 @@
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
-from pyspark.sql.functions import from_json, col, expr, window
+from pyspark.sql.functions import from_json, col
 from fastapi import HTTPException
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
 from pyspark.sql.types import StructType, StructField, StringType, FloatType, IntegerType
+from utils.file_management import device_exists, kafka_topic_name
+
+def check_if_session_exists():
+    """Check if a Spark session exists."""
+    spark = SparkSession.getActiveSession()
+    if not spark:
+        return
+    return spark
+
 
 def convert_schema_to_structtype(schema_fields):
     """
@@ -23,12 +34,12 @@ def convert_schema_to_structtype(schema_fields):
     return StructType(struct_fields)
 
 
-def get_spark_session():
+def get_spark_session(session_name="Kafka Streaming Stats"):
     """Create or get an existing Spark session."""
-    spark = SparkSession.getActiveSession()  # Check if a session exists
+    spark = check_if_session_exists()  # Check if a session exists
     if not spark:  # If no session exists, create a new one
         spark = SparkSession.builder \
-            .appName("Kafka Streaming Stats") \
+            .appName(session_name) \
             .master("local[*]") \
             .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
             .config("spark.sql.warehouse.dir", "/tmp") \
@@ -36,6 +47,42 @@ def get_spark_session():
             .config("spark.hadoop.io.nativeio.disable", "true") \
             .getOrCreate()
     return spark
+
+
+def read_kafka_stream(spark, kafka_topic: str):
+    """
+    Reads and returns a streaming DataFrame from Kafka for the given topic.
+    """
+    return spark.readStream \
+        .format("kafka") \
+        .option("kafka.bootstrap.servers", "localhost:9092") \
+        .option("subscribe", kafka_topic) \
+        .option("startingOffsets", "latest") \
+        .load()
+
+
+def read_kafka_batch(spark, kafka_topic: str):
+    """
+    Reads and returns a batch DataFrame from Kafka for the given topic.
+    """
+    return spark.read \
+        .format("kafka") \
+        .option("kafka.bootstrap.servers", "localhost:9092") \
+        .option("subscribe", kafka_topic) \
+        .option("startingOffsets", "earliest") \
+        .load()
+
+
+def write_stream_to_memory(stream_df, table_name, trigger_time=5):
+    """
+    Write the streaming DataFrame to an in-memory table with the given name.
+    """
+    return stream_df.writeStream \
+        .outputMode("append") \
+        .format("memory") \
+        .queryName(table_name) \
+        .trigger(processingTime=f'{trigger_time} seconds') \
+        .start()
 
 
 def read_kafka_data(device_id: str, schema_fields: dict, time_window_seconds: int = None):
@@ -51,12 +98,7 @@ def read_kafka_data(device_id: str, schema_fields: dict, time_window_seconds: in
         struct_schema = convert_schema_to_structtype(schema_fields)
 
         # Read data from Kafka topic in batch mode using the "earliest" offset
-        kafka_df = spark.read \
-            .format("kafka") \
-            .option("kafka.bootstrap.servers", "localhost:9092") \
-            .option("subscribe", device_id) \
-            .option("startingOffsets", "earliest") \
-            .load()
+        kafka_df = read_kafka_batch(spark, device_id)
 
         # Convert the binary 'value' column from Kafka to a string and drop the Kafka timestamp
         value_df = kafka_df.selectExpr("CAST(value AS STRING) as json_string")
@@ -94,21 +136,18 @@ def read_kafka_data(device_id: str, schema_fields: dict, time_window_seconds: in
 # Dictionary to keep track of active streaming queries by device_id
 streaming_queries = {}
 
-def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_seconds: int, triggers: dict):
+def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_seconds: int, triggers: dict, table_preappend: str = None, kafka_streaming_app: str = "Kafka Streaming Stats"):
     """
     Set up a streaming threshold check on the Kafka stream for the given Kafka topic.
     If the query is already running, it will return the existing query.
     """
     # Create Spark session
-    spark = SparkSession.builder \
-        .appName("Kafka Streaming Stats") \
-        .master("local[*]") \
-        .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
-        .getOrCreate()
+    spark = get_spark_session(kafka_streaming_app)
+    
+    table_name = f"{table_preappend}_{kafka_topic}" if table_preappend else kafka_topic
 
     # Check if a streaming query with this Kafka topic is already running
-    query_name = f"device_threshold_view_{kafka_topic}"
-    active_queries = [q for q in spark.streams.active if q.name == query_name]
+    active_queries = [q for q in spark.streams.active if q.name == table_name]
 
     if active_queries:
         print(f"Streaming query for topic {kafka_topic} is already running.")
@@ -121,12 +160,7 @@ def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_se
     ])
 
     # Read the streaming data from Kafka
-    kafka_stream = spark.readStream \
-        .format("kafka") \
-        .option("kafka.bootstrap.servers", "localhost:9092") \
-        .option("subscribe", kafka_topic) \
-        .option("startingOffsets", "latest") \
-        .load()
+    kafka_stream = read_kafka_stream(spark, kafka_topic)
 
     # Convert the binary 'value' column from Kafka to a string and drop the Kafka timestamp
     value_df = kafka_stream.selectExpr("CAST(value AS STRING) as json_string")
@@ -152,12 +186,7 @@ def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_se
                                          .otherwise("normal"))
 
     # Write the result with status checks to an in-memory table with a unique query name for this device
-    query = data_df.writeStream \
-        .outputMode("append") \
-        .format("memory") \
-        .queryName(query_name) \
-        .trigger(processingTime=f"{window_seconds} seconds") \
-        .start()
+    query = write_stream_to_memory(data_df, table_name, window_seconds)
 
     # Store the reference to the query so we can manage it later
     streaming_queries[kafka_topic] = query
@@ -211,21 +240,79 @@ def get_kafka_batch_aggregates(device_id: str, schema_fields: dict, agg_type: st
         raise HTTPException(status_code=500, detail=f"Error processing Kafka batch: {str(e)}")
 
 
-def get_latest_stats(device_id: str):
+def get_latest_stats(table: str, query: str):
     """
-    Retrieve the latest stats from the in-memory table for the given device ID.
+    Retrieve the latest stats from the in-memory table for the given device ID based on the provided query.
     """
-    spark = SparkSession.getActiveSession()
+    spark = check_if_session_exists()
     if spark is None:
         raise Exception("No active Spark session found")
 
-    # Construct the view name based on the device_id
-    view_name = f"device_threshold_view_{device_id}"
-
     # Check if the view exists before querying
-    if not spark.catalog.tableExists(view_name):
-        raise Exception(f"The table or view {view_name} cannot be found.")
+    if not spark.catalog.tableExists(table):
+        raise Exception(f"The table or view {table} cannot be found.")
 
-    # Query the in-memory table for the latest result
-    stats_df = spark.sql(f"SELECT * FROM {view_name}")
-    return stats_df.collect()
+    # Format the query to safely include the view name
+    try:
+        formatted_query = query.format(table=table)
+    except KeyError:
+        raise Exception("The query string must include '{table}' placeholder for the view name.")
+
+    # Execute the SQL query
+    try:
+        stats_df = spark.sql(formatted_query)
+        return stats_df.collect()
+    except Exception as e:
+        raise Exception(f"Error executing query: {str(e)}")
+
+
+GET_STATS_ENDPOINT = "/get-stats/{device_id}/{run_id}"
+GET_LATEST_STATS_ENDPOINT = "/get-latest-stats/{device_id}/{run_id}"
+START_STREAM_ENDOINT = "/start-stream/{device_id}/{run_id}"
+DEVICE_SCHEMA_PATH = "data/device_schemas"
+
+# Create a ThreadPoolExecutor for concurrent Spark jobs
+executor = ThreadPoolExecutor(max_workers=16)
+
+# Generic endpoint function for getting aggregated stats
+async def get_aggregated_stats(device_id: str, run_id: str, agg_type: str):
+    loop = asyncio.get_event_loop()
+    try:
+        # Retrieve the device schema from file
+        device_schema = device_exists(DEVICE_SCHEMA_PATH, device_id, raise_error_if_not_found=True)
+        schema_fields = device_schema["schema"]  # Extract actual schema fields
+
+        # Get the Kafka stream and apply dynamic aggregation (run in a thread to avoid blocking)
+        kafka_topic = kafka_topic_name(device_id, run_id)
+        result = await loop.run_in_executor(executor, get_kafka_batch_aggregates, kafka_topic, schema_fields, agg_type)
+
+        # Format the result dynamically
+        response = {"device_id": device_id, "aggregation": agg_type}
+        for field in schema_fields.keys():
+            if schema_fields[field] in ["float", "int"]:  # Include only numeric fields in the response
+                response[f"{agg_type}_{field}"] = result.get(f"{agg_type}_{field}", None)
+
+        return response
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch {agg_type} stats: {str(e)}")
+
+
+# Function to start the streaming aggregation for a device
+def initialize_streaming(device_id: str, run_id: str, triggers: dict, window_seconds: int = 5, table_preappend: str = None):
+    """
+    Initialize the streaming aggregation for the given device and run ID if it's not already running.
+    """
+    try:
+        # Retrieve the device schema from file
+        device_schema = device_exists(DEVICE_SCHEMA_PATH, device_id, raise_error_if_not_found=True)
+        schema_fields = device_schema["schema"]  # Extract actual schema fields
+
+        # Create the Kafka topic from device_id and run_id
+        kafka_topic = kafka_topic_name(device_id, run_id)
+
+        # Start the streaming aggregation with the triggers and optional table_preappend
+        start_streaming_aggregation(kafka_topic, schema_fields, window_seconds, triggers, table_preappend)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to start streaming aggregation: {str(e)}")
