@@ -1,12 +1,15 @@
+import asyncio
+import math
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
+
+from fastapi import HTTPException
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
-from pyspark.sql.functions import from_json, col
-from fastapi import HTTPException
-from concurrent.futures import ThreadPoolExecutor
-import asyncio
-from pyspark.sql.types import StructType, StructField, StringType, FloatType, IntegerType
-from utils.file_management import device_exists, kafka_topic_name
+from pyspark.sql.functions import col, from_json
+from pyspark.sql.types import StructField, StructType,  FloatType, IntegerType, StringType
 
+from utils.file_management import device_exists, kafka_topic_name
 def check_if_session_exists():
     """Check if a Spark session exists."""
     spark = SparkSession.getActiveSession()
@@ -316,3 +319,4 @@ def initialize_streaming(device_id: str, run_id: str, triggers: dict, window_sec
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to start streaming aggregation: {str(e)}")
+    

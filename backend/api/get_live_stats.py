@@ -97,7 +97,7 @@ async def get_stats(
     device_id: str,
     run_id: str,
     agg_type: str = Query("average", enum=["average", "max", "min", "sum"])
-) -> Dict[str, Union[str, List[Dict]]]:
+) -> Dict:
     """
     Endpoint to fetch aggregated stats for a device and run.
 
