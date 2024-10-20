@@ -4,7 +4,7 @@ from typing import Optional, List, Dict, Union
 from fastapi import APIRouter, HTTPException, Query
 from confluent_kafka.admin import AdminClient
 
-from utils.file_management import device_exists
+from utils.file_management import device_exists, kafka_topic_name
 from utils.kafka_producer import get_kafka_messages
 from backend.config.config import KAFKA_BROKER_URL
 
@@ -72,7 +72,7 @@ async def delete_topic_by_device_name(device_id: str, run_id: str) -> Dict[str, 
     Returns:
         Dict[str, str]: A message indicating the result of the topic deletion.
     """
-    topic: str = f"{device_id}_{run_id}"
+    topic: str = kafka_topic_name(device_id, run_id)
     try:
         future = admin_client.delete_topics([topic])
         result = future[topic].result()

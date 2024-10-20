@@ -42,7 +42,7 @@ async def start_stream(
         Dict[str, str]: A message indicating whether the streaming was started or is already running.
     """
     try:
-        spark = SparkSession.getActiveSession()
+        spark = check_if_session_exists()
         if spark is not None:
             kafka_topic = kafka_topic_name(device_id, run_id)
             view_name = f"{table_preappend}_{kafka_topic}" if table_preappend else kafka_topic

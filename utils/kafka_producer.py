@@ -7,6 +7,7 @@ from aiokafka import AIOKafkaConsumer
 from kafka import KafkaProducer
 
 from backend.config.config import KAFKA_BROKER_URL
+from utils.file_management import kafka_topic_name
 
 async def get_kafka_messages(
     device_id: str,
@@ -28,7 +29,7 @@ async def get_kafka_messages(
         Union[List[Dict[str, Union[str, int, float, bool]]], Dict[str, str]]: 
         A list of messages if successful, or a message indicating no new data if timed out.
     """
-    topic: str = f"{device_id}_{run_id}"
+    topic: str = kafka_topic_name(device_id, run_id)
 
     consumer = AIOKafkaConsumer(
         topic,
