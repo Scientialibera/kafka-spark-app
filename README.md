@@ -55,6 +55,12 @@ Sports Prophet is a full-stack application designed to analyze soccer match data
   - `run_id` (str): The ID of the run.
   - `agg_type` (str): Type of aggregation (average, max, min, sum).
 
+- **`GET /get-speed/{device_id}/{run_id}`**
+  Retrieves the instantaneous speed for a specific device and run using the most recent two messages from Kafka.  
+  **Parameters**:
+  - `device_id` (str): The ID of the device.
+  - `run_id` (str): The ID of the run.
+
 ### 2. **Kafka Topics API** (`kafka_topics.py`)
 
 #### Endpoints:
@@ -416,4 +422,54 @@ async def main_streaming_test():
 
 # Run the main_streaming_test function
 await main_streaming_test()
+```
+
+## 6. Getting Instant Speed
+
+```python
+import aiohttp
+import asyncio
+
+# Define the FastAPI endpoint template for the get_speed endpoint
+get_speed_url_template = "http://localhost:8000/get-speed/{device_id}/{run_id}"
+
+# Asynchronous function to test the get-speed endpoint
+async def test_get_speed(device_id, run_id):
+    url = get_speed_url_template.format(device_id=device_id, run_id=run_id)
+    async with aiohttp.ClientSession() as session:
+        try:
+            # Make the GET request to the get-speed endpoint
+            async with session.get(url) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    # Validate that the response contains the expected fields
+                    if "device_id" in data and "run_id" in data and "speed" in data:
+                        print(f"Success for {device_id}/{run_id}: {data}")
+                    else:
+                        print(f"Unexpected response structure for {device_id}/{run_id}: {data}")
+                else:
+                    text = await response.text()
+                    print(f"Failed for {device_id}/{run_id} with status code: {response.status}, {text}")
+        except Exception as e:
+            print(f"An error occurred for {device_id}/{run_id}: {e}")
+
+# Main asynchronous function to handle the test requests for multiple device and run combinations
+async def main_get_speed_test():
+    # Define run_ids and corresponding device_ids
+    test_cases = [
+        {"device_id": "gps_1", "run_id": "run_001"},
+        {"device_id": "gps_1", "run_id": "run_002"},
+        {"device_id": "gps_1", "run_id": "run_003"},
+        {"device_id": "gps_1", "run_id": "run_004"},
+        {"device_id": "gps_1", "run_id": "run_005"},
+    ]
+
+    # Create tasks to test each device_id and run_id pair concurrently
+    test_tasks = [test_get_speed(case["device_id"], case["run_id"]) for case in test_cases]
+    
+    # Run all tasks concurrently
+    await asyncio.gather(*test_tasks)
+
+# Run the main_get_speed_test function
+await main_get_speed_test()
 ```
