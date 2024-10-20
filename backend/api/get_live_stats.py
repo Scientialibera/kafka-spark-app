@@ -142,7 +142,7 @@ async def get_speed(
 
         # If we have fewer than 2 messages, we can't calculate the speed
         if len(messages) < 2:
-            raise HTTPException(status_code=400, detail="Not enough data to calculate speed.")
+            raise HTTPException(status_code=400, detail="Not enough data to calculate speed. Please ensure there are active sensors producing data.")
 
         # Sort messages by timestamp to ensure they are in chronological order
         sorted_messages = sorted(messages, key=lambda msg: msg["timestamp"])
