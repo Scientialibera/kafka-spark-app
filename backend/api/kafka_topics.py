@@ -20,7 +20,7 @@ admin_client = AdminClient({'bootstrap.servers': KAFKA_BROKER_URL})
 async def get_topic_messages(
     device_id: str,
     run_id: str,
-    limit: Optional[int] = Query(None)
+    limit: Optional[int] = None
 ) -> Dict[str, Union[str, List[Dict[str, Union[str, int, float, bool]]]]]:
     """
     Endpoint to asynchronously retrieve Kafka messages for a given device_id and run_id.

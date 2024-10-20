@@ -16,7 +16,7 @@ async def get_kafka_messages(
 ) -> Union[List[Dict[str, Union[str, int, float, bool]]], Dict[str, str]]:
     """
     Asynchronously reads messages from the Kafka topic corresponding to the device_id and run_id.
-    Retrieves only the latest message(s) without maintaining a bookmark in Kafka, with a 5-second timeout if no new messages.
+    Retrieves up to 'limit' latest messages with a 5-second timeout if no new messages.
 
     Args:
         device_id (str): The ID of the device.
@@ -44,17 +44,19 @@ async def get_kafka_messages(
     timeout_seconds: int = 5
 
     try:
-        try:
-            message = await asyncio.wait_for(consumer.getone(), timeout=timeout_seconds)
-            value = message.value
+        while len(messages) < limit:
+            try:
+                message = await asyncio.wait_for(consumer.getone(), timeout=timeout_seconds)
+                value = message.value
 
-            if set(value.keys()) != set(schema_fields.keys()):
-                raise ValueError(f"Invalid message schema for message: {value}")
+                if set(value.keys()) != set(schema_fields.keys()):
+                    raise ValueError(f"Invalid message schema for message: {value}")
 
-            messages.append(value)
+                messages.append(value)
 
-        except asyncio.TimeoutError:
-            return {"message": "No new data", "device_id": device_id, "run_id": run_id}
+            except asyncio.TimeoutError:
+                # If we time out, return the messages we have gathered so far
+                break
 
         return messages
 

@@ -8,11 +8,14 @@ from utils.spark_processor import (
     get_aggregated_stats,initialize_streaming
 )
 from utils.file_management import kafka_topic_name
+from utils.maths_functions import calculate_speed_from_messages
+from .kafka_topics import get_topic_messages
 
 router = APIRouter()
 
 GET_STATS_ENDPOINT: str = "/get-stats/{device_id}/{run_id}"
 GET_LATEST_STATS_ENDPOINT: str = "/get-latest-stats/{device_id}/{run_id}"
+GET_INSTANT_SPEED_ENDPOINT: str = "/get-speed/{device_id}/{run_id}"
 START_STREAM_ENDPOINT: str = "/start-stream/{device_id}/{run_id}"
 DEVICE_SCHEMA_PATH: str = "data/device_schemas"
 
@@ -113,3 +116,43 @@ async def get_stats(
         return await get_aggregated_stats(device_id, run_id, agg_type)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get aggregated stats: {str(e)}")
+
+
+@router.get(GET_INSTANT_SPEED_ENDPOINT)
+async def get_speed(
+    device_id: str,
+    run_id: str
+) -> Dict[str, Union[str, float]]:
+    """
+    Endpoint to fetch instantaneous speed for a device and run.
+
+    Args:
+        device_id (str): ID of the device.
+        run_id (str): ID of the run.
+
+    Returns:
+        Dict[str, Union[str, float]]: A dictionary containing the device_id, run_id, and the instantaneous speed.
+    """
+    try:
+        # Fetch the latest 2 messages from Kafka
+        response = await get_topic_messages(device_id, run_id, limit=2)
+
+        # Extract the messages from the response
+        messages = response.get("messages", [])
+
+        # If we have fewer than 2 messages, we can't calculate the speed
+        if len(messages) < 2:
+            raise HTTPException(status_code=400, detail="Not enough data to calculate speed.")
+
+        # Sort messages by timestamp to ensure they are in chronological order
+        sorted_messages = sorted(messages, key=lambda msg: msg["timestamp"])
+
+        # Calculate the speed using the last two messages
+        speed = calculate_speed_from_messages(sorted_messages)
+        return {
+            "device_id": device_id,
+            "run_id": run_id,
+            "speed": speed
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get speed: {str(e)}")
