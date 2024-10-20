@@ -1,11 +1,15 @@
 from typing import Dict, List, Optional, Union
-from pyspark.sql import SparkSession
 
+from starlette.responses import StreamingResponse
+from sse_starlette.sse import EventSourceResponse
 from fastapi import APIRouter, HTTPException, Query, Body
+import asyncio
+
 from utils.spark_processor import (
     get_latest_stats,
     check_if_session_exists,
-    get_aggregated_stats,initialize_streaming
+    get_aggregated_stats,
+    initialize_streaming
 )
 from utils.file_management import kafka_topic_name
 from utils.maths_functions import calculate_speed_from_messages
@@ -14,9 +18,10 @@ from .kafka_topics import get_topic_messages
 router = APIRouter()
 
 GET_STATS_ENDPOINT: str = "/get-stats/{device_id}/{run_id}"
-GET_LATEST_STATS_ENDPOINT: str = "/get-latest-stats/{device_id}/{run_id}"
+QUERY_VIEW: str = "/query-view/{device_id}/{run_id}"
 GET_INSTANT_SPEED_ENDPOINT: str = "/get-speed/{device_id}/{run_id}"
 START_STREAM_ENDPOINT: str = "/start-stream/{device_id}/{run_id}"
+ALARM_ENDPOINT: str = "/get-notification/{device_id}/{run_id}"
 DEVICE_SCHEMA_PATH: str = "data/device_schemas"
 
 
@@ -26,7 +31,9 @@ async def start_stream(
     run_id: str,
     triggers: Dict[str, List[float]] = Body(..., description="Dictionary with column names and min/max values", embed=True),
     window_seconds: int = Body(5, embed=True),
-    table_preappend: Optional[str] = Body(None, embed=True)
+    table_preappend: Optional[str] = Body(None, embed=True),
+    exclude_normal: Optional[bool] = Body(False, embed=True)
+
 ) -> Dict[str, str]:
     """
     Endpoint to start the streaming job for a device and run.
@@ -50,7 +57,7 @@ async def start_stream(
             if spark.catalog.tableExists(view_name):
                 return {"message": f"Streaming already running for device {device_id} and run {run_id}."}
 
-        initialize_streaming(device_id, run_id, triggers, window_seconds, table_preappend)
+        initialize_streaming(device_id, run_id, triggers, window_seconds, table_preappend, exclude_normal)
         return {"message": f"Streaming started for device {device_id} and run {run_id}."}
 
     except HTTPException as http_ex:
@@ -59,8 +66,8 @@ async def start_stream(
         raise HTTPException(status_code=500, detail=f"Failed to start streaming: {str(e)}")
 
 
-@router.get(GET_LATEST_STATS_ENDPOINT)
-async def get_latest_stats_endpoint(
+@router.get(QUERY_VIEW)
+async def QUERY_VIEW(
     device_id: str,
     run_id: str,
     query: str = Query(default="SELECT * FROM {table}", description="SQL query to filter or select data from the streaming view"),
@@ -156,3 +163,60 @@ async def get_speed(
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get speed: {str(e)}")
+    
+
+@router.get(ALARM_ENDPOINT)
+async def get_notification(device_id: str, run_id: str, table_preappend: Union[str, None] = None) -> StreamingResponse:
+    """
+    Endpoint to provide live notifications while the stream is active for a device and run.
+
+    Args:
+        device_id (str): ID of the device.
+        run_id (str): ID of the run.
+        table_preappend (Optional[str]): Optional prefix for the streaming view table name.
+
+    Returns:
+        StreamingResponse: A live streaming response with data updates.
+    """
+    kafka_topic = kafka_topic_name(device_id, run_id)
+    view_name = f"{table_preappend}_{kafka_topic}" if table_preappend else kafka_topic
+
+    async def event_generator():
+        try:
+            spark = check_if_session_exists()
+            if spark is None:
+                raise HTTPException(status_code=400, detail="Spark session not available")
+
+            while True:
+                # Check if the view exists
+                if not spark.catalog.tableExists(view_name):
+                    # If the view is gone, close the connection
+                    break
+
+                # Fetch latest data from the view
+                try:
+                    query = f"SELECT * FROM {view_name}"
+                    data_df = spark.sql(query)
+
+                    # Convert the DataFrame to JSON
+                    data = [row.asDict() for row in data_df.collect()]
+
+                    # If there's data, yield it as an SSE message
+                    if data:
+                        yield {
+                            "event": "update",
+                            "data": {"device_id": f"{device_id}_{run_id}", "updates": data}
+                        }
+
+                except Exception as e:
+                    # Log or handle error
+                    print(f"Error fetching data from view {view_name}: {str(e)}")
+
+                # Wait for a short period before checking again
+                await asyncio.sleep(5)
+
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+    # Return the event stream response
+    return EventSourceResponse(event_generator())

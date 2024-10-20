@@ -10,7 +10,8 @@ from pyspark.sql.functions import col, from_json
 from pyspark.sql.types import StructField, StructType,  FloatType, IntegerType, StringType
 
 from utils.file_management import device_exists, kafka_topic_name
-from backend.config.config import MAX_WORKERS
+from utils.kafka_producer import KafkaProducerWrapper
+from backend.config.config import MAX_WORKERS, SPARK_APP_NAME
 
 DEVICE_SCHEMA_PATH = "data/device_schemas"
 
@@ -44,7 +45,7 @@ def convert_schema_to_structtype(schema_fields):
     return StructType(struct_fields)
 
 
-def get_spark_session(session_name="Kafka Streaming Stats"):
+def get_spark_session(session_name=SPARK_APP_NAME):
     """Create or get an existing Spark session."""
     spark = check_if_session_exists()  # Check if a session exists
     if not spark:  # If no session exists, create a new one
@@ -146,7 +147,7 @@ def read_kafka_data(device_id: str, schema_fields: dict, time_window_seconds: in
 # Dictionary to keep track of active streaming queries by device_id
 streaming_queries = {}
 
-def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_seconds: int, triggers: dict, table_preappend: str = None, kafka_streaming_app: str = "Kafka Streaming Stats"):
+def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_seconds: int, triggers: dict, table_preappend: str = None, kafka_streaming_app: str = SPARK_APP_NAME, exclude_normal: bool = False):
     """
     Set up a streaming threshold check on the Kafka stream for the given Kafka topic.
     If the query is already running, it will return the existing query.
@@ -186,14 +187,20 @@ def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_se
     # Ensure the timestamp column from the JSON is cast as a timestamp type
     data_df = data_df.withColumn("timestamp", col("timestamp").cast("timestamp"))
 
-    # Apply the threshold checks based on triggers
+    # Apply the threshold checks based on triggers with precision handling
     for field, (min_val, max_val) in triggers.items():
         if field in schema_fields and schema_fields[field] in ["float", "int"]:
-            # Create conditions for checking threshold violations
+            # Apply threshold checks with better precision control
             data_df = data_df.withColumn(f"{field}_status",
-                                         F.when(col(field) < min_val, "low")
-                                         .when(col(field) > max_val, "high")
+                                         F.when(F.col(field) < F.lit(min_val), "low")
+                                         .when(F.col(field) > F.lit(max_val), "high")
                                          .otherwise("normal"))
+
+    # If exclude_normal is True, filter out rows where all status columns are "normal"
+    if exclude_normal:
+        status_columns = [f"{field}_status" for field in triggers.keys() if field in schema_fields and schema_fields[field] in ["float", "int"]]
+        condition = " OR ".join([f"{col_name} != 'normal'" for col_name in status_columns])
+        data_df = data_df.filter(condition)
 
     # Write the result with status checks to an in-memory table with a unique query name for this device
     query = write_stream_to_memory(data_df, table_name, window_seconds)
@@ -303,7 +310,7 @@ async def get_aggregated_stats(device_id: str, run_id: str, agg_type: str):
 
 
 # Function to start the streaming aggregation for a device
-def initialize_streaming(device_id: str, run_id: str, triggers: dict, window_seconds: int = 5, table_preappend: str = None):
+def initialize_streaming(device_id: str, run_id: str, triggers: dict, window_seconds: int = 5, table_preappend: str = None, exclude_normal: bool = False):
     """
     Initialize the streaming aggregation for the given device and run ID if it's not already running.
     """
@@ -316,7 +323,7 @@ def initialize_streaming(device_id: str, run_id: str, triggers: dict, window_sec
         kafka_topic = kafka_topic_name(device_id, run_id)
 
         # Start the streaming aggregation with the triggers and optional table_preappend
-        start_streaming_aggregation(kafka_topic, schema_fields, window_seconds, triggers, table_preappend)
+        start_streaming_aggregation(kafka_topic, schema_fields, window_seconds, triggers, table_preappend, exclude_normal)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to start streaming aggregation: {str(e)}")
