@@ -10,6 +10,13 @@ from pyspark.sql.functions import col, from_json
 from pyspark.sql.types import StructField, StructType,  FloatType, IntegerType, StringType
 
 from utils.file_management import device_exists, kafka_topic_name
+from backend.config.config import MAX_WORKERS
+
+DEVICE_SCHEMA_PATH = "data/device_schemas"
+
+# Create a ThreadPoolExecutor for concurrent Spark jobs
+executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
+
 def check_if_session_exists():
     """Check if a Spark session exists."""
     spark = SparkSession.getActiveSession()
@@ -224,6 +231,9 @@ def generate_aggregations(schema_fields, agg_type):
 
 # Function to process Kafka stream and calculate dynamic aggregates
 def get_kafka_batch_aggregates(device_id: str, schema_fields: dict, agg_type: str):
+    """
+    Process the Kafka batch data for the given device ID and schema fields.
+    """
     try:
         # Read the processed Kafka DataFrame using the new utility function (no time window for aggregation)
         data_df = read_kafka_data(device_id, schema_fields)
@@ -267,15 +277,6 @@ def get_latest_stats(table: str, query: str):
         return stats_df.collect()
     except Exception as e:
         raise Exception(f"Error executing query: {str(e)}")
-
-
-GET_STATS_ENDPOINT = "/get-stats/{device_id}/{run_id}"
-GET_LATEST_STATS_ENDPOINT = "/get-latest-stats/{device_id}/{run_id}"
-START_STREAM_ENDOINT = "/start-stream/{device_id}/{run_id}"
-DEVICE_SCHEMA_PATH = "data/device_schemas"
-
-# Create a ThreadPoolExecutor for concurrent Spark jobs
-executor = ThreadPoolExecutor(max_workers=16)
 
 # Generic endpoint function for getting aggregated stats
 async def get_aggregated_stats(device_id: str, run_id: str, agg_type: str):

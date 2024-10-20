@@ -83,6 +83,7 @@ class KafkaProducerWrapper:
     def close(self):
         self.producer.close()
 
+
 def send_data_to_kafka(producer: KafkaProducerWrapper, topic: str, data: dict):
     """
     Sends data to Kafka using the provided Kafka producer.

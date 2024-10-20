@@ -44,6 +44,15 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     """
     Calculate the great-circle distance between two points on the Earth's surface given their latitude and longitude.
     Returns the distance in meters.
+
+    Args:
+        lat1 (float): Latitude of the first point.
+        lon1 (float): Longitude of the first point.
+        lat2 (float): Latitude of the second point.
+        lon2 (float): Longitude of the second point.
+    
+    Returns:
+        float: The calculated distance in meters.
     """
     R = 6371000  # Radius of Earth in meters
     phi1, phi2 = math.radians(lat1), math.radians(lat2)
