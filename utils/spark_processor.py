@@ -60,7 +60,7 @@ def get_spark_session(session_name=SPARK_APP_NAME):
     return spark
 
 
-def read_kafka_stream(spark, kafka_topic: str):
+def read_kafka_stream(spark, kafka_topic: str, offset: str = "latest"):
     """
     Reads and returns a streaming DataFrame from Kafka for the given topic.
     """
@@ -68,11 +68,11 @@ def read_kafka_stream(spark, kafka_topic: str):
         .format("kafka") \
         .option("kafka.bootstrap.servers", "localhost:9092") \
         .option("subscribe", kafka_topic) \
-        .option("startingOffsets", "latest") \
+        .option("startingOffsets", offset) \
         .load()
 
 
-def read_kafka_batch(spark, kafka_topic: str):
+def read_kafka_batch(spark, kafka_topic: str, offset: str = "earliest"):
     """
     Reads and returns a batch DataFrame from Kafka for the given topic.
     """
@@ -80,7 +80,7 @@ def read_kafka_batch(spark, kafka_topic: str):
         .format("kafka") \
         .option("kafka.bootstrap.servers", "localhost:9092") \
         .option("subscribe", kafka_topic) \
-        .option("startingOffsets", "earliest") \
+        .option("startingOffsets", offset) \
         .load()
 
 
@@ -187,20 +187,25 @@ def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_se
     # Ensure the timestamp column from the JSON is cast as a timestamp type
     data_df = data_df.withColumn("timestamp", col("timestamp").cast("timestamp"))
 
-    # Apply the threshold checks based on triggers with precision handling
+    status_columns = []
     for field, (min_val, max_val) in triggers.items():
         if field in schema_fields and schema_fields[field] in ["float", "int"]:
-            # Apply threshold checks with better precision control
-            data_df = data_df.withColumn(f"{field}_status",
-                                         F.when(F.col(field) < F.lit(min_val), "low")
-                                         .when(F.col(field) > F.lit(max_val), "high")
-                                         .otherwise("normal"))
+            print(f"Adding status check for field: {field} with min: {min_val} and max: {max_val}.")
+            
+            status_column = F.when(F.col(field) < F.lit(min_val), "low") \
+                             .when(F.col(field) > F.lit(max_val), "high") \
+                             .otherwise("normal")
+            
+            status_column_name = f"{field}_status"
+            data_df = data_df.withColumn(status_column_name, status_column)
+            status_columns.append(status_column_name)
 
-    # If exclude_normal is True, filter out rows where all status columns are "normal"
-    if exclude_normal:
-        status_columns = [f"{field}_status" for field in triggers.keys() if field in schema_fields and schema_fields[field] in ["float", "int"]]
-        condition = " OR ".join([f"{col_name} != 'normal'" for col_name in status_columns])
-        data_df = data_df.filter(condition)
+    combined_condition = F.lit(False)
+    for col_name in status_columns:
+        combined_condition = combined_condition | (F.col(col_name) != "normal")
+
+    # Apply the filter to exclude rows where all status columns are 'normal'
+    data_df = data_df.filter(combined_condition)
 
     # Write the result with status checks to an in-memory table with a unique query name for this device
     query = write_stream_to_memory(data_df, table_name, window_seconds)

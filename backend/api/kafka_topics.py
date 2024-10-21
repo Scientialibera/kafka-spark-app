@@ -1,7 +1,7 @@
 import os
 from typing import Optional, List, Dict, Union
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException
 from confluent_kafka.admin import AdminClient
 
 from utils.file_management import device_exists, kafka_topic_name
