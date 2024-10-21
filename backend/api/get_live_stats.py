@@ -238,3 +238,4 @@ async def get_notification(device_id: str, run_id: str, window: int = 1, table_p
 
     # Return the event stream response
     return EventSourceResponse(event_generator())
+
