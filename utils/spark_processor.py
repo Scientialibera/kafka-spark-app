@@ -205,7 +205,7 @@ def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_se
         combined_condition = combined_condition | (F.col(col_name) != "normal")
 
     # Apply the filter to exclude rows where all status columns are 'normal'
-    data_df = data_df.filter(combined_condition)
+    data_df = data_df.filter(combined_condition).coalesce(1)
 
     # Write the result with status checks to an in-memory table with a unique query name for this device
     query = write_stream_to_memory(data_df, table_name, window_seconds)
