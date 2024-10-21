@@ -166,13 +166,14 @@ async def get_speed(
     
 
 @router.get(ALARM_ENDPOINT)
-async def get_notification(device_id: str, run_id: str, table_preappend: Union[str, None] = None) -> StreamingResponse:
+async def get_notification(device_id: str, run_id: str, window: int = 1, table_preappend: Union[str, None] = None) -> StreamingResponse:
     """
     Endpoint to provide live notifications while the stream is active for a device and run.
 
     Args:
         device_id (str): ID of the device.
         run_id (str): ID of the run.
+        window (int): Interval in seconds between data fetch attempts.
         table_preappend (Optional[str]): Optional prefix for the streaming view table name.
 
     Returns:
@@ -187,33 +188,50 @@ async def get_notification(device_id: str, run_id: str, table_preappend: Union[s
             if spark is None:
                 raise HTTPException(status_code=400, detail="Spark session not available")
 
+            # Variable to keep track of the last processed timestamp
+            last_processed_timestamp = None
+
             while True:
                 # Check if the view exists
                 if not spark.catalog.tableExists(view_name):
                     # If the view is gone, close the connection
                     break
 
-                # Fetch latest data from the view
+                # Fetch the latest data from the view
                 try:
-                    query = f"SELECT * FROM {view_name}"
+                    # Query the view and order by timestamp descending to get the latest row
+                    query = f"SELECT * FROM {view_name} ORDER BY timestamp DESC LIMIT 1"
                     data_df = spark.sql(query)
 
-                    # Convert the DataFrame to JSON
+                    # Convert the DataFrame to a dictionary
                     data = [row.asDict() for row in data_df.collect()]
 
-                    # If there's data, yield it as an SSE message
                     if data:
-                        yield {
-                            "event": "update",
-                            "data": {"device_id": f"{device_id}_{run_id}", "updates": data}
-                        }
+                        latest_row = data[0]
+                        current_timestamp = latest_row.get("timestamp")
+
+                        # Check if the current timestamp is newer than the last processed timestamp
+                        if last_processed_timestamp is None or current_timestamp > last_processed_timestamp:
+                            # Update the last processed timestamp
+                            last_processed_timestamp = current_timestamp
+                            # Yield the latest data as an SSE message
+                            yield {
+                                "event": "update",
+                                "data": {"device_id": f"{device_id}_{run_id}", "updates": [latest_row]}
+                            }
+                        else:
+                            # If there's no new data, yield the last known value to keep the connection alive
+                            yield {
+                                "event": "update",
+                                "data": {"device_id": f"{device_id}_{run_id}", "updates": [latest_row]}
+                            }
 
                 except Exception as e:
                     # Log or handle error
                     print(f"Error fetching data from view {view_name}: {str(e)}")
 
-                # Wait for a short period before checking again
-                await asyncio.sleep(5)
+                # Wait for the specified interval before checking again
+                await asyncio.sleep(window)
 
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
