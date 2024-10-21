@@ -66,40 +66,40 @@ async def start_stream(
         raise HTTPException(status_code=500, detail=f"Failed to start streaming: {str(e)}")
 
 
-@router.get(QUERY_VIEW)
-async def QUERY_VIEW(
-    device_id: str,
-    run_id: str,
-    query: str = Query(default="SELECT * FROM {table}", description="SQL query to filter or select data from the streaming view"),
-    table_preappend: Optional[str] = Query(None)
-) -> Dict[str, Union[str, List[Dict]]]:
-    """
-    Endpoint to fetch the latest stats from the streaming view for a device and run.
+# @router.get(QUERY_VIEW)
+# async def QUERY_VIEW(
+#     device_id: str,
+#     run_id: str,
+#     query: str = Query(default="SELECT * FROM {table}", description="SQL query to filter or select data from the streaming view"),
+#     table_preappend: Optional[str] = Query(None)
+# ) -> Dict[str, Union[str, List[Dict]]]:
+#     """
+#     Endpoint to fetch the latest stats from the streaming view for a device and run.
 
-    Args:
-        device_id (str): ID of the device.
-        run_id (str): ID of the run.
-        query (str): SQL query to filter or select data from the streaming view.
-        table_preappend (Optional[str]): Optional prefix for the streaming view table name.
+#     Args:
+#         device_id (str): ID of the device.
+#         run_id (str): ID of the run.
+#         query (str): SQL query to filter or select data from the streaming view.
+#         table_preappend (Optional[str]): Optional prefix for the streaming view table name.
 
-    Returns:
-        Dict[str, Union[str, List[Dict]]]: A dictionary containing device_id and the retrieved stats as a list of dictionaries.
-    """
-    try:
-        kafka_topic = kafka_topic_name(device_id, run_id)
-        view_name = f"{table_preappend}_{kafka_topic}" if table_preappend else kafka_topic
+#     Returns:
+#         Dict[str, Union[str, List[Dict]]]: A dictionary containing device_id and the retrieved stats as a list of dictionaries.
+#     """
+#     try:
+#         kafka_topic = kafka_topic_name(device_id, run_id)
+#         view_name = f"{table_preappend}_{kafka_topic}" if table_preappend else kafka_topic
 
-        spark = check_if_session_exists()
-        if spark is None or not spark.catalog.tableExists(view_name):
-            raise HTTPException(status_code=400, detail=f"Streaming not running for device {device_id} and run {run_id}. Please start the stream first.")
+#         spark = check_if_session_exists()
+#         if spark is None or not spark.catalog.tableExists(view_name):
+#             raise HTTPException(status_code=400, detail=f"Streaming not running for device {device_id} and run {run_id}. Please start the stream first.")
 
-        stats = get_latest_stats(view_name, query)
-        return {"device_id": f'{device_id}_{run_id}', "stats": [row.asDict() for row in stats]}
+#         stats = get_latest_stats(view_name, query)
+#         return {"device_id": f'{device_id}_{run_id}', "stats": [row.asDict() for row in stats]}
 
-    except HTTPException as http_ex:
-        raise http_ex
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch latest stats: {str(e)}")
+#     except HTTPException as http_ex:
+#         raise http_ex
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Failed to fetch latest stats: {str(e)}")
 
 
 @router.get(GET_STATS_ENDPOINT)
