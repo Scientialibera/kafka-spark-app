@@ -93,9 +93,7 @@ async def update_coordinates(sensors: list, interval: float, runtime: float):
 
 if __name__ == "__main__":
     # Define the 10 sensors (device_id: "gps_1", run_id: "run_001" to "run_010")
-    sensors = [(f"gps_1", f"run_{str(i).zfill(3)}") for i in range(1, 5)]
-
-    # Define parameters
+    sensors = [("gps_1", "run_001")]
     runtime = 60  # Total running time in seconds
     interval = 1   # Time interval between updates (in seconds)
 

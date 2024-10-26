@@ -1,0 +1,67 @@
+services:
+  # Zookeeper service (required by Kafka)
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  # Kafka broker service
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    depends_on:
+      - zookeeper
+
+  # Spark master
+  spark-master:
+    image: bitnami/spark:3.5.3
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+
+  # Spark worker
+  spark-worker:
+    image: bitnami/spark:3.5.3
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    depends_on:
+      - spark-master
+
+  # Hadoop namenode and datanode services
+  hadoop:
+    image: apache/hadoop:3.3.6
+    environment:
+      - HDFS_NAMENODE_USER=root
+      - HDFS_DATANODE_USER=root
+      - HDFS_SECONDARYNAMENODE_USER=root
+    ports:
+      - "9870:9870"  # Hadoop web interface
+      - "9000:9000"  # HDFS port
+
+  # FastAPI application
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - zookeeper
+      - kafka
+      - spark-master
+      - hadoop
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPARK_MASTER_URL: spark://spark-master:7077
+      HADOOP_URL: hdfs://hadoop:9000
+    entrypoint: ["./wait-for-it.sh", "kafka:9092", "--", "uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000"]

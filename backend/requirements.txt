@@ -8,3 +8,10 @@ pytest
 jsonschema
 websockets
 timedelta
+sse_starlette
+starlette
+pandas
+aiokafka
+confluent_kafka
+pydantic
+kafka-python==2.0.2
