@@ -1,13 +1,13 @@
 services:
-  # Zookeeper service (required by Kafka)
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     ports:
       - "2181:2181"
+    networks:
+      - kafka_network
 
-  # Kafka broker service
   kafka:
     image: confluentinc/cp-kafka:latest
     ports:
@@ -18,26 +18,20 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
     depends_on:
       - zookeeper
+    networks:
+      - kafka_network
 
-  kafka-manager:
-    image: hlebalbau/kafka-manager:latest
-    ports:
-      - "9008:9008"
-    environment:
-      ZK_HOSTS: "zookeeper:2181"
-    depends_on:
-      - zookeeper
-
-  # Spark master
   spark-master:
     image: bitnami/spark:3.5.3
+    hostname: spark-master
     environment:
       - SPARK_MODE=master
     ports:
       - "7077:7077"
       - "8080:8080"
+    networks:
+      - kafka_network
 
-  # Spark worker
   spark-worker:
     image: bitnami/spark:3.5.3
     environment:
@@ -45,8 +39,9 @@ services:
       - SPARK_MASTER_URL=spark://spark-master:7077
     depends_on:
       - spark-master
+    networks:
+      - kafka_network
 
-  # Hadoop namenode and datanode services
   hadoop:
     image: apache/hadoop:3.3.6
     environment:
@@ -54,10 +49,11 @@ services:
       - HDFS_DATANODE_USER=root
       - HDFS_SECONDARYNAMENODE_USER=root
     ports:
-      - "9870:9870"  # Hadoop web interface
-      - "9000:9000"  # HDFS port
+      - "9870:9870"
+      - "9000:9000"
+    networks:
+      - kafka_network
 
-  # FastAPI application
   api:
     build:
       context: .
@@ -70,7 +66,13 @@ services:
       - spark-master
       - hadoop
     environment:
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_BROKER_URL: kafka:9092
       SPARK_MASTER_URL: spark://spark-master:7077
       HADOOP_URL: hdfs://hadoop:9000
     entrypoint: ["./wait-for-it.sh", "kafka:9092", "--", "uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
+    networks:
+      - kafka_network
+
+networks:
+  kafka_network:
+    driver: bridge

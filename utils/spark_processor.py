@@ -10,8 +10,7 @@ from pyspark.sql.functions import col, from_json
 from pyspark.sql.types import StructField, StructType,  FloatType, IntegerType, StringType
 
 from utils.file_management import device_exists, kafka_topic_name
-from utils.kafka_producer import KafkaProducerWrapper
-from backend.config.config import MAX_WORKERS, SPARK_APP_NAME
+from backend.config.config import MAX_WORKERS, SPARK_APP_NAME, SPARK_MASTER_URL, KAFKA_BROKER_URL, HADOOP_URL
 
 DEVICE_SCHEMA_PATH = "data/device_schemas"
 
@@ -45,17 +44,18 @@ def convert_schema_to_structtype(schema_fields):
     return StructType(struct_fields)
 
 
-def get_spark_session(session_name=SPARK_APP_NAME):
+def get_spark_session(session_name="Kafka Streaming Stats"):
     """Create or get an existing Spark session."""
     spark = check_if_session_exists()  # Check if a session exists
     if not spark:  # If no session exists, create a new one
         spark = SparkSession.builder \
             .appName(session_name) \
-            .master("local[*]") \
+            .master(SPARK_MASTER_URL) \
             .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
             .config("spark.sql.warehouse.dir", "/tmp") \
-            .config("spark.hadoop.fs.defaultFS", "file:///") \
+            .config("spark.hadoop.fs.defaultFS", HADOOP_URL) \
             .config("spark.hadoop.io.nativeio.disable", "true") \
+            .config("spark.kafka.bootstrap.servers", KAFKA_BROKER_URL) \
             .getOrCreate()
     return spark
 
@@ -66,7 +66,7 @@ def read_kafka_stream(spark, kafka_topic: str, offset: str = "latest"):
     """
     return spark.readStream \
         .format("kafka") \
-        .option("kafka.bootstrap.servers", "localhost:9092") \
+        .option("kafka.bootstrap.servers", KAFKA_BROKER_URL) \
         .option("subscribe", kafka_topic) \
         .option("startingOffsets", offset) \
         .load()
@@ -78,7 +78,7 @@ def read_kafka_batch(spark, kafka_topic: str, offset: str = "earliest"):
     """
     return spark.read \
         .format("kafka") \
-        .option("kafka.bootstrap.servers", "localhost:9092") \
+        .option("kafka.bootstrap.servers", KAFKA_BROKER_URL) \
         .option("subscribe", kafka_topic) \
         .option("startingOffsets", offset) \
         .load()
@@ -104,7 +104,24 @@ def read_kafka_data(device_id: str, schema_fields: dict, time_window_seconds: in
     try:
         # Create Spark session
         spark = get_spark_session()
-
+        
+        # Print Spark session and configuration details
+        print("Spark session information:")
+        print(f" - App Name: {spark.sparkContext.appName}")
+        print(f" - Master URL: {spark.sparkContext.master}")
+        print(f" - Spark UI URL: {spark.sparkContext.uiWebUrl}")
+        print(f" - Spark Version: {spark.version}")
+        
+        # Get Spark configuration settings
+        print("Spark Configuration:")
+        for key, value in spark.sparkContext.getConf().getAll():
+            print(f"   {key}: {value}")
+        
+        # Print worker details
+        print("Spark Workers Information:")
+        print(f" - Executor memory: {spark.sparkContext.getConf().get('spark.executor.memory')}")
+        print(f" - Executor cores: {spark.sparkContext.getConf().get('spark.executor.cores')}")
+        
         # Convert the dictionary schema_fields into a PySpark StructType
         struct_schema = convert_schema_to_structtype(schema_fields)
 
