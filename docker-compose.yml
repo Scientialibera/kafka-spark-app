@@ -19,6 +19,15 @@ services:
     depends_on:
       - zookeeper
 
+  kafka-manager:
+    image: hlebalbau/kafka-manager:latest
+    ports:
+      - "9008:9008"
+    environment:
+      ZK_HOSTS: "zookeeper:2181"
+    depends_on:
+      - zookeeper
+
   # Spark master
   spark-master:
     image: bitnami/spark:3.5.3
