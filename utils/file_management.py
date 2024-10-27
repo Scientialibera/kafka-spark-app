@@ -1,11 +1,7 @@
 import os
 import json
 
-from fastapi import HTTPException, WebSocket
-from typing import List, Dict
-
-from utils.kafka_producer import KafkaProducerWrapper, send_data_to_kafka
-from backend.config.config import HISTORICAL_DATA_PATH
+from fastapi import HTTPException
 
 def kafka_topic_name(device_id: str, run_id: str) -> str:
     """Returns the Kafka topic name based on the device_id and run_id."""
@@ -89,53 +85,4 @@ def validate_data(data: dict, schema: dict) -> bool:
             return False
 
     # If all keys and data types match
-    return True
-
-
-async def handle_websocket_disconnect(
-    device_id: str,
-    run_id: str,
-    data_list: List[Dict]
-) -> None:
-    """
-    Handles WebSocket disconnection, including saving historical data.
-    """
-    device_run_path: str = os.path.join(HISTORICAL_DATA_PATH, device_id, run_id)
-    create_folder(device_run_path)
-    historical_file: str = os.path.join(device_run_path, f"{device_id}.json")
-
-    try:
-        if os.path.exists(historical_file):
-            with open(historical_file, "r") as file:
-                existing_data = json.load(file)
-            existing_data.extend(data_list)
-            save_json_file(historical_file, existing_data)
-        else:
-            save_json_file(historical_file, data_list)
-        print(f"Historical data saved for device '{device_id}'.")
-    except Exception as e:
-        print(f"Failed to save historical data: {e}")
-
-
-async def process_received_data(
-    websocket: WebSocket,
-    device_id: str,
-    run_id: str,
-    data: Dict,
-    schema_fields: Dict,
-    producer: KafkaProducerWrapper,
-    data_list: List[Dict]
-) -> bool:
-    """
-    Processes the data received from the WebSocket, validates it, and sends it to Kafka if valid.
-    """
-    if not validate_data(data, schema_fields):
-        await websocket.send_text("Validation failed. Data does not match the schema.")
-        print(f"Validation failed for device {device_id}, run {run_id}. Data: {data}")
-        return False
-
-    kafka_topic: str = f"{device_id}_{run_id}"
-    send_data_to_kafka(producer, kafka_topic, data)
-    data_list.append(data)
-
     return True
