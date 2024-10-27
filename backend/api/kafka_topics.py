@@ -104,3 +104,22 @@ async def delete_all_topics() -> Dict[str, Union[str, Dict[str, Optional[None]]]
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete all topics: {str(e)}")
+
+
+@router.get("/list-topics")
+async def list_topics() -> Dict[str, Union[str, List[str]]]:
+    """
+    Endpoint to retrieve all Kafka topics.
+
+    Returns:
+        Dict[str, Union[str, List[str]]]: A message and a list of all Kafka topics.
+    """
+    try:
+        # Get metadata for all topics
+        metadata = admin_client.list_topics(timeout=10)
+        topics = list(metadata.topics.keys())
+
+        return {"message": "Topics retrieved successfully", "topics": topics}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to list topics: {str(e)}")
