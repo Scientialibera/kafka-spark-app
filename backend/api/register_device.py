@@ -17,11 +17,11 @@ router = APIRouter()
 
 # Set the path where schemas will be saved
 SCHEMA_SAVE_PATH = os.path.join("data", "device_schemas")  # Join with data/device_schemas path
-REGISTER_DEVICE_ENDPOINT = "/register-device"
-UPDATE_DEVICE_ENDPOINT = "/update-device"
-DELETE_DEVICE_ENDPOINT = "/delete-device/{device_id}"
-ALL_DEVICE_ENDPOINT = "/devices"
-GET_DEVICE_ENDPOINT = "/device/{device_id}"
+REGISTER_DEVICE_ENDPOINT: str = "/register-device"
+UPDATE_DEVICE_ENDPOINT: str = "/update-device"
+DELETE_DEVICE_ENDPOINT: str = "/delete-device/{device_id}"
+ALL_DEVICE_ENDPOINT: str = "/devices"
+GET_DEVICE_ENDPOINT: str = "/device/{device_id}"
 
 
 @router.post(REGISTER_DEVICE_ENDPOINT)

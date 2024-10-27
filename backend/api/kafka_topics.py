@@ -11,12 +11,16 @@ from backend.config.config import KAFKA_BROKER_URL
 router = APIRouter()
 
 SCHEMA_SAVE_PATH: str = os.path.join("data", "device_schemas")
+GET_TOPIC_MESSAGES_ENDPOINT: str = "/get-topic-messages/{device_id}/{run_id}"
+DELETE_TOPIC_ENDPOINT: str = "/delete-topic/{device_id}/{run_id}"
+DELETE_ALL_TOPICS_ENDPOINT: str = "/delete-all-topics"
+LIST_TOPICS_ENDPOINT: str = "/list-topics"
 
 
 # Kafka Admin client
 admin_client = AdminClient({'bootstrap.servers': KAFKA_BROKER_URL})
 
-@router.get("/get-topic-messages/{device_id}/{run_id}")
+@router.get(GET_TOPIC_MESSAGES_ENDPOINT)
 async def get_topic_messages(
     device_id: str,
     run_id: str,
@@ -60,7 +64,7 @@ async def get_topic_messages(
         raise HTTPException(status_code=500, detail=f"Failed to get messages: {str(e)}")
 
 
-@router.delete("/delete-topic/{device_id}/{run_id}")
+@router.delete(DELETE_TOPIC_ENDPOINT)
 async def delete_topic_by_device_name(device_id: str, run_id: str) -> Dict[str, str]:
     """
     Endpoint to delete a Kafka topic based on the device_id and run_id.
@@ -84,7 +88,7 @@ async def delete_topic_by_device_name(device_id: str, run_id: str) -> Dict[str, 
         raise HTTPException(status_code=500, detail=f"Failed to delete topic: {str(e)}")
 
 
-@router.delete("/delete-all-topics")
+@router.delete(DELETE_ALL_TOPICS_ENDPOINT)
 async def delete_all_topics() -> Dict[str, Union[str, Dict[str, Optional[None]]]]:
     """
     Endpoint to delete all Kafka topics in the cluster.
@@ -106,7 +110,7 @@ async def delete_all_topics() -> Dict[str, Union[str, Dict[str, Optional[None]]]
         raise HTTPException(status_code=500, detail=f"Failed to delete all topics: {str(e)}")
 
 
-@router.get("/list-topics")
+@router.get(LIST_TOPICS_ENDPOINT)
 async def list_topics() -> Dict[str, Union[str, List[str]]]:
     """
     Endpoint to retrieve all Kafka topics.

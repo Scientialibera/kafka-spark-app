@@ -7,10 +7,10 @@ from backend.config.config import HISTORICAL_DATA_PATH
 
 router = APIRouter()
 
-GET_HISTORICAL_AVERAGE_ENDPOINT = "/get-average/{device_id}/{run_id}"
-GET_HISTORICAL_MAX_ENDPOINT = "/get-max/{device_id}/{run_id}"
-DELETE_HISTORICAL_DATA_ENDPOINT = "/delete/{device_id}/{run_id}"
-DELETE_ALL_HISTORICAL_DATA_ENDPOINT = "/delete-all"
+GET_HISTORICAL_AVERAGE_ENDPOINT: str = "/get-average/{device_id}/{run_id}"
+GET_HISTORICAL_MAX_ENDPOINT: str = "/get-max/{device_id}/{run_id}"
+DELETE_HISTORICAL_DATA_ENDPOINT: str = "/delete/{device_id}/{run_id}"
+DELETE_ALL_HISTORICAL_DATA_ENDPOINT: str = "/delete-all"
 
 # Generic endpoint function for getting aggregated historical stats
 @router.get(GET_HISTORICAL_AVERAGE_ENDPOINT)

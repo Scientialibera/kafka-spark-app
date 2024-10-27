@@ -10,83 +10,15 @@ from utils.file_management import (
     save_json_file,
     device_exists,
     validate_data,
+    handle_websocket_disconnect,
+    process_received_data
 )
 
 router = APIRouter()
 
 # Constants
 SCHEMA_SAVE_PATH: str = os.path.join("data", "device_schemas")
-HISTORICAL_DATA_PATH: str = os.path.join("data", "historical", "devices")
 ENDPOINT_WEBSOCKET: str = "/send-stream/{device_id}/{run_id}"
-
-
-async def process_received_data(
-    websocket: WebSocket,
-    device_id: str,
-    run_id: str,
-    data: Dict,
-    schema_fields: Dict,
-    producer: KafkaProducerWrapper,
-    data_list: List[Dict]
-) -> bool:
-    """
-    Processes the data received from the WebSocket, validates it, and sends it to Kafka if valid.
-
-    Args:
-        websocket (WebSocket): The WebSocket connection.
-        device_id (str): The ID of the device.
-        run_id (str): The ID of the run associated with the device.
-        data (Dict): The data received from the WebSocket.
-        schema_fields (Dict): The expected schema fields for validation.
-        producer (KafkaProducerWrapper): Kafka producer instance for sending data.
-        data_list (List[Dict]): List to collect validated data for historical saving.
-
-    Returns:
-        bool: True if the data is valid and processed successfully, otherwise False.
-    """
-    if not validate_data(data, schema_fields):
-        await websocket.send_text("Validation failed. Data does not match the schema.")
-        print(f"Validation failed for device {device_id}, run {run_id}. Data: {data}")
-        return False
-
-    kafka_topic: str = f"{device_id}_{run_id}"
-    send_data_to_kafka(producer, kafka_topic, data)
-    data_list.append(data)
-
-    return True
-
-
-async def handle_websocket_disconnect(
-    device_id: str,
-    run_id: str,
-    data_list: List[Dict]
-) -> None:
-    """
-    Handles WebSocket disconnection, including saving historical data.
-
-    Args:
-        device_id (str): The ID of the device.
-        run_id (str): The ID of the run associated with the device.
-        data_list (List[Dict]): The list of data collected during the WebSocket connection.
-
-    Returns:
-        None
-    """
-    device_run_path: str = os.path.join(HISTORICAL_DATA_PATH, device_id, run_id)
-    create_folder(device_run_path)
-    historical_file: str = os.path.join(device_run_path, f"{device_id}.json")
-
-    try:
-        if os.path.exists(historical_file):
-            with open(historical_file, "r") as file:
-                existing_data = json.load(file)
-            existing_data.extend(data_list)
-            save_json_file(historical_file, existing_data)
-        else:
-            save_json_file(historical_file, data_list)
-        print(f"Historical data saved for device '{device_id}'.")
-    except Exception as e:
-        print(f"Failed to save historical data: {e}")
 
 
 @router.websocket(ENDPOINT_WEBSOCKET)
@@ -139,3 +71,6 @@ async def send_stream(
             producer.flush()
             producer.close()
         await handle_websocket_disconnect(device_id, run_id, data_list)
+
+
+
