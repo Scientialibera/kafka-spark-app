@@ -8,3 +8,5 @@ SPARK_APP_NAME = os.getenv("SPARK_APP_NAME", "Kafka Streaming Stats")
 SPARK_MASTER_URL = os.getenv("SPARK_MASTER_URL", "spark://spark-master:7077")
 
 HADOOP_URL = os.getenv("HADOOP_URL", "hdfs://hadoop:9000")
+
+HISTORICAL_DATA_PATH = os.getenv("HISTORICAL_DATA_PATH", "data/historical")
