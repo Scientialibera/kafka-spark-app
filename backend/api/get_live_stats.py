@@ -18,10 +18,10 @@ from .kafka_topics import get_topic_messages
 router = APIRouter()
 
 GET_STATS_ENDPOINT: str = "/get-stats/{device_id}/{run_id}"
-QUERY_VIEW: str = "/query-view/{device_id}/{run_id}"
 GET_INSTANT_SPEED_ENDPOINT: str = "/get-speed/{device_id}/{run_id}"
 START_STREAM_ENDPOINT: str = "/start-stream/{device_id}/{run_id}"
 ALARM_ENDPOINT: str = "/get-notification/{device_id}/{run_id}"
+
 DEVICE_SCHEMA_PATH: str = "data/device_schemas"
 
 

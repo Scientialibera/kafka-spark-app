@@ -11,6 +11,7 @@ from backend.config.config import KAFKA_BROKER_URL
 router = APIRouter()
 
 SCHEMA_SAVE_PATH: str = os.path.join("data", "device_schemas")
+
 GET_TOPIC_MESSAGES_ENDPOINT: str = "/get-topic-messages/{device_id}/{run_id}"
 DELETE_TOPIC_ENDPOINT: str = "/delete-topic/{device_id}/{run_id}"
 DELETE_ALL_TOPICS_ENDPOINT: str = "/delete-all-topics"

@@ -1,6 +1,6 @@
 # Sports Prophet
 
-Sports Prophet is a full-stack application designed to analyze soccer match data in real-time and ad-hoc. It ingests sensor streams from devices into Kafka topics and uses Spark for real-time aggregation or direct querying for on-demand data. Users can also manage sensor schemas through the API, providing flexibility to ingest new data types dynamically.
+Sports Prophet is a full-stack application designed to analyze soccer match data in real-time and ad-hoc. It ingests sensor streams from devices into Kafka topics and uses Spark for real-time aggregation or direct querying for on-demand data. Users can also manage sensor schemas through the API.
 
 
 ### Key Directories and Files
@@ -24,6 +24,57 @@ Sports Prophet is a full-stack application designed to analyze soccer match data
 6. **test**: Contains unit and integration tests for backend components.
 
 7. **utils**: Utility scripts for Kafka management, file operations, and Spark stream processing.
+
+
+## Docker Details
+
+The Sports Prophet application utilizes Docker and Docker Compose to manage and orchestrate its services. 
+Below is a breakdown of each service and instructions to manage them.
+
+### Docker Services Overview
+
+1. **zookeeper**: A service for managing Kafka metadata and synchronization. Exposes port `2181`.
+2. **kafka**: Message broker for sensor data ingestion, connected to Zookeeper. Exposes port `9092`.
+3. **spark-master**: Master node for Spark processing tasks, managing worker nodes and job scheduling. Ports `7077` and `8080` are open.
+4. **spark-worker**: Worker node that connects to Spark Master, processing tasks as assigned.
+5. **hadoop**: Manages HDFS storage, which Spark may utilize for persistent storage. Ports `9870` (Namenode UI) and `9000` (for HDFS communication) are exposed.
+6. **api**: The FastAPI-based backend application providing APIs for data access and management. Accessible on port `8000`.
+
+### Common Docker Commands
+
+1. **Start Services**: 
+   ```
+   docker-compose up -d
+   ```
+   This command launches all services in detached mode.
+
+2. **Check Running Containers**: 
+   ```
+   docker ps
+   ```
+   Displays all active containers along with their names, ports, and statuses.
+
+3. **View Logs for a Specific Container**: 
+   ```
+   docker logs <container_name>
+   ```
+   Replace `<container_name>` with the name of the container (e.g., `api`, `kafka`, etc.) to view its logs.
+
+4. **Stop Services**: 
+   ```
+   docker-compose down
+   ```
+   Stops and removes all services defined in the `docker-compose.yml` file.
+
+5. **Rebuild a Specific Service** (useful after code updates):
+   ```
+   docker-compose build <service_name>
+   ```
+   Replace `<service_name>` with the service you wish to rebuild, such as `api`.
+
+### Docker Networking
+
+All services are connected to a shared network, `kafka_network` for communication between Kafka, Zookeeper, Spark, and the API service.
 
 ## API Documentation
 
@@ -81,12 +132,15 @@ Sports Prophet is a full-stack application designed to analyze soccer match data
 - **`DELETE /delete-all-topics`**  
   Deletes all Kafka topics in the cluster.
 
+- **`GET /list-topics`**  
+  Deletes all Kafka topics in the cluster.
+
 ### 3. **Device Management API** (`register_device.py`)
 
 #### Endpoints:
 
 - **`POST /register-device`**  
-  Registers a new device schema, ensuring schema consistency and directory setup.  
+  Registers a new device schema for schema consistency and directory setup.  
   **Parameters**:
   - `device` (RegisterDeviceRequest): Details and schema of the new device.
 
@@ -107,6 +161,16 @@ Sports Prophet is a full-stack application designed to analyze soccer match data
   Fetches the schema of a specified device.  
   **Parameters**:
   - `device_id` (str): Device ID to retrieve.
+
+### 4. **Data Stream API** (`send_stream.py`)
+
+#### Endpoints:
+
+- **`/send-stream/{device_id}/{run_id}`** (WebSocket)
+  Initiates a WebSocket connection to send a continuous data stream for a specific device and run. The data received through the WebSocket is validated and sent to Kafka in real-time. When the websocket disconnects, data is saved in path of choice.
+  **Parameters**:
+  - `device_id` (str): Unique identifier for the device sending data.
+  - `run_id` (str): Identifier for the specific run associated with the device.
 
 ## Technologies Used
 
