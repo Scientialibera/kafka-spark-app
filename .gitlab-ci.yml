@@ -1,7 +1,7 @@
 stages:
   - build
   # - test  # Uncomment this stage when tests are ready
-  - deploy
+  # - deploy
 
 variables:
   DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/backend"
@@ -30,14 +30,14 @@ build_backend:
 #     - docker build -t $FRONTEND_IMAGE frontend
 #     - docker push $FRONTEND_IMAGE
 
-deploy:
-  stage: deploy
-  only:
-    - main
-  environment:
-    name: production
-  script:
-    # The following commands start the services with docker-compose
-    - echo "Deploying backend to production environment..."
-    - docker-compose down  # Stops any existing services
-    - docker-compose up --build -d  # Starts and rebuilds the backend service
+# deploy:
+#   stage: deploy
+#   only:
+#     - main
+#   environment:
+#     name: production
+#   script:
+#     # The following commands start the services with docker-compose
+#     - echo "Deploying backend to production environment..."
+#     - docker-compose down  # Stops any existing services
+#     - docker-compose up --build -d  # Starts and rebuilds the backend service
