@@ -1,0 +1,43 @@
+stages:
+  - build
+  # - test  # Uncomment this stage when tests are ready
+  - deploy
+
+variables:
+  DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/backend"
+
+# Authenticate GitLab Docker registry
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_JOB_TOKEN" "$CI_REGISTRY"
+
+# Build Backend Docker Image
+build_backend:
+  stage: build
+  script:
+    - docker build -t $DOCKER_IMAGE -f backend/Dockerfile .
+    - docker push $DOCKER_IMAGE
+
+# Test Stage - To be uncommented once tests are set up
+# test_backend:
+#   stage: test
+#   script:
+#     - docker run --rm $DOCKER_IMAGE pytest test/streaming_test.py
+
+# Frontend Build - To be uncommented when frontend is ready
+# build_frontend:
+#   stage: build
+#   script:
+#     - docker build -t $FRONTEND_IMAGE frontend
+#     - docker push $FRONTEND_IMAGE
+
+deploy:
+  stage: deploy
+  only:
+    - main
+  environment:
+    name: production
+  script:
+    # The following commands start the services with docker-compose
+    - echo "Deploying backend to production environment..."
+    - docker-compose down  # Stops any existing services
+    - docker-compose up --build -d  # Starts and rebuilds the backend service
