@@ -9,7 +9,8 @@ from utils.file_management import (
     create_folder,
     save_json_file,
     convert_model_to_json,
-    device_exists
+    device_exists,
+    validate_schema_not_empty
 )
 
 router = APIRouter()
@@ -67,7 +68,9 @@ async def register_device_schema(
         SCHEMA_SAVE_PATH, f"{device.device_name}.json"
     )
     try:
-        save_json_file(schema_file_path, convert_model_to_json(device))
+        device_schema = convert_model_to_json(device)
+        validate_schema_not_empty(device_schema)
+        save_json_file(schema_file_path, device_schema)
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to save device schema: {e}"
@@ -112,7 +115,10 @@ async def update_device_schema(
         SCHEMA_SAVE_PATH, f"{device.device_name}.json"
     )
     try:
-        save_json_file(schema_file_path, convert_model_to_json(device))
+        device_schema = convert_model_to_json(device)
+        validate_schema_not_empty(device_schema)
+
+        save_json_file(schema_file_path, device_schema)
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to update device schema: {e}"

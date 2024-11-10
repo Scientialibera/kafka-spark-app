@@ -1,5 +1,6 @@
 import os
 import json
+from typing import Dict
 
 from fastapi import HTTPException
 
@@ -86,3 +87,18 @@ def validate_data(data: dict, schema: dict) -> bool:
 
     # If all keys and data types match
     return True
+
+
+def validate_schema_not_empty(register_device_json: Dict) -> None:
+    """
+    Checks if the schema dictionary is empty by validating its size.
+    Raises an HTTPException if the dictionary is empty.
+
+    Args:
+        schema (Dict): The schema dictionary to check.
+
+    Raises:
+        HTTPException: If the schema is empty, raises a 400 status error with a specific message.
+    """
+    if not register_device_json.get('schema') or len(register_device_json.get('schema')) == 0:
+        raise HTTPException(status_code=400, detail="Schema is empty.")
