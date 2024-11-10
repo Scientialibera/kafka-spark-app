@@ -4,31 +4,43 @@ stages:
   # - deploy
 
 variables:
-  DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/backend"
+  DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/backend"  # Base image name
+  IMAGE_TAG: "latest"  # Tag can be set to a Git commit SHA or version if needed
+  FULL_IMAGE_PATH: "$DOCKER_IMAGE:$IMAGE_TAG"  # Full image path with tag
 
-# Authenticate GitLab Docker registry
+# Authenticate with GitLab Container Registry
 before_script:
-  - docker login -u "$CI_REGISTRY_USER" -p "$CI_JOB_TOKEN" "$CI_REGISTRY"
+  - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
 
-# Build Backend Docker Image
+# Build and Push Docker Image on Merge to Main
 build_backend:
   stage: build
+  only:
+    - main  # Runs only on merges to the main branch
+  tags:
+    - windows  # Replace with your runner's actual tag, if needed
   script:
-    - docker build -t $DOCKER_IMAGE -f backend/Dockerfile .
-    - docker push $DOCKER_IMAGE
+    - docker build -t $FULL_IMAGE_PATH -f backend/Dockerfile .
+    - docker push $FULL_IMAGE_PATH
 
 # Test Stage - To be uncommented once tests are set up
 # test_backend:
 #   stage: test
+#   tags:
+#     - windows
 #   script:
-#     - docker run --rm $DOCKER_IMAGE pytest test/streaming_test.py
+#     - echo "Running tests..."  # Placeholder for test commands
+#     # - docker run --rm $FULL_IMAGE_PATH pytest test/streaming_test.py
 
 # Frontend Build - To be uncommented when frontend is ready
 # build_frontend:
 #   stage: build
+#   tags:
+#     - windows
 #   script:
-#     - docker build -t $FRONTEND_IMAGE frontend
-#     - docker push $FRONTEND_IMAGE
+#     - echo "Building frontend..."  # Placeholder for frontend build commands
+#     # - docker build -t $FRONTEND_IMAGE frontend
+#     # - docker push $FRONTEND_IMAGE
 
 # deploy:
 #   stage: deploy
@@ -36,8 +48,10 @@ build_backend:
 #     - main
 #   environment:
 #     name: production
+#   tags:
+#     - windows
 #   script:
-#     # The following commands start the services with docker-compose
 #     - echo "Deploying backend to production environment..."
-#     - docker-compose down  # Stops any existing services
-#     - docker-compose up --build -d  # Starts and rebuilds the backend service
+#     # The following commands start the services with docker-compose
+#     # - docker-compose down  # Stops any existing services
+#     # - docker-compose up --build -d  # Starts and rebuilds the backend service
