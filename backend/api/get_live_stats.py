@@ -12,13 +12,13 @@ from utils.spark_processor import (
     initialize_streaming
 )
 from utils.file_management import kafka_topic_name
-from utils.maths_functions import calculate_speed_from_messages
+from utils.maths_functions import calculate_speed_from_messages, calculate_acceleration_from_messages
 from .kafka_topics import get_topic_messages
 
 router = APIRouter()
 
 GET_STATS_ENDPOINT: str = "/get-stats/{device_id}/{run_id}"
-GET_INSTANT_SPEED_ENDPOINT: str = "/get-speed/{device_id}/{run_id}"
+GET_INSTANT_SPEED_ACCEL_ENDPOINT: str = "/get-speed/{device_id}/{run_id}"
 START_STREAM_ENDPOINT: str = "/start-stream/{device_id}/{run_id}"
 ALARM_ENDPOINT: str = "/get-notification/{device_id}/{run_id}"
 
@@ -125,44 +125,53 @@ async def get_stats(
         raise HTTPException(status_code=500, detail=f"Failed to get aggregated stats: {str(e)}")
 
 
-@router.get(GET_INSTANT_SPEED_ENDPOINT)
-async def get_speed(
+@router.get(GET_INSTANT_SPEED_ACCEL_ENDPOINT)
+async def get_metric(
     device_id: str,
-    run_id: str
+    run_id: str,
+    type: str  # "speed" or "acceleration"
 ) -> Dict[str, Union[str, float]]:
     """
-    Endpoint to fetch instantaneous speed for a device and run.
+    Endpoint to fetch either instantaneous speed or acceleration for a device and run.
 
     Args:
         device_id (str): ID of the device.
         run_id (str): ID of the run.
+        type (str): Type of metric to calculate ("speed" or "acceleration").
 
     Returns:
-        Dict[str, Union[str, float]]: A dictionary containing the device_id, run_id, and the instantaneous speed.
+        Dict[str, Union[str, float]]: A dictionary containing the device_id, run_id, and the calculated metric.
     """
     try:
-        # Fetch the latest 2 messages from Kafka
-        response = await get_topic_messages(device_id, run_id, limit=2)
+        # Fetch the latest 3 messages from Kafka for acceleration or 2 for speed
+        limit = 3 if type == "acceleration" else 2
+        response = await get_topic_messages(device_id, run_id, limit=limit)
 
         # Extract the messages from the response
         messages = response.get("messages", [])
 
-        # If we have fewer than 2 messages, we can't calculate the speed
-        if len(messages) < 2:
-            raise HTTPException(status_code=400, detail="Not enough data to calculate speed. Please ensure there are active sensors producing data.")
+        # Validate data availability
+        if (type == "speed" and len(messages) < 2) or (type == "acceleration" and len(messages) < 3):
+            raise HTTPException(status_code=400, detail=f"Not enough data to calculate {type}. Please ensure there are active sensors producing data.")
 
         # Sort messages by timestamp to ensure they are in chronological order
         sorted_messages = sorted(messages, key=lambda msg: msg["timestamp"])
 
-        # Calculate the speed using the last two messages
-        speed = calculate_speed_from_messages(sorted_messages)
+        # Calculate the requested metric
+        if type == "speed":
+            metric = calculate_speed_from_messages(sorted_messages)
+        elif type == "acceleration":
+            metric = calculate_acceleration_from_messages(sorted_messages)
+        else:
+            raise HTTPException(status_code=400, detail=f"Invalid type '{type}'. Must be 'speed' or 'acceleration'.")
+
         return {
             "device_id": device_id,
             "run_id": run_id,
-            "speed": speed
+            type: metric
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get speed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get {type}: {str(e)}")
     
 
 @router.get(ALARM_ENDPOINT)
