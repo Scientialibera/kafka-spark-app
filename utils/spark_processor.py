@@ -54,7 +54,6 @@ def get_spark_session(session_name="Kafka Streaming Stats"):
             .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
             .config("spark.sql.warehouse.dir", "/tmp") \
             .config("spark.hadoop.fs.defaultFS", HADOOP_URL) \
-            .config("spark.hadoop.io.nativeio.disable", "true") \
             .config("spark.kafka.bootstrap.servers", KAFKA_BROKER_URL) \
             .getOrCreate()
     return spark
