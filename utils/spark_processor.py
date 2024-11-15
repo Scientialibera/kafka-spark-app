@@ -52,9 +52,9 @@ def get_spark_session(session_name="Kafka Streaming Stats"):
             .appName(session_name) \
             .master(SPARK_MASTER_URL) \
             .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
-            .config("spark.sql.warehouse.dir", "/tmp") \
-            .config("spark.hadoop.fs.defaultFS", HADOOP_URL) \
-            .config("spark.kafka.bootstrap.servers", KAFKA_BROKER_URL) \
+            .config("spark.sql.warehouse.dir", "/tmp/spark-warehouse") \
+            .config("spark.sql.catalogImplementation", "in-memory") \
+            .config("spark.local.dir", "/tmp/spark-temp") \
             .getOrCreate()
     return spark
 

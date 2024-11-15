@@ -1,8 +1,0 @@
-{
-    "device_name": "wind_2",
-    "schema": {
-        "speed": "float",
-        "direction": "float",
-        "timestamp": "string"
-    }
-}

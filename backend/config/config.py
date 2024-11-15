@@ -17,7 +17,7 @@ if is_running_in_docker():
     
 else:
     KAFKA_BROKER_URL = os.getenv("KAFKA_BROKER_URL", "localhost:9092")
-    SPARK_MASTER_URL = os.getenv("SPARK_MASTER_URL", "spark://localhost:7077")
+    SPARK_MASTER_URL = os.getenv("SPARK_MASTER_URL", "local[*]")
     HADOOP_URL = os.getenv("HADOOP_URL", "hdfs://localhost:9000")
 
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", 16))

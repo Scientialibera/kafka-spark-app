@@ -56,6 +56,8 @@ async def start_stream(
 
             if spark.catalog.tableExists(view_name):
                 return {"message": f"Streaming already running for device {device_id} and run {run_id}."}
+            else:
+                initialize_streaming(device_id, run_id, triggers, window_seconds, table_preappend, exclude_normal)
 
         initialize_streaming(device_id, run_id, triggers, window_seconds, table_preappend, exclude_normal)
         return {"message": f"Streaming started for device {device_id} and run {run_id}."}
