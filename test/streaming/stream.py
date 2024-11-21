@@ -5,7 +5,9 @@ import json
 import random
 import time
 from datetime import datetime
+from fastapi import APIRouter, HTTPException
 
+router = APIRouter()
 # Define the WebSocket URL with placeholders for device_id and run_id
 WEBSOCKET_ENDPOINT_TEMPLATE = "ws://localhost:8000/send-stream/{device_id}/{run_id}"
 
@@ -13,6 +15,7 @@ DURATION_SECONDS = 500  # Total duration to send data
 INTERVAL_SECONDS = 0.5  # Interval between data sends
 MAX_STR_LEN = 3
 BASE_URL = "http://localhost:8000"
+GEN_TEST_DATA_ENDPOINT = "/generate-test-data"
 
 def generate_padded_string(schema_type, num):
     numstr = str(num)
@@ -41,7 +44,7 @@ def check_if_device_exists(name):
         return False
 
 def create_device(num, schema_type):
-    strnum = generate_string(schema_type + "_", num)
+    strnum = generate_string(schema_type, num)
 
     if schema_type == "gps":
         if not check_if_device_exists(strnum):
@@ -119,14 +122,14 @@ async def send_synthetic_data(device_id, run_id, schema_type):
             # Wait for the specified interval before sending the next message
             thread.sleep(INTERVAL_SECONDS)
 
+@router.post(GEN_TEST_DATA_ENDPOINT)
 def main():
     for player in range(1, 21, 1):
-        device_id = generate_string("gps", player)
-        create_device(player)
-        device_id = generate_string("heart_rate", player)
+        create_device(player, "gps")
+        create_device(player, "player_heart_rate")
         for run in range(1, 11, 1):
             run_id = generate_padded_string("run", run)
+            device_id = generate_string("gps", player)
             send_synthetic_data(device_id, run_id, "gps")
-            send_synthetic_data(device_id, run_id, "heart_rate")
-
-main()
+            device_id = generate_string("player_heart_rate", player)
+            send_synthetic_data(device_id, run_id, "player_heart_rate")
