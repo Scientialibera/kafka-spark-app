@@ -5,7 +5,7 @@ import json
 import random
 import time
 from datetime import datetime
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
 router = APIRouter()
 # Define the WebSocket URL with placeholders for device_id and run_id
