@@ -1,21 +1,27 @@
 stages:
   - build
-  - deploy
+  - push
 
 variables:
   IMAGE_TAG: "latest"
-  COMPOSE_PROJECT_NAME: "my_project"  # Replace with a unique name for the registry
+  COMPOSE_PROJECT_NAME: "sports_project"
 
 before_script:
+  # Log in to the GitLab Container Registry
   - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
 
-# Build and Push All Custom Images
 build_services:
   stage: build
   tags:
     - docker
-  only:
-    - main  # Trigger this job only on merges/commits to the main branch
   script:
+    # Build all services with a `build` section
     - docker-compose build
+
+push_services:
+  stage: push
+  tags:
+    - docker
+  script:
+    # Push all images with an `image` tag to the registry
     - docker-compose push
