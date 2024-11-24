@@ -1,10 +1,9 @@
-version: '3.8'
-
 services:
   api:
-    image: ${FULL_IMAGE_PATH:-git.ecdf.ed.ac.uk:5050/sdol2425/duncan-proctor/sports_project/backend:latest}
-    ports:
-      - "8000:8000"
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: git.ecdf.ed.ac.uk:5050/sdol2425/duncan-proctor/sports_project/backend:latest
     depends_on:
       - zookeeper
       - kafka
