@@ -58,7 +58,7 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
-    image: https://git.ecdf.ed.ac.uk/sdol2425/duncan-proctor/sports_project/backend:latest
+    image: git.ecdf.ed.ac.uk/sdol2425/duncan-proctor/sports_project/backend:latest
     ports:
       - "8000:8000"
     depends_on:
