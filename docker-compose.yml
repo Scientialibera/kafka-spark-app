@@ -1,22 +1,4 @@
 services:
-  api:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
-    image: git.ecdf.ed.ac.uk:5050/sdol2425/duncan-proctor/sports_project/backend:latest
-    depends_on:
-      - zookeeper
-      - kafka
-      - spark-master
-      - hadoop
-    environment:
-      KAFKA_BROKER_URL: kafka:9092
-      SPARK_MASTER_URL: spark://spark-master:7077
-      HADOOP_URL: hdfs://hadoop:9000
-    entrypoint: ["kafka:9092", "--", "uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
-    networks:
-      - kafka_network
-
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
@@ -69,6 +51,24 @@ services:
     ports:
       - "9870:9870"
       - "9000:9000"
+    networks:
+      - kafka_network
+      
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: git.ecdf.ed.ac.uk:5050/sdol2425/duncan-proctor/sports_project/backend:latest
+    depends_on:
+      - zookeeper
+      - kafka
+      - spark-master
+      - hadoop
+    environment:
+      KAFKA_BROKER_URL: kafka:9092
+      SPARK_MASTER_URL: spark://spark-master:7077
+      HADOOP_URL: hdfs://hadoop:9000
+    entrypoint: ["wait-for-it.sh", "kafka:9092", "--", "uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
     networks:
       - kafka_network
 
