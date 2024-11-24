@@ -3,11 +3,11 @@ stages:
   - push
 
 variables:
-  IMAGE_TAG: "latest"
-  COMPOSE_PROJECT_NAME: "sports_project"
+  DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/backend"  # Base image name
+  IMAGE_TAG: "latest"  # Tag for the image
+  FULL_IMAGE_PATH: "$DOCKER_IMAGE:$IMAGE_TAG"  # Full image path with tag
 
 before_script:
-  # Log in to the GitLab Container Registry
   - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
 
 build_services:
@@ -15,7 +15,7 @@ build_services:
   tags:
     - docker
   script:
-    # Build all services with a `build` section
+    # Build all services with a `build` section in docker-compose.yml
     - docker-compose build
 
 push_services:
@@ -23,5 +23,5 @@ push_services:
   tags:
     - docker
   script:
-    # Push all images with an `image` tag to the registry
+    # Push all built images to the registry
     - docker-compose push
