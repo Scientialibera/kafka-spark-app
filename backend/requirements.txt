@@ -8,6 +8,7 @@ pytest
 jsonschema
 websockets
 timedelta
+requests
 sse_starlette
 starlette
 pandas
