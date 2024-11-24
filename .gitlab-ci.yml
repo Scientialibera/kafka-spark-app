@@ -1,57 +1,21 @@
 stages:
   - build
-  # - test  # Uncomment this stage when tests are ready
-  # - deploy
+  - deploy
 
 variables:
-  DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/backend"  # Base image name
-  IMAGE_TAG: "latest"  # Tag can be set to a Git commit SHA or version if needed
-  FULL_IMAGE_PATH: "$DOCKER_IMAGE:$IMAGE_TAG"  # Full image path with tag
+  IMAGE_TAG: "latest"
+  COMPOSE_PROJECT_NAME: "my_project"  # Replace with a unique name for the registry
 
-# Authenticate with GitLab Container Registry
 before_script:
   - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
 
-# Build and Push Docker Image on Merge to Main
-build_backend:
+# Build and Push All Custom Images
+build_services:
   stage: build
-  only:
-    - main  # Runs only on merges to the main branch
   tags:
-    - windows  # Replace with your runner's actual tag, if needed
+    - docker
+  only:
+    - main  # Trigger this job only on merges/commits to the main branch
   script:
-    - docker build -t $FULL_IMAGE_PATH -f backend/Dockerfile .
-    - docker push $FULL_IMAGE_PATH
-
-# Test Stage - To be uncommented once tests are set up
-# test_backend:
-#   stage: test
-#   tags:
-#     - windows
-#   script:
-#     - echo "Running tests..."  # Placeholder for test commands
-#     # - docker run --rm $FULL_IMAGE_PATH pytest test/streaming_test.py
-
-# Frontend Build - To be uncommented when frontend is ready
-# build_frontend:
-#   stage: build
-#   tags:
-#     - windows
-#   script:
-#     - echo "Building frontend..."  # Placeholder for frontend build commands
-#     # - docker build -t $FRONTEND_IMAGE frontend
-#     # - docker push $FRONTEND_IMAGE
-
-# deploy:
-#   stage: deploy
-#   only:
-#     - main
-#   environment:
-#     name: production
-#   tags:
-#     - windows
-#   script:
-#     - echo "Deploying backend to production environment..."
-#     # The following commands start the services with docker-compose
-#     # - docker-compose down  # Stops any existing services
-#     # - docker-compose up --build -d  # Starts and rebuilds the backend service
+    - docker-compose build
+    - docker-compose push
