@@ -59,6 +59,8 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     image: git.ecdf.ed.ac.uk:5050/sdol2425/duncan-proctor/sports_project/backend:latest
+    ports:
+      - "8000:8000"
     depends_on:
       - zookeeper
       - kafka
@@ -68,7 +70,7 @@ services:
       KAFKA_BROKER_URL: kafka:9092
       SPARK_MASTER_URL: spark://spark-master:7077
       HADOOP_URL: hdfs://hadoop:9000
-    entrypoint: ["wait-for-it.sh", "kafka:9092", "--", "uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
+    entrypoint: ["/bin/sh", "-c", "sleep 5 && uvicorn backend.app:app --host 0.0.0.0 --port 8000"]
     networks:
       - kafka_network
 
