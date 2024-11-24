@@ -58,7 +58,7 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
-    image: git.ecdf.ed.ac.uk/sdol2425/Duncan-Proctor/sports_project/api:latest  # Proper registry path
+    image: git.ecdf.ed.ac.uk/sdol2425/duncan-proctor/sports_project/api:latest  # Proper registry path
     ports:
       - "8000:8000"
     depends_on:
