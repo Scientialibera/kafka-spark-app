@@ -4,28 +4,25 @@ FROM python:3.9-slim
 # Set working directory
 WORKDIR /app
 
-# Copy requirements and install dependencies
+# Copy requirements first for better layer caching
 COPY backend/requirements.txt .
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Update and install required packages
-RUN apt-get update && apt-get install -y procps default-jdk
+# Install OS-level dependencies
+RUN apt-get update && apt-get install -y procps default-jdk && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Dynamically set JAVA_HOME after installation
-RUN export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::") && \
-    echo "JAVA_HOME=$JAVA_HOME" >> /etc/environment
-
-# Source /etc/environment to set JAVA_HOME globally in the container
-RUN . /etc/environment
-
-# Add JAVA_HOME to PATH
+ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
-# Copy application files
+# Copy the rest of the application files
 COPY . .
 
-# Expose the port FastAPI will run on
+# Expose the FastAPI port
 EXPOSE 8000
 
-# Start the FastAPI app
+# Set the default command
 CMD ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
