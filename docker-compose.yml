@@ -2,10 +2,7 @@ version: '3.8'
 
 services:
   api:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
-    image: ${FULL_IMAGE_PATH}  # Use the variable from CI
+    image: ${FULL_IMAGE_PATH:-git.ecdf.ed.ac.uk:5050/sdol2425/duncan-proctor/sports_project/backend:latest}
     ports:
       - "8000:8000"
     depends_on:
