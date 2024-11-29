@@ -547,14 +547,14 @@ With an emphasis on parameters like speed, distance, tiredness, and recovery, th
 Endpoints Overview
 The endpoints are providing:
 
-Team Statistics: Provides metrics such as total distance and average speed.
-Game Statistics: Fetches win/loss/draw data.
-Team Metrics: Analyzes recovery rates and distance metrics.
-Player Overview: Offers player-specific insights, including fatigue and recovery rates.
-Fatigue Distribution: Aggregates fatigue levels for tactical decision-making.
-Recommendations: Summarizes personalized and team-wide recommendations.
+1. **Team Statistics**: Provides metrics such as total distance and average speed.
+2. **Game Statistics**: Fetches win/loss/draw data.
+3. **Team Metrics**: Analyzes recovery rates and distance metrics.
+4. **Player Overview**: Offers player-specific insights, including fatigue and recovery rates.
+5. **Fatigue Distribution**: Aggregates fatigue levels for tactical decision-making.
+6. **Recommendations**: Summarizes personalized and team-wide recommendations.
 
-Structure of the Repository
+## Structure of the historical data
 
 sports_project/
 │
@@ -576,11 +576,11 @@ sports_project/
 └── README.md (this documentation)
 
 
-Important Directories and Files:
+## Important Directories and Files:
 data/historical/devices/: Contains GPS, speed, and heart rate historical data files.
 utils/: Provides math functions like haversine_distance. get_historical_data.py: Specifies the  logic and API routes for analytics.
 
-Calculations and Metrics
+## Calculations and Metrics
 1. Team Distance computes the average and total distances that each player runs during a game.
 C_team_distance() is the corresponding function.
 2. Team Speeds Uses vector computations to determine the average and maximum team speeds.
@@ -603,10 +603,10 @@ Copy code
 curl http://127.0.0.1:8000/team-statistics
 
 
-Inspiration from Research
+## Inspiration from Research
 This repository integrates findings from the study Heart Rate Dynamics and Quantifying Physical Fatigue in Canadian Football (Zafar et al., 2024) to enhance its analysis and recommendation system. Key insights adapted include:
 
-References
+## References
 This repository leverages concepts and methodologies discussed in the following research paper:
 
 Zafar, A., Guay, S., Vinet, S.-A., Pilon, F., Martens, G., Prince, F., & De Beaumont, L.
