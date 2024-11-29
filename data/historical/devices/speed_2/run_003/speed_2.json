@@ -1,0 +1,48 @@
+
+[
+    {
+        "device_name": "speed_3",
+        "schema": {
+            "speed_x": 5.17,
+            "speed_y": 0.67,
+            "speed_z": 6.9,
+            "timestamp": "20241021T18:22:45"
+        }
+    },
+    {
+        "device_name": "speed_3",
+        "schema": {
+            "speed_x": 5.45,
+            "speed_y": 3.04,
+            "speed_z": 3.86,
+            "timestamp": "20241021T18:22:45.500000"
+        }
+    },
+    {
+        "device_name": "speed_3",
+        "schema": {
+            "speed_x": 8.98,
+            "speed_y": 5.08,
+            "speed_z": 9.28,
+            "timestamp": "20241021T18:22:46"
+        }
+    },
+    {
+        "device_name": "speed_3",
+        "schema": {
+            "speed_x": 1.24,
+            "speed_y": 6.77,
+            "speed_z": 4.02,
+            "timestamp": "20241021T18:22:46.500000"
+        }
+    },
+    {
+        "device_name": "speed_3",
+        "schema": {
+            "speed_x": 6.89,
+            "speed_y": 6.29,
+            "speed_z": 6.16,
+            "timestamp": "20241021T18:22:47"
+        }
+    }
+]
