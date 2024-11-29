@@ -544,6 +544,16 @@ await main_get_speed_test()
 Historical data and folder structure
 With an emphasis on parameters like speed, distance, tiredness, and recovery, this repository offers APIs for managing and analyzing player and team performance data. Real-time insights and suggestions are made possible by its architecture for sports analytics applications.
 
+Endpoints Overview
+The endpoints are providing:
+
+Team Statistics: Provides metrics such as total distance and average speed.
+Game Statistics: Fetches win/loss/draw data.
+Team Metrics: Analyzes recovery rates and distance metrics.
+Player Overview: Offers player-specific insights, including fatigue and recovery rates.
+Fatigue Distribution: Aggregates fatigue levels for tactical decision-making.
+Recommendations: Summarizes personalized and team-wide recommendations.
+
 Structure of the Repository
 
 sports_project/
@@ -590,4 +600,27 @@ Access endpoints via a browser or Postman.
 Example request:
 bash
 Copy code
-curl http://127.0.0.1:8000/team-statistics```
+curl http://127.0.0.1:8000/team-statistics
+
+
+Inspiration from Research
+This repository integrates findings from the study Heart Rate Dynamics and Quantifying Physical Fatigue in Canadian Football (Zafar et al., 2024) to enhance its analysis and recommendation system. Key insights adapted include:
+
+References
+This repository leverages concepts and methodologies discussed in the following research paper:
+
+Zafar, A., Guay, S., Vinet, S.-A., Pilon, F., Martens, G., Prince, F., & De Beaumont, L.
+Heart Rate Dynamics and Quantifying Physical Fatigue in Canadian Football.
+Applied Sciences, 2024, 14(5340).
+DOI: 10.3390/app14125340
+Key concepts from this research—such as HRmax, HRRpk, and CVC—have been incorporated into the calculations and recommendations provided by the API to enhance its accuracy and applicability for real-time fatigue monitoring and performance analysis.
+
+
+
+
+
+
+
+
+
+```
