@@ -534,6 +534,61 @@ async def main_get_speed_test():
     # Run all tasks concurrently
     await asyncio.gather(*test_tasks)
 
+
+### Historical data analytics and game data structure
+
+Historical data and folder structure
+With an emphasis on parameters like speed, distance, tiredness, and recovery, this repository offers APIs for managing and analyzing player and team performance data. Real-time insights and suggestions are made possible by its architecture for sports analytics applications.
+
+Structure of the Repository
+
+sports_project/
+│
+├── data/
+│   └── historical/
+│       └── devices/
+│           ├── gps_<player_id>/
+│           ├── speed_<player_id>/
+│           └── player_heart_rate_<player_id>/
+│
+├── utils/
+│   ├── maths_functions.py
+│   └── __init__.py
+│
+├── backend
+├── api/
+│   └── get_historical_data.py (this file)
+│
+└── README.md (this documentation)
+
+
+Important Directories and Files:
+data/historical/devices/: Contains GPS, speed, and heart rate historical data files.
+utils/: Provides math functions like haversine_distance. get_historical_data.py: Specifies the  logic and API routes for analytics.
+
+Calculations and Metrics
+1. Team Distance computes the average and total distances that each player runs during a game.
+C_team_distance() is the corresponding function.
+2. Team Speeds Uses vector computations to determine the average and maximum team speeds.
+The team_speeds() is the corresponding function.
+3. Recovery of Heart Rate
+examines each player's and team's average recovery rate.
+Heart_rate_recovery() is the corresponding function.
+4. tiredness Levels Assesses tiredness patterns by looking at declining performance indicators.
+Calculate_fatigue_levels() is the corresponding function.
+5. Analysis of Injuries
+combines injury information from past documents.
+Function: injuries()
+
+Usage:
+Start the server.
+Access endpoints via a browser or Postman.
+Example request:
+bash
+Copy code
+curl http://127.0.0.1:8000/team-statistics
+
+
 # Run the main_get_speed_test function
 await main_get_speed_test()
 ```
