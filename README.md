@@ -535,6 +535,10 @@ async def main_get_speed_test():
     await asyncio.gather(*test_tasks)
 
 
+# Run the main_get_speed_test function
+await main_get_speed_test()
+
+
 ### Historical data analytics and game data structure
 
 Historical data and folder structure
@@ -586,9 +590,4 @@ Access endpoints via a browser or Postman.
 Example request:
 bash
 Copy code
-curl http://127.0.0.1:8000/team-statistics
-
-
-# Run the main_get_speed_test function
-await main_get_speed_test()
-```
+curl http://127.0.0.1:8000/team-statistics```
