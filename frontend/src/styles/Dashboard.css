@@ -1,0 +1,87 @@
+.dashboard {
+    margin-left: 250px; /* Offset for the sidebar */
+    padding: 24px;
+    background-color: #ffffff;
+  }
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .dashboard-layout {
+    display: grid;
+    grid-template-columns: 3fr 1fr; /* Main area + Metrics cards */
+    grid-template-rows: auto auto; /* Rows for team stats, player overview, etc. */
+    gap: 24px;
+  }
+  
+  .container {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 0px;
+  }
+  
+  .team-statistics {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+  
+  .metrics-section {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+  
+  .player-overview {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+  
+  .injury-risk {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+  
+  /* Start Live Stream Button */
+.button {
+    position: relative;
+    margin-left: auto; /* Push the button to the far right in flex layout */
+    margin-right: 16px; /* Adds some spacing from the right edge */
+    padding: 8px 16px; /* Adjusted padding for better spacing */
+    width: 160px; /* Fixed width as per wireframe */
+    height: 36px; /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter", sans-serif; /* Use Inter font as per wireframe */
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 500; /* Slightly bold */
+    color: #ffffff; /* White text */
+    background: #636ae8; /* Primary purple color */
+    border: none; /* Remove any border */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+/* Button Hover */
+.button:hover {
+    background: #4850e4; /* Slightly darker purple on hover */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+/* Button Active (Pressed State) */
+.button:active {
+    background: #2c35e0; /* Even darker purple when clicked */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+}
+
+/* Button Disabled */
+.button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed; /* Show not-allowed cursor when disabled */
+}

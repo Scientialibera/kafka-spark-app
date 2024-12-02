@@ -1,0 +1,114 @@
+.player-overview-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    background: #ffffff;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    height: 503px;
+    overflow: hidden;
+  }
+  
+  .player-overview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .player-overview-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #171a1f;
+  }
+  
+  .view-all-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: #636ae8;
+    text-decoration: none;
+  }
+  
+  .view-all-link:hover {
+    text-decoration: underline;
+  }
+  
+  .player-table {
+    flex-grow: 1;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    overflow: auto;
+  }
+  
+  .player-table th,
+  .player-table td {
+    text-align: left;
+    padding: 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .player-table th {
+    font-weight: 700;
+    color: #565d6d;
+  }
+  
+  .player-table td {
+    font-weight: 400;
+    color: #171a1f;
+  }
+  
+  .fatigue-badge {
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+  }
+
+  .fatigue-badge.moderate {
+    background: #fbbf24; /* Yellow */
+  }
+  
+  .fatigue-badge.low {
+    background: #34d399; /* Green */
+  }
+  
+  .fatigue-badge.high {
+    background: #ef4444; /* Red */
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #565d6d;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .pagination-controls button {
+    background: #f3f4f6;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .pagination-controls button.active {
+    background: #636ae8;
+    color: #ffffff;
+  }
+  
+  .pagination-controls button:hover {
+    background: #ced0f8;
+  }
+  
