@@ -12,12 +12,13 @@ from utils.file_management import (
     device_exists,
     validate_schema_not_empty
 )
+from backend.config.config import SCHEMA_DATA_PATH
 
 router = APIRouter()
 
 
 # Set the path where schemas will be saved
-SCHEMA_SAVE_PATH = os.path.join("data", "device_schemas")  # Join with data/device_schemas path
+SCHEMA_SAVE_PATH = SCHEMA_DATA_PATH  # Join with data/device_schemas path
 
 REGISTER_DEVICE_ENDPOINT: str = "/register-device"
 UPDATE_DEVICE_ENDPOINT: str = "/update-device"

@@ -14,6 +14,7 @@ from utils.spark_processor import (
 from utils.file_management import kafka_topic_name
 from utils.maths_functions import calculate_speed_from_messages, calculate_acceleration_from_messages
 from .kafka_topics import get_topic_messages
+from backend.config.config import SCHEMA_DATA_PATH
 
 router = APIRouter()
 
@@ -22,7 +23,7 @@ GET_INSTANT_SPEED_ACCEL_ENDPOINT: str = "/get-speed/{device_id}/{run_id}"
 START_STREAM_ENDPOINT: str = "/start-stream/{device_id}/{run_id}"
 ALARM_ENDPOINT: str = "/get-notification/{device_id}/{run_id}"
 
-DEVICE_SCHEMA_PATH: str = "data/device_schemas"
+DEVICE_SCHEMA_PATH: str = SCHEMA_DATA_PATH
 
 
 @router.post(START_STREAM_ENDPOINT)

@@ -1,18 +1,14 @@
 import json
 import os
 import datetime
-from utils.maths_functions import haversine_distance
 import math
 from datetime import datetime
 from fastapi import APIRouter, HTTPException
 
+from backend.config.config import HISTORICAL_DATA_PATH
+from utils.maths_functions import haversine_distance
+
 router = APIRouter()
-
-
-# Set the path relative to one folder above the current script's directory
-# Navigate two levels up to reach 'sports_project-main'
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Move up one level
-HISTORICAL_DATA_PATH = os.path.join(BASE_DIR, "data", "historical", "devices")  # Correct relative path
 
 # Endpoint 1: Team Statistics (Line Chart)
 @router.get("/team-statistics")

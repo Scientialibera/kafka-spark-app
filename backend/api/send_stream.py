@@ -12,11 +12,11 @@ from utils.file_management import (
     validate_data
 )
 
-from backend.config.config import HISTORICAL_DATA_PATH
+from backend.config.config import HISTORICAL_DATA_PATH, SCHEMA_DATA_PATH
 router = APIRouter()
 
 # Constants
-SCHEMA_SAVE_PATH: str = os.path.join("data", "device_schemas")
+SCHEMA_SAVE_PATH: str = SCHEMA_DATA_PATH
 ENDPOINT_WEBSOCKET: str = "/send-stream/{device_id}/{run_id}"
 
 

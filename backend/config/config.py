@@ -24,4 +24,5 @@ MAX_WORKERS = int(os.getenv("MAX_WORKERS", 16))
 
 SPARK_APP_NAME = os.getenv("SPARK_APP_NAME", "Kafka Streaming Stats")
 
-HISTORICAL_DATA_PATH = os.getenv("HISTORICAL_DATA_PATH", "data/historical/devices")
+HISTORICAL_DATA_PATH = os.getenv("HISTORICAL_DATA_PATH", "backend/data/historical/devices")
+SCHEMA_DATA_PATH = os.getenv("HISTORICAL_DATA_PATH", "backend/data/device_schemas")

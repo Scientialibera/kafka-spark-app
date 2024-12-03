@@ -6,11 +6,11 @@ from confluent_kafka.admin import AdminClient
 
 from utils.file_management import device_exists, kafka_topic_name
 from utils.kafka_producer import get_kafka_messages
-from backend.config.config import KAFKA_BROKER_URL
+from backend.config.config import KAFKA_BROKER_URL, SCHEMA_DATA_PATH
 
 router = APIRouter()
 
-SCHEMA_SAVE_PATH: str = os.path.join("data", "device_schemas")
+SCHEMA_SAVE_PATH: str = SCHEMA_DATA_PATH
 
 GET_TOPIC_MESSAGES_ENDPOINT: str = "/get-topic-messages/{device_id}/{run_id}"
 DELETE_TOPIC_ENDPOINT: str = "/delete-topic/{device_id}/{run_id}"
