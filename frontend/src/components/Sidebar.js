@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import "../styles/Sidebar.css";
 
 // Import icons
@@ -12,6 +13,8 @@ import DevicesIcon from "../icons/devices.png";
 import NotificationsIcon from "../icons/notifications.png";
 
 const Sidebar = () => {
+  const location = useLocation(); // Get the current route
+
   return (
     <div className="sidebar">
       {/* Logo Section */}
@@ -25,34 +28,69 @@ const Sidebar = () => {
 
       {/* Menu Section */}
       <div className="menu">
-        <div className="menu-item selected">
+        <Link
+          to="/"
+          className={`menu-item ${location.pathname === "/" ? "selected" : ""}`}
+        >
           <img src={DashboardIcon} alt="Dashboard" className="menu-icon" />
           Dashboard
-        </div>
-        <div className="menu-item">
+        </Link>
+        <Link
+          to="/players"
+          className={`menu-item ${
+            location.pathname === "/players" ? "selected" : ""
+          }`}
+        >
           <img src={PlayersIcon} alt="Players" className="menu-icon" />
           Players
-        </div>
-        <div className="menu-item">
+        </Link>
+        <Link
+          to="/team"
+          className={`menu-item ${location.pathname === "/team" ? "selected" : ""}`}
+        >
           <img src={TeamIcon} alt="Team" className="menu-icon" />
           Team
-        </div>
-        <div className="menu-item">
+        </Link>
+        <Link
+          to="/live-data"
+          className={`menu-item ${
+            location.pathname === "/live-data" ? "selected" : ""
+          }`}
+        >
           <img src={LiveDataIcon} alt="Live Data" className="menu-icon" />
           Live Data
-        </div>
-        <div className="menu-item">
+        </Link>
+        <Link
+          to="/reports"
+          className={`menu-item ${
+            location.pathname === "/reports" ? "selected" : ""
+          }`}
+        >
           <img src={ReportsIcon} alt="Reports" className="menu-icon" />
           Reports
-        </div>
-        <div className="menu-item">
+        </Link>
+        <Link
+          to="/devices"
+          className={`menu-item ${
+            location.pathname === "/devices" ? "selected" : ""
+          }`}
+        >
           <img src={DevicesIcon} alt="Devices" className="menu-icon" />
           Devices
-        </div>
-        <div className="menu-item">
-          <img src={NotificationsIcon} alt="Notifications" className="menu-icon" />
+        </Link>
+        <Link
+          to="/notifications"
+          className={`menu-item ${
+            location.pathname === "/notifications" ? "selected" : ""
+          }`}
+        >
+          <img
+            src={NotificationsIcon}
+            alt="Notifications"
+            className="menu-icon"
+          />
           Notifications <span className="badge">9</span>
-        </div>
+        </Link>
       </div>
 
       {/* User Info Section */}
