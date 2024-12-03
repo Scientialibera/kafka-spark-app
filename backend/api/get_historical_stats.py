@@ -109,8 +109,6 @@ def get_recommendations():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-HISTORICAL_DATA_PATH = R"C:\Users\KonstantinosKyrtsoni\Downloads\sports_project-main\sports_project\data\historical\devices"
-
 def calculate_metrics():
     """
 
