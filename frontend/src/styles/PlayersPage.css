@@ -219,6 +219,8 @@
   margin-top: 20px;
   height: 280px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .players-page .health-info h3 {
@@ -235,12 +237,13 @@
   border-collapse: collapse;
   font-family: "Inter", sans-serif;
   margin-bottom: auto;
-  flex: 1;
+  table-layout: fixed;
+  flex: none;
 }
 
 .players-page .health-info table th {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: #565d6d;
   text-align: left;
   padding: 10px;
@@ -253,6 +256,7 @@
   text-align: left;
   padding: 10px;
   border-bottom: 1px solid #f3f4f6;
+  font-weight: 400;
 }
 
 /* Health summary section */
@@ -416,22 +420,25 @@
   align-items: center;
   font-size: 14px;
   color: #565d6d;
-  margin-top: 20px; /* Add spacing above pagination */
+  margin-top: 20px;
+  padding: 10px; /* Add padding for better spacing */
 }
 
 .players-page .pagination-controls {
   display: flex;
   gap: 8px;
+  align-items: center;
 }
 
 .players-page .pagination-controls button {
   background: #f3f4f6;
   border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Add smooth transitions */
 }
 
 .players-page .pagination-controls button.active {
@@ -441,9 +448,43 @@
 
 .players-page .pagination-controls button:hover {
   background: #ced0f8;
+  transform: translateY(-2px); /* Add a slight lift effect on hover */
+}
+
+.players-page .pagination-controls button.disabled {
+  background: #e0e0e0;
+  cursor: not-allowed;
+  color: #a0a0a0;
 }
 
 .players-page .pagination span {
   font-family: "Inter", sans-serif;
   font-weight: 500;
+  margin: 0 10px;
 }
+
+.players-page .fatigue-badge {
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.players-page .fatigue-badge.moderate {
+  background: #fbbf24; /* Yellow */
+}
+
+.players-page .fatigue-badge.low {
+  background: #34d399; /* Green */
+}
+
+.players-page .fatigue-badge.high {
+  background: #e8618c; /* Red */
+}
+
+.players-page .health-info th:nth-child(1) {
+  width: 100px;
+}
+

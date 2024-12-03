@@ -1,89 +1,143 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/PlayerOverview.css";
 
-const players = [
+const ITEMS_PER_PAGE = 7; // Number of items per page for pagination
+
+const games = [
   {
-    name: "Player A",
-    heartRate: 78,
+    game: 1,
+    heartRateRecovery: 78,
     injuries: 2,
-    lastRecommendation: "Avoid high-impact movements",
-    fatigueLevel: "Moderate",
+    bestPlayerRecommendation: "Player 5: Good heart rate recovery",
+    worstPlayerRecommendation: "Player 2: To train more",
   },
   {
-    name: "Player B",
-    heartRate: 85,
-    injuries: 0,
-    lastRecommendation: "Focus on endurance training",
-    fatigueLevel: "Low",
-  },
-  {
-    name: "Player C",
-    heartRate: 95,
+    game: 2,
+    heartRateRecovery: 85,
     injuries: 1,
-    lastRecommendation: "Increase rest",
-    fatigueLevel: "High",
+    bestPlayerRecommendation: "Player 3: Improved endurance",
+    worstPlayerRecommendation: "Player 4: Needs better recovery",
   },
   {
-    name: "Player D",
-    heartRate: 72,
-    injuries: 0,
-    lastRecommendation: "Continue regular training",
-    fatigueLevel: "Low",
-  },
-  {
-    name: "Player E",
-    heartRate: 102,
+    game: 3,
+    heartRateRecovery: 95,
     injuries: 3,
-    lastRecommendation: "Physio session recommended",
-    fatigueLevel: "Moderate",
+    bestPlayerRecommendation: "Player 1: Consistent performance",
+    worstPlayerRecommendation: "Player 6: High fatigue observed",
+  },
+  {
+    game: 4,
+    heartRateRecovery: 72,
+    injuries: 0,
+    bestPlayerRecommendation: "Player 7: Maintains stable stats",
+    worstPlayerRecommendation: "Player 8: Needs strength training",
+  },
+  {
+    game: 5,
+    heartRateRecovery: 102,
+    injuries: 4,
+    bestPlayerRecommendation: "Player 9: Quick recovery post-game",
+    worstPlayerRecommendation: "Player 10: Lacks endurance",
+  },
+  {
+    game: 6,
+    heartRateRecovery: 78,
+    injuries: 0,
+    bestPlayerRecommendation: "Player 9: Best performance",
+    worstPlayerRecommendation: "Player 10: Lacks stretching",
+  },
+  {
+    game: 7,
+    heartRateRecovery: 78,
+    injuries: 0,
+    bestPlayerRecommendation: "Player 9: Best performance",
+    worstPlayerRecommendation: "Player 10: Lacks stretching",
+  },
+  {
+    game: 8,
+    heartRateRecovery: 78,
+    injuries: 0,
+    bestPlayerRecommendation: "Player 9: Best performance",
+    worstPlayerRecommendation: "Player 10: Lacks stretching",
+  },
+  {
+    game: 9,
+    heartRateRecovery: 78,
+    injuries: 0,
+    bestPlayerRecommendation: "Player 9: Best performance",
+    worstPlayerRecommendation: "Player 10: Lacks stretching",
   },
 ];
 
 const PlayerOverview = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(games.length / ITEMS_PER_PAGE);
+
+  const displayedGames = games.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
   return (
     <div className="player-overview-container">
       <div className="player-overview-header">
-        <h2>Player Overview</h2>
-        <a href="#" className="view-all-link">
-          View all
-        </a>
+        <h2>Overview</h2>
       </div>
       <table className="player-table">
         <thead>
           <tr>
-            <th>Player</th>
-            <th>Heart Rate</th>
+            <th>Game</th>
+            <th>Heart Rate Recovery</th>
             <th>Injuries</th>
-            <th>Last Recommendation</th>
-            <th>Fatigue Level</th>
+            <th>Best Player Recommendation</th>
+            <th>Worst Player Recommendation</th>
           </tr>
         </thead>
         <tbody>
-          {players.map((player, index) => (
+          {displayedGames.map((game, index) => (
             <tr key={index}>
-              <td>{player.name}</td>
-              <td>{player.heartRate}</td>
-              <td>{player.injuries}</td>
-              <td>{player.lastRecommendation}</td>
-              <td>
-                <span className={`fatigue-badge ${player.fatigueLevel.toLowerCase()}`}>
-                  {player.fatigueLevel}
-                </span>
-              </td>
+              <td>{game.game}</td>
+              <td>{game.heartRateRecovery}</td>
+              <td>{game.injuries}</td>
+              <td>{game.bestPlayerRecommendation}</td>
+              <td>{game.worstPlayerRecommendation}</td>
             </tr>
           ))}
         </tbody>
       </table>
       <div className="pagination">
-        <span>1 - 10 of 145</span>
+        <button
+          className={`pagination-btn ${currentPage === 1 ? "disabled" : ""}`}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
         <div className="pagination-controls">
-          <button>{"<"}</button>
-          <button className="active">1</button>
-          <button>2</button>
-          <button>...</button>
-          <button>11</button>
-          <button>{">"}</button>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              className={`pagination-btn ${currentPage === index + 1 ? "active" : ""}`}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
+        <button
+          className={`pagination-btn ${currentPage === totalPages ? "disabled" : ""}`}
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

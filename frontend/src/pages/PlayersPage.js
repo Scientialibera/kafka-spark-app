@@ -32,48 +32,41 @@ const PlayersPage = () => {
         averageRecoveryTime: "4 bpm/s",
         maxHeartRate: "142 bpm",
       },
-      injuries: [
+      games: [
         {
-          date: "2024-11-05",
-          type: "Muscle Strain",
-          severity: "High",
+          game: "1",
+          heartRateRecovery: "78 BPM",
+          fatigueLevel: "High",
           recommendation: "Increase lower body stretching",
           actionTaken: false,
         },
         {
-          date: "2024-10-15",
-          type: "Concussion",
-          severity: "Low",
+          game: "2",
+          heartRateRecovery: "85 BPM",
+          fatigueLevel: "Moderate",
           recommendation: "Light training only",
           actionTaken: true,
         },
         {
-          date: "2024-09-22",
-          type: "Ankle Sprain",
-          severity: "Moderate",
+          game: "3",
+          heartRateRecovery: "95 BPM",
+          fatigueLevel: "Low",
           recommendation: "Attend physiotherapy session",
           actionTaken: false,
         },
         {
-          date: "2024-08-10",
-          type: "Back Pain",
-          severity: "Low",
+          game: "4",
+          heartRateRecovery: "72 BPM",
+          fatigueLevel: "Moderate",
           recommendation: "Stretch regularly",
           actionTaken: true,
         },
         {
-          date: "2024-07-15",
-          type: "Shoulder Strain",
-          severity: "Moderate",
+          game: "5",
+          heartRateRecovery: "102 BPM",
+          fatigueLevel: "High",
           recommendation: "Reduce overhead lifting",
           actionTaken: false,
-        },
-        {
-          date: "2024-06-20",
-          type: "Hamstring Pull",
-          severity: "High",
-          recommendation: "Focus on physiotherapy sessions",
-          actionTaken: true,
         },
       ],
     },
@@ -96,18 +89,18 @@ const PlayersPage = () => {
         averageRecoveryTime: "3 bpm/s",
         maxHeartRate: "128 bpm",
       },
-      injuries: [
+      games: [
         {
-          date: "2024-09-12",
-          type: "Knee Injury",
-          severity: "Moderate",
-          recommendation: "Avoid heavy squats",
-          actionTaken: true,
+          game: "5",
+          heartRateRecovery: "102 BPM",
+          fatigueLevel: "High",
+          recommendation: "Reduce overhead lifting",
+          actionTaken: false,
         },
         {
-          date: "2024-08-10",
-          type: "Back Pain",
-          severity: "Low",
+          game: "4",
+          heartRateRecovery: "72 BPM",
+          fatigueLevel: "Moderate",
           recommendation: "Stretch regularly",
           actionTaken: true,
         },
@@ -139,12 +132,12 @@ const PlayersPage = () => {
     temperature: TemperatureIcon,
   };
 
-  const displayedInjuries = selectedPlayer.injuries.slice(
+  const displayedGames = selectedPlayer.games.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  const totalPages = Math.ceil(selectedPlayer.injuries.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(selectedPlayer.games.length / ITEMS_PER_PAGE);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -302,33 +295,69 @@ const PlayersPage = () => {
           <table>
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Injury Type</th>
-                <th>Severity</th>
+                <th>Game</th>
+                <th>Heart Rate Recovery</th>
+                <th>Fatigue Level</th>
                 <th>Recommendation</th>
                 <th>Action Taken?</th>
               </tr>
             </thead>
             <tbody>
-              {displayedInjuries.map((injury, index) => (
+              {displayedGames.map((game, index) => (
                 <tr key={index}>
-                  <td>{injury.date}</td>
-                  <td>{injury.type}</td>
-                  <td>{injury.severity}</td>
-                  <td>{injury.recommendation}</td>
+                  <td>{game.game}</td>
+                  <td>{game.heartRateRecovery}</td>
                   <td>
-                    <input type="checkbox" checked={injury.actionTaken} readOnly />
+                    <span className={`fatigue-badge ${game.fatigueLevel.toLowerCase()}`}>
+                      {game.fatigueLevel}
+                    </span>
+                  </td>
+                  <td>{game.recommendation}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      className="action-taken-checkbox"
+                      checked={game.actionTaken}
+                      onChange={() => {
+                        const updatedGames = [...selectedPlayer.games];
+                        updatedGames[(currentPage - 1) * ITEMS_PER_PAGE + index].actionTaken = !game.actionTaken;
+                        setSelectedPlayer({
+                          ...selectedPlayer,
+                          games: updatedGames,
+                        });
+                      }}
+                    />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
           <div className="pagination">
-            <button onClick={() => handlePageChange(currentPage - 1)}>Previous</button>
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
-            <button onClick={() => handlePageChange(currentPage + 1)}>Next</button>
+            <button
+              className={`pagination-btn ${currentPage === 1 ? "disabled" : ""}`}
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <div className="pagination-controls">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  className={`pagination-btn ${currentPage === index + 1 ? "active" : ""}`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+            <button
+              className={`pagination-btn ${currentPage === totalPages ? "disabled" : ""}`}
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>
