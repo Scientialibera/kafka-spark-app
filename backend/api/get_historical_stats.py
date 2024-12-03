@@ -1,7 +1,7 @@
 import json
 import os
 import datetime
-from sports_project.utils.maths_functions import haversine_distance
+from utils.maths_functions import haversine_distance
 import math
 from datetime import datetime
 from fastapi import APIRouter, HTTPException
