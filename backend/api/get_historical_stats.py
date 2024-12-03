@@ -1,7 +1,7 @@
 import json
 import os
 import datetime
-from sports_project.utils.maths_functions import haversine_distance
+from utils.maths_functions import haversine_distance
 import math
 from datetime import datetime
 from fastapi import APIRouter, HTTPException
@@ -9,9 +9,10 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter()
 
 
-# Set the path relative to the current script's directory
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current script
-HISTORICAL_DATA_PATH = os.path.join(BASE_DIR, "data", "historical", "devices")  # Relative path to the data directory
+# Set the path relative to one folder above the current script's directory
+# Navigate two levels up to reach 'sports_project-main'
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Move up one level
+HISTORICAL_DATA_PATH = os.path.join(BASE_DIR, "data", "historical", "devices")  # Correct relative path
 
 # Endpoint 1: Team Statistics (Line Chart)
 @router.get("/team-statistics")
@@ -109,7 +110,6 @@ def get_recommendations():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-HISTORICAL_DATA_PATH = R"C:\Users\KonstantinosKyrtsoni\Downloads\sports_project-main\sports_project\data\historical\devices"
 
 def calculate_metrics():
     """
