@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Line } from "react-chartjs-2"; // Import the Line chart component
-import "../styles/PlayersPage.css";
+import "../styles/TeamPage.css";
 import Sidebar from "../components/Sidebar";
 
 // Import metric icons
@@ -11,105 +11,59 @@ import TemperatureIcon from "../icons/temperature.png";
 
 const ITEMS_PER_PAGE = 3; // Number of items per page for pagination
 
-const PlayersPage = () => {
-  const players = [
-    {
-      id: "player-a",
-      name: "John Doe",
-      age: 20,
-      team: "Team A",
-      position: "Midfielder",
-      fatigueLevel: "High",
-      metrics: {
-        heartRate: "142 BPM",
-        speed: "24 KM/H",
-        acceleration: "0.8 M/S",
-        temperature: "37.2 °C",
-      },
-      heartbeatData: [72, 85, 78, 90, 95, 100],
-      overallMetrics: {
-        averageHeartRate: "78 bpm",
-        averageRecoveryTime: "4 bpm/s",
-        maxHeartRate: "142 bpm",
-      },
-      games: [
-        {
-          game: "1",
-          heartRateRecovery: "78 BPM",
-          fatigueLevel: "High",
-          recommendation: "Increase lower body stretching",
-        },
-        {
-          game: "2",
-          heartRateRecovery: "85 BPM",
-          fatigueLevel: "Moderate",
-          recommendation: "Light training only",
-        },
-        {
-          game: "3",
-          heartRateRecovery: "95 BPM",
-          fatigueLevel: "Low",
-          recommendation: "Attend physiotherapy session",
-        },
-        {
-          game: "4",
-          heartRateRecovery: "72 BPM",
-          fatigueLevel: "Moderate",
-          recommendation: "Stretch regularly",
-        },
-        {
-          game: "5",
-          heartRateRecovery: "102 BPM",
-          fatigueLevel: "High",
-          recommendation: "Reduce overhead lifting",
-        },
-      ],
+const TeamPage = () => {
+  const team = {
+    name: "Team A",
+    manager: "John Doe",
+    coach: "Peter Smith",
+    totalPlayers: 21,
+    seasonRecord: "5-2-3",
+    leagueRank: "#2 in League",
+    metrics: {
+      heartRate: "142 BPM",
+      speed: "24 KM/H",
+      acceleration: "0.8 M/S",
+      temperature: "37.2 °C",
     },
-    {
-      id: "player-b",
-      name: "Jane Smith",
-      age: 23,
-      team: "Team B",
-      position: "Defender",
-      fatigueLevel: "Low",
-      metrics: {
-        heartRate: "128 BPM",
-        speed: "22 KM/H",
-        acceleration: "0.6 M/S",
-        temperature: "36.8 °C",
-      },
-      heartbeatData: [65, 70, 68, 72, 75, 78],
-      overallMetrics: {
-        averageHeartRate: "72 bpm",
-        averageRecoveryTime: "3 bpm/s",
-        maxHeartRate: "128 bpm",
-      },
-      games: [
-        {
-          game: "5",
-          heartRateRecovery: "102 BPM",
-          fatigueLevel: "High",
-          recommendation: "Reduce overhead lifting",
-        },
-        {
-          game: "4",
-          heartRateRecovery: "72 BPM",
-          fatigueLevel: "Moderate",
-          recommendation: "Stretch regularly",
-        },
-      ],
+    heartbeatData: [72, 85, 78, 90, 95, 100],
+    overallMetrics: {
+      averageHeartRate: "78 bpm",
+      averageRecoveryTime: "4 bpm/s",
+      maxHeartRate: "142 bpm",
     },
-  ];
-
-  const [selectedPlayer, setSelectedPlayer] = useState(players[0]);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const handlePlayerChange = (event) => {
-    const selectedId = event.target.value;
-    const player = players.find((p) => p.id === selectedId);
-    setSelectedPlayer(player);
-    setCurrentPage(1); // Reset to the first page when changing the player
+    games: [
+      {
+        game: "1",
+        totalDistance: "64 km",
+        avgHeartRateRecovery: "78 bpm/s",
+        percentageFit: "60%",
+        teamRecommendation: "Increase lower body stretching",
+      },
+      {
+        game: "2",
+        totalDistance: "72 km",
+        avgHeartRateRecovery: "70 bpm/s",
+        percentageFit: "70%",
+        teamRecommendation: "Light training only",
+      },
+      {
+        game: "3",
+        totalDistance: "50 km",
+        avgHeartRateRecovery: "85 bpm/s",
+        percentageFit: "40%",
+        teamRecommendation: "Attend physiotherapy session",
+      },
+      {
+        game: "4",
+        totalDistance: "58 km",
+        avgHeartRateRecovery: "69 bpm/s",
+        percentageFit: "65%",
+        teamRecommendation: "Stretch regularly",
+      },
+    ],
   };
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   const metricTitles = {
     heartRate: "Heart Rate",
@@ -125,12 +79,12 @@ const PlayersPage = () => {
     temperature: TemperatureIcon,
   };
 
-  const displayedGames = selectedPlayer.games.slice(
+  const displayedGames = team.games.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  const totalPages = Math.ceil(selectedPlayer.games.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(team.games.length / ITEMS_PER_PAGE);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -143,7 +97,7 @@ const PlayersPage = () => {
     datasets: [
       {
         label: "Average Heartbeat per Minute",
-        data: selectedPlayer.heartbeatData,
+        data: team.heartbeatData,
         borderColor: "#636ae8",
         backgroundColor: "rgba(99, 106, 232, 0.1)",
         pointBackgroundColor: "#636ae8",
@@ -178,50 +132,31 @@ const PlayersPage = () => {
   };
 
   return (
-    <div className="players-page">
+    <div className="team-page">
       <Sidebar />
       <div className="page-content">
-        <div className="header">
-          <select
-            className="player-dropdown"
-            onChange={handlePlayerChange}
-            value={selectedPlayer.id}
-          >
-            {players.map((player) => (
-              <option key={player.id} value={player.id}>
-                {player.name}
-              </option>
-            ))}
-          </select>
+        <div className="team-header">
           <button className="button">Start Live Stream</button>
         </div>
 
-        <div className="player-section">
-          <div className="container player-info">
-            <img
-              src="https://via.placeholder.com/133"
-              alt={selectedPlayer.name}
-              className="player-avatar"
-            />
-            <div className="player-details">
-              <h2>{selectedPlayer.name}</h2>
-              <p>
-                {selectedPlayer.position} | {selectedPlayer.age} years |{" "}
-                {selectedPlayer.team}
-              </p>
-              <span
-                className={`badge ${selectedPlayer.fatigueLevel.toLowerCase()}-fatigue`}
-              >
-                {selectedPlayer.fatigueLevel} Fatigue
-              </span>
+        <div className="team-section">
+          <div className="container team-info">
+            <img src="https://via.placeholder.com/133" className="team-avatar" alt="Team Avatar" />
+            <div className="team-details">
+              <h2>{team.name}</h2>
+              <p><strong>Manager:</strong> {team.manager}</p>
+              <p><strong>Coach:</strong> {team.coach}</p>
+              <p><strong>Players:</strong> {team.totalPlayers}</p>
+              <p><strong>Season Record:</strong> {team.seasonRecord}</p>
+              <p><strong>League Rank:</strong> {team.leagueRank}</p>
             </div>
           </div>
 
           <div className="action-buttons">
-            <button className="button grey">Edit Player Information</button>
-            <button className="button grey">Add Injury Record</button>
+            <button className="button grey">Edit Team Information</button>
+            <button className="button grey">View Players</button>
             <button className="button grey">Assign Training Recommendation</button>
-            <button className="button primary">Download Full Player Data</button>
+            <button className="button primary">Download Full Team Data</button>
           </div>
         </div>
 
@@ -229,7 +164,7 @@ const PlayersPage = () => {
           <div className="live-metrics-container">
             <h3 className="live-metrics-title">Live Metrics</h3>
             <div className="live-metrics">
-              {Object.entries(selectedPlayer.metrics).map(([key, value]) => (
+              {Object.entries(team.metrics).map(([key, value]) => (
                 <div key={key} className="metric-box">
                   <div className={`metric-icon ${key.toLowerCase()}-icon`}>
                     <img src={metricIcons[key]} alt={`${key} icon`} className="icon" />
@@ -256,9 +191,7 @@ const PlayersPage = () => {
             <div className="rectangle green"></div>
             <div className="text-container">
               <p className="summary-title">Overall Average Heart Rate</p>
-              <p className="summary-value">
-                {selectedPlayer.overallMetrics.averageHeartRate}
-              </p>
+              <p className="summary-value">{team.overallMetrics.averageHeartRate}</p>
             </div>
           </div>
 
@@ -266,9 +199,7 @@ const PlayersPage = () => {
             <div className="rectangle yellow"></div>
             <div className="text-container">
               <p className="summary-title">Overall Average Recovery Time</p>
-              <p className="summary-value">
-                {selectedPlayer.overallMetrics.averageRecoveryTime}
-              </p>
+              <p className="summary-value">{team.overallMetrics.averageRecoveryTime}</p>
             </div>
           </div>
 
@@ -276,9 +207,7 @@ const PlayersPage = () => {
             <div className="rectangle red"></div>
             <div className="text-container">
               <p className="summary-title">Overall Maximum Heart Rate</p>
-              <p className="summary-value">
-                {selectedPlayer.overallMetrics.maxHeartRate}
-              </p>
+              <p className="summary-value">{team.overallMetrics.maxHeartRate}</p>
             </div>
           </div>
         </div>
@@ -289,9 +218,10 @@ const PlayersPage = () => {
             <thead>
               <tr>
                 <th>Game</th>
+                <th>Total Distance</th>
                 <th>Heart Rate Recovery</th>
-                <th>Fatigue Level</th>
-                <th>Recommendation</th>
+                <th>% Players Fit</th>
+                <th>Team Recommendation</th>
                 <th>Action Taken?</th>
               </tr>
             </thead>
@@ -299,25 +229,20 @@ const PlayersPage = () => {
               {displayedGames.map((game, index) => (
                 <tr key={index}>
                   <td>{game.game}</td>
-                  <td>{game.heartRateRecovery}</td>
-                  <td>
-                    <span className={`fatigue-badge ${game.fatigueLevel.toLowerCase()}`}>
-                      {game.fatigueLevel}
-                    </span>
-                  </td>
-                  <td>{game.recommendation}</td>
+                  <td>{game.totalDistance}</td>
+                  <td>{game.avgHeartRateRecovery}</td>
+                  <td>{game.percentageFit}</td>
+                  <td>{game.teamRecommendation}</td>
                   <td>
                     <input
                       type="checkbox"
                       className="action-taken-checkbox"
                       checked={game.actionTaken}
                       onChange={() => {
-                        const updatedGames = [...selectedPlayer.games];
-                        updatedGames[(currentPage - 1) * ITEMS_PER_PAGE + index].actionTaken = !game.actionTaken;
-                        setSelectedPlayer({
-                          ...selectedPlayer,
-                          games: updatedGames,
-                        });
+                        const updatedGames = [...team.games];
+                        updatedGames[
+                          (currentPage - 1) * ITEMS_PER_PAGE + index
+                        ].actionTaken = !game.actionTaken;
                       }}
                     />
                   </td>
@@ -358,4 +283,4 @@ const PlayersPage = () => {
   );
 };
 
-export default PlayersPage;
+export default TeamPage;
