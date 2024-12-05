@@ -11,11 +11,12 @@ services:
   kafka:
     image: confluentinc/cp-kafka:latest
     ports:
-      - "9092:9092"
+      - "9092:9092"  # Maps Kafka's internal port to the host
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092  # Important: internal Docker hostname
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092  # Listen on all interfaces
     depends_on:
       - zookeeper
     networks:
