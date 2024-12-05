@@ -222,17 +222,11 @@ async def get_notification(device_id: str, run_id: str, window: int = 1, table_p
                         latest_row = data[0]
                         current_timestamp = latest_row.get("timestamp")
 
-                        # Check if the current timestamp is newer than the last processed timestamp
+                        # Only yield if the current timestamp is newer than the last processed timestamp
                         if last_processed_timestamp is None or current_timestamp > last_processed_timestamp:
                             # Update the last processed timestamp
                             last_processed_timestamp = current_timestamp
                             # Yield the latest data as an SSE message
-                            yield {
-                                "event": "update",
-                                "data": {"device_id": f"{device_id}_{run_id}", "updates": [latest_row]}
-                            }
-                        else:
-                            # If there's no new data, yield the last known value to keep the connection alive
                             yield {
                                 "event": "update",
                                 "data": {"device_id": f"{device_id}_{run_id}", "updates": [latest_row]}
@@ -250,4 +244,3 @@ async def get_notification(device_id: str, run_id: str, window: int = 1, table_p
 
     # Return the event stream response
     return EventSourceResponse(event_generator())
-

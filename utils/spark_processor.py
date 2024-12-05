@@ -10,9 +10,9 @@ from pyspark.sql.functions import col, from_json
 from pyspark.sql.types import StructField, StructType,  FloatType, IntegerType, StringType
 
 from utils.file_management import device_exists, kafka_topic_name
-from backend.config.config import MAX_WORKERS, SPARK_APP_NAME, SPARK_MASTER_URL, KAFKA_BROKER_URL, HADOOP_URL
+from backend.config.config import MAX_WORKERS, SPARK_APP_NAME, SPARK_MASTER_URL, KAFKA_BROKER_URL, SCHEMA_DATA_PATH
 
-DEVICE_SCHEMA_PATH = "data/device_schemas"
+DEVICE_SCHEMA_PATH = SCHEMA_DATA_PATH
 
 # Create a ThreadPoolExecutor for concurrent Spark jobs
 executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
