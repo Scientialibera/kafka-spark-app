@@ -9,7 +9,8 @@ from utils.spark_processor import (
     get_latest_stats,
     check_if_session_exists,
     get_aggregated_stats,
-    initialize_streaming
+    initialize_streaming,
+    get_spark_session
 )
 from utils.file_management import kafka_topic_name
 from utils.maths_functions import calculate_speed_from_messages, calculate_acceleration_from_messages
@@ -196,9 +197,7 @@ async def get_notification(device_id: str, run_id: str, window: int = 1, table_p
 
     async def event_generator():
         try:
-            spark = check_if_session_exists()
-            if spark is None:
-                raise HTTPException(status_code=400, detail="Spark session not available")
+            spark = get_spark_session()
 
             # Variable to keep track of the last processed timestamp
             last_processed_timestamp = None
