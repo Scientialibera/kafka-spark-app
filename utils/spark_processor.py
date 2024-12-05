@@ -44,13 +44,11 @@ def convert_schema_to_structtype(schema_fields):
     return StructType(struct_fields)
 
 
-def get_spark_session(session_name="Kafka Streaming Stats"):
-    """Create or get an existing Spark session."""
-    spark = check_if_session_exists()  # Check if a session exists
-    if not spark:  # If no session exists, create a new one
+def get_spark_session(app_name="Kafka Streaming Stats", master_url=SPARK_MASTER_URL):
+    try:
         spark = SparkSession.builder \
-            .appName(session_name) \
-            .master(SPARK_MASTER_URL) \
+            .appName(app_name) \
+            .master(master_url) \
             .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
             .config("spark.sql.warehouse.dir", "/tmp/spark-warehouse") \
             .config("spark.sql.catalogImplementation", "in-memory") \
@@ -58,7 +56,11 @@ def get_spark_session(session_name="Kafka Streaming Stats"):
             .config("spark.driver.host", "0.0.0.0") \
             .config("spark.driver.bindAddress", "0.0.0.0") \
             .getOrCreate()
-    return spark
+        print("Spark session created successfully.")
+        return spark
+    except Exception as e:
+        print("Failed to create Spark session:", e)
+        raise
 
 
 def read_kafka_stream(spark, kafka_topic: str, offset: str = "latest"):
