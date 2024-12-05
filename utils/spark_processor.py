@@ -51,6 +51,10 @@ def get_spark_session(app_name="Kafka Streaming Stats", master_url=SPARK_MASTER_
             .master(master_url) \
             .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
             .config("spark.sql.warehouse.dir", "/tmp/spark-warehouse") \
+            .config("spark.sql.catalogImplementation", "in-memory") \
+            .config("spark.local.dir", "/tmp/spark-temp") \
+            .config("spark.driver.host", "0.0.0.0") \
+            .config("spark.driver.bindAddress", "0.0.0.0") \
             .config("spark.kafka.bootstrap.servers", KAFKA_BROKER_URL) \
             .getOrCreate()
         print("Spark session created successfully.")
