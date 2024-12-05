@@ -55,6 +55,8 @@ def get_spark_session(session_name="Kafka Streaming Stats"):
             .config("spark.sql.warehouse.dir", "/tmp/spark-warehouse") \
             .config("spark.sql.catalogImplementation", "in-memory") \
             .config("spark.local.dir", "/tmp/spark-temp") \
+            .config("spark.driver.host", "0.0.0.0") \
+            .config("spark.driver.bindAddress", "0.0.0.0") \
             .getOrCreate()
     return spark
 
