@@ -11,14 +11,14 @@ def is_running_in_docker():
 
 # Set KAFKA_BROKER_URL based on environment
 if is_running_in_docker():
-    KAFKA_BROKER_URL = os.getenv("KAFKA_BROKER_URL", "kafka:9092")
-    SPARK_MASTER_URL = os.getenv("SPARK_MASTER_URL", "spark://spark-master:7077")
-    HADOOP_URL = os.getenv("HADOOP_URL", "hdfs://hadoop:9000")
-    
+    KAFKA_BROKER_URL = os.getenv("KAFKA_BROKER_URL", "kafka:9092")  # Use Docker hostname
+    SPARK_MASTER_URL = os.getenv("SPARK_MASTER_URL", "spark://spark-master:7077")  # Use Docker hostname
+    HADOOP_URL = os.getenv("HADOOP_URL", "hdfs://hadoop:9000")  # Consistent with the others
 else:
-    KAFKA_BROKER_URL = os.getenv("KAFKA_BROKER_URL", "localhost:9092")
-    SPARK_MASTER_URL = os.getenv("SPARK_MASTER_URL", "local[*]")
-    HADOOP_URL = os.getenv("HADOOP_URL", "hdfs://localhost:9000")
+    KAFKA_BROKER_URL = os.getenv("KAFKA_BROKER_URL", "localhost:9092")  # Local setup
+    SPARK_MASTER_URL = os.getenv("SPARK_MASTER_URL", "local[*]")  # Local setup
+    HADOOP_URL = os.getenv("HADOOP_URL", "hdfs://localhost:9000")  # Local setup
+
 
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", 16))
 
