@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     procps \
     default-jdk \
     iputils-ping \
-    netcat \
+    netcat-openbsd \
     nano && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
