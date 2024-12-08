@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import PlayersPage from "./pages/PlayersPage";
 import TeamPage from "./pages/TeamPage";
+import LiveDataPage from "./pages/LiveDataPage";
 import "./App.css";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/players" element={<PlayersPage />} />
             <Route path="/team" element={<TeamPage />} />
+            <Route path="/live-data" element={<LiveDataPage />} />
           </Routes>
         </div>
       </Router>

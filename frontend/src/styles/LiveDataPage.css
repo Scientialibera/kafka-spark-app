@@ -1,0 +1,29 @@
+.live-data-page {
+    display: flex;
+    height: 100vh;
+    background-color: #ffffff;
+  }
+  
+  .live-data-page .page-content {
+    margin-left: 250px; /* Matches sidebar width */
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .live-data-page .page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #171a1f;
+    margin-bottom: 20px;
+  }
+  
+  .live-data-page .live-data-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
