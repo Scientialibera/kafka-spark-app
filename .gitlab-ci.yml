@@ -10,18 +10,17 @@ variables:
 before_script:
   - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
 
-build_services:
+build_backend:
   stage: build
   tags:
     - docker
   script:
-    # Build all services with a `build` section in docker-compose.yml
-    - docker-compose build
+    - docker build -t $FULL_IMAGE_PATH -f backend/Dockerfile .
 
-push_services:
+push_backend:
   stage: push
   tags:
     - docker
   script:
-    # Push all built images to the registry
-    - docker-compose push
+    - docker push $FULL_IMAGE_PATH
+

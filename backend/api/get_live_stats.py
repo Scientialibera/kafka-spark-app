@@ -9,20 +9,23 @@ from utils.spark_processor import (
     get_latest_stats,
     check_if_session_exists,
     get_aggregated_stats,
-    initialize_streaming
+    initialize_streaming,
+    get_spark_session
 )
 from utils.file_management import kafka_topic_name
 from utils.maths_functions import calculate_speed_from_messages, calculate_acceleration_from_messages
 from .kafka_topics import get_topic_messages
+from backend.config.config import SCHEMA_DATA_PATH
 
 router = APIRouter()
 
 GET_STATS_ENDPOINT: str = "/get-stats/{device_id}/{run_id}"
 GET_INSTANT_SPEED_ACCEL_ENDPOINT: str = "/get-speed/{device_id}/{run_id}"
 START_STREAM_ENDPOINT: str = "/start-stream/{device_id}/{run_id}"
+END_STREAM_ENDPOINT: str = "/stop-stream/{device_id}/{run_id}"
 ALARM_ENDPOINT: str = "/get-notification/{device_id}/{run_id}"
 
-DEVICE_SCHEMA_PATH: str = "data/device_schemas"
+DEVICE_SCHEMA_PATH: str = SCHEMA_DATA_PATH
 
 
 @router.post(START_STREAM_ENDPOINT)
@@ -195,9 +198,7 @@ async def get_notification(device_id: str, run_id: str, window: int = 1, table_p
 
     async def event_generator():
         try:
-            spark = check_if_session_exists()
-            if spark is None:
-                raise HTTPException(status_code=400, detail="Spark session not available")
+            spark = get_spark_session()
 
             # Variable to keep track of the last processed timestamp
             last_processed_timestamp = None
@@ -221,17 +222,11 @@ async def get_notification(device_id: str, run_id: str, window: int = 1, table_p
                         latest_row = data[0]
                         current_timestamp = latest_row.get("timestamp")
 
-                        # Check if the current timestamp is newer than the last processed timestamp
+                        # Only yield if the current timestamp is newer than the last processed timestamp
                         if last_processed_timestamp is None or current_timestamp > last_processed_timestamp:
                             # Update the last processed timestamp
                             last_processed_timestamp = current_timestamp
                             # Yield the latest data as an SSE message
-                            yield {
-                                "event": "update",
-                                "data": {"device_id": f"{device_id}_{run_id}", "updates": [latest_row]}
-                            }
-                        else:
-                            # If there's no new data, yield the last known value to keep the connection alive
                             yield {
                                 "event": "update",
                                 "data": {"device_id": f"{device_id}_{run_id}", "updates": [latest_row]}
@@ -250,3 +245,41 @@ async def get_notification(device_id: str, run_id: str, window: int = 1, table_p
     # Return the event stream response
     return EventSourceResponse(event_generator())
 
+
+@router.post(END_STREAM_ENDPOINT)
+async def stop_stream(device_id: str, run_id: str) -> Dict[str, str]:
+    """
+    Endpoint to stop the streaming job for a device and run.
+
+    Args:
+        device_id (str): ID of the device.
+        run_id (str): ID of the run.
+
+    Returns:
+        Dict[str, str]: A message indicating whether the streaming was stopped or not found.
+    """
+    try:
+        spark = check_if_session_exists()
+        if not spark:
+            raise HTTPException(status_code=404, detail="No active Spark session found.")
+
+        # Create Kafka topic name from device_id and run_id
+        kafka_topic = kafka_topic_name(device_id, run_id)
+
+        # Check if the streaming query exists for this Kafka topic
+        active_queries = [q for q in spark.streams.active if q.name == kafka_topic]
+
+        if not active_queries:
+            return {"message": f"No active streaming job found for device {device_id} and run {run_id}."}
+
+        # Stop all matching queries
+        for query in active_queries:
+            query.stop()
+            query.awaitTermination()
+
+        return {"message": f"Streaming stopped for device {device_id} and run {run_id}."}
+
+    except HTTPException as http_ex:
+        raise http_ex
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to stop streaming: {str(e)}")

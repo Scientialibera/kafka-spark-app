@@ -10,9 +10,9 @@ from pyspark.sql.functions import col, from_json
 from pyspark.sql.types import StructField, StructType,  FloatType, IntegerType, StringType
 
 from utils.file_management import device_exists, kafka_topic_name
-from backend.config.config import MAX_WORKERS, SPARK_APP_NAME, SPARK_MASTER_URL, KAFKA_BROKER_URL, HADOOP_URL
+from backend.config.config import MAX_WORKERS, SPARK_APP_NAME, SPARK_MASTER_URL, KAFKA_BROKER_URL, SCHEMA_DATA_PATH
 
-DEVICE_SCHEMA_PATH = "data/device_schemas"
+DEVICE_SCHEMA_PATH = SCHEMA_DATA_PATH
 
 # Create a ThreadPoolExecutor for concurrent Spark jobs
 executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
@@ -44,19 +44,18 @@ def convert_schema_to_structtype(schema_fields):
     return StructType(struct_fields)
 
 
-def get_spark_session(session_name="Kafka Streaming Stats"):
-    """Create or get an existing Spark session."""
-    spark = check_if_session_exists()  # Check if a session exists
-    if not spark:  # If no session exists, create a new one
+def get_spark_session(app_name="Kafka Streaming Stats", master_url=SPARK_MASTER_URL):
+    try:
         spark = SparkSession.builder \
-            .appName(session_name) \
-            .master(SPARK_MASTER_URL) \
+            .appName(app_name) \
+            .master(master_url) \
             .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
-            .config("spark.sql.warehouse.dir", "/tmp/spark-warehouse") \
-            .config("spark.sql.catalogImplementation", "in-memory") \
-            .config("spark.local.dir", "/tmp/spark-temp") \
             .getOrCreate()
-    return spark
+        print("Spark session created successfully.")
+        return spark
+    except Exception as e:
+        print("Failed to create Spark session:", e)
+        raise
 
 
 def read_kafka_stream(spark, kafka_topic: str, offset: str = "latest"):

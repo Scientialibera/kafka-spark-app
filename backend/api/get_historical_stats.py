@@ -5,13 +5,10 @@ from utils.maths_functions import haversine_distance
 import math
 from datetime import datetime
 from fastapi import APIRouter, HTTPException
+from backend.config.config import HISTORICAL_DATA_PATH
+from utils.maths_functions import haversine_distance
 
 router = APIRouter()
-
-
-# Set the path relative to the current script's directory
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current script
-HISTORICAL_DATA_PATH = os.path.join(BASE_DIR, "data", "historical", "devices")  # Relative path to the data directory
 
 # Endpoint 1: Team Statistics (Line Chart)
 @router.get("/team-statistics")
@@ -108,6 +105,8 @@ def get_recommendations():
         return metrics["Recommendations"]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+HISTORICAL_DATA_PATH = R"C:\Users\KonstantinosKyrtsoni\Downloads\sports_project-main\sports_project\data\historical\devices"
 
 def calculate_metrics():
     """

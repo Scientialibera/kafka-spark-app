@@ -3,7 +3,7 @@
 Sports Prophet is a full-stack application designed to analyze soccer match data in real-time and ad-hoc. It ingests sensor streams from devices into Kafka topics and uses Spark for real-time aggregation or direct querying for on-demand data. Users can also manage sensor schemas through the API.
 
 
-### Key Directories and Files
+### Key Directories & Files
 
 1. **backend**: Contains the API implementation using FastAPI, Kafka integration, and Spark processing logic.
    - **api**: Holds individual API route files (`get_live_stats.py`, `register_device.py`, etc.).

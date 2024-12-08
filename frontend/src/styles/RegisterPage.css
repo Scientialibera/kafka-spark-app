@@ -1,0 +1,61 @@
+.register-page {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+    font-family: "Inter", sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  .register-card {
+    width: 50%;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .register-card h2 {
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+  }
+  
+  .register-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #636ae8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .register-button:hover {
+    background-color: #4850e4;
+  }
+  
+  .terms {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .register-info {
+    width: 40%;
+    padding: 40px;
+    background-color: #eef1f7;
+    border-radius: 12px;
+  }
+  
