@@ -44,7 +44,9 @@ Below is a breakdown of each service and instructions to manage them.
 
 1. **Start Services**: 
    ```
-   docker-compose up --build
+   docker-compose pull
+   docker-compose build api
+   docker-compose up -d
    ```
    This command launches all services in detached mode.
 
