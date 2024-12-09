@@ -1,37 +1,22 @@
 [
     {
-        "device_name": "player_heart_rate_9",
-        "schema": {
-            "heart_rate": 99,
-            "timestamp": "2024-10-21T18:22:45"
-        }
+        "heart_rate": 99,
+        "timestamp": "2024-10-21T18:22:45"
     },
     {
-        "device_name": "player_heart_rate_9",
-        "schema": {
-            "heart_rate": 85,
-            "timestamp": "2024-10-21T18:22:45.500000"
-        }
+        "heart_rate": 85,
+        "timestamp": "2024-10-21T18:22:45.500000"
     },
     {
-        "device_name": "player_heart_rate_9",
-        "schema": {
-            "heart_rate": 87,
-            "timestamp": "2024-10-21T18:22:46"
-        }
+        "heart_rate": 87,
+        "timestamp": "2024-10-21T18:22:46"
     },
     {
-        "device_name": "player_heart_rate_9",
-        "schema": {
-            "heart_rate": 175,
-            "timestamp": "2024-10-21T18:22:46.500000"
-        }
+        "heart_rate": 175,
+        "timestamp": "2024-10-21T18:22:46.500000"
     },
     {
-        "device_name": "player_heart_rate_9",
-        "schema": {
-            "heart_rate": 97,
-            "timestamp": "2024-10-21T18:22:47"
-        }
+        "heart_rate": 97,
+        "timestamp": "2024-10-21T18:22:47"
     }
 ]
