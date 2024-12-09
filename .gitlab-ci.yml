@@ -27,10 +27,11 @@ deploy_services:
     - docker
   script:
     - |
-      if (-Not (docker network inspect $NETWORK_NAME -ErrorAction SilentlyContinue)) {
-        docker network create $NETWORK_NAME
-      }
-    - docker-compose -f docker-compose.yml up -d
+      # Check if the Docker network exists, and create it if it doesn't
+      if ! docker network inspect "$NETWORK_NAME" >/dev/null 2>&1; then
+        docker network create "$NETWORK_NAME"
+      fi
+    - docker-compose -f $DOCKER_COMPOSE_FILE up -d
 
 test_api:
   stage: test
@@ -42,7 +43,7 @@ test_api:
     # Test the API health
     - curl --retry 5 --retry-delay 5 --retry-connrefused -s http://localhost:8000/health || exit 1
   after_script:
-    - docker-compose -f docker-compose.yml down
+    - docker-compose -f $DOCKER_COMPOSE_FILE down
     - docker network rm $NETWORK_NAME || true
 
 push_backend:
