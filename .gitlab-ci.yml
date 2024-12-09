@@ -2,6 +2,7 @@ stages:
   - build
   - deploy
   - test
+  - deploy_to_runner
   - push
 
 variables:
@@ -43,8 +44,21 @@ test_api:
     # Test the API health
     - curl --retry 5 --retry-delay 5 --retry-connrefused -s http://localhost:8000/health || exit 1
   after_script:
-    - docker-compose -f $DOCKER_COMPOSE_FILE down
+    - docker compose -f $DOCKER_COMPOSE_FILE down
     - docker network rm $NETWORK_NAME || true
+
+deploy_to_runner:
+  stage: deploy_to_runner
+  tags:
+    - docker
+  script:
+    - |
+      # Deploy services permanently to the runner machine
+      if ! docker network inspect "$NETWORK_NAME" >/dev/null 2>&1; then
+        docker network create "$NETWORK_NAME"
+      fi
+    - docker compose -f $DOCKER_COMPOSE_FILE up -d
+    - echo "Services deployed permanently on the runner machine."
 
 push_backend:
   stage: push
