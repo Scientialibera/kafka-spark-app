@@ -616,13 +616,3 @@ Heart Rate Dynamics and Quantifying Physical Fatigue in Canadian Football.
 Applied Sciences, 2024, 14(5340).
 DOI: 10.3390/app14125340
 Key concepts from this research—such as HRmax, HRRpk, and CVC—have been incorporated into the calculations and recommendations provided by the API to enhance its accuracy and applicability for real-time fatigue monitoring and performance analysis.
-
-
-
-
-
-
-
-
-
-```
