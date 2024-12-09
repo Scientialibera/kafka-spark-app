@@ -31,7 +31,7 @@ deploy_services:
       if ! docker network inspect "$NETWORK_NAME" >/dev/null 2>&1; then
         docker network create "$NETWORK_NAME"
       fi
-    - docker-compose -f $DOCKER_COMPOSE_FILE up -d
+    - docker compose -f $DOCKER_COMPOSE_FILE up -d
 
 test_api:
   stage: test
