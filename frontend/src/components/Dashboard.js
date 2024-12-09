@@ -1,7 +1,7 @@
 import React from "react";
 import MetricsCards from "./MetricsCards";
 import FatigueLevelDistribution from "./FatigueLevelDistribution";
-import TeamStatistics from "./TeamStatistics";
+import TeamStatistics from "./TeamStatisticsWithBackend";
 import PlayerOverview from "./PlayerOverview";
 import "../styles/Dashboard.css";
 

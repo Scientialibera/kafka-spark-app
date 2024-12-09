@@ -29,8 +29,8 @@ const Sidebar = () => {
       {/* Menu Section */}
       <div className="menu">
         <Link
-          to="/"
-          className={`menu-item ${location.pathname === "/" ? "selected" : ""}`}
+          to="/dashboard"
+          className={`menu-item ${location.pathname === "/dashboard" ? "selected" : ""}`}
         >
           <img src={DashboardIcon} alt="Dashboard" className="menu-icon" />
           Dashboard
