@@ -9,6 +9,7 @@ variables:
   IMAGE_TAG: "latest"
   FULL_IMAGE_PATH: "$DOCKER_IMAGE:$IMAGE_TAG"
   NETWORK_NAME: "ci_pipeline_network"
+  DOCKER_COMPOSE_FILE: "docker-compose.yml"
 
 before_script:
   - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
@@ -25,10 +26,11 @@ deploy_services:
   tags:
     - docker
   script:
-    - docker network create $NETWORK_NAME || true
+    - |
+      if (-Not (docker network inspect $NETWORK_NAME -ErrorAction SilentlyContinue)) {
+        docker network create $NETWORK_NAME
+      }
     - docker-compose -f docker-compose.yml up -d
-  except:
-    - tags  # Prevents deployment when running in the context of tags
 
 test_api:
   stage: test
