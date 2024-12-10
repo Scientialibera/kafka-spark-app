@@ -1,0 +1,83 @@
+.fatigue-level-container {
+    background: #ffffff;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    width: auto; /* Matches the wireframe 328px */
+    height: 503px; /* Matches the wireframe 503px*/
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #323743;
+    margin-bottom: 16px;
+  }
+  
+  .chart-container {
+    height: 200px; /* Adjust to fit the container */
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .chart-legend {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #565d6d;
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Increase spacing between legend items */
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .legend-color {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  
+  .legend-label {
+    flex: 1;
+    color: #171a1f;
+    font-weight: 600;
+  }
+  
+  .legend-value {
+    color: #171a1f;
+    font-weight: 500;
+  }
+  
+  .legend-percentage {
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 12px;
+    text-align: center;
+  }
+  
+  .legend-percentage.low-bg {
+    color: #636ae8;
+    background-color: rgba(99, 106, 232, 0.1);
+  }
+  
+  .legend-percentage.moderate-bg {
+    color: #e8618c;
+    background-color: rgba(232, 97, 140, 0.1);
+  }
+  
+  .legend-percentage.high-bg {
+    color: #adb5bd;
+    background-color: rgba(173, 181, 189, 0.1);
+  }
+  

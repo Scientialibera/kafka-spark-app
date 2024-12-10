@@ -1,0 +1,114 @@
+.player-overview-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    background: #ffffff;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    height: 503px;
+    overflow: hidden;
+  }
+  
+  .player-overview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .player-overview-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #171a1f;
+  }
+  
+  .player-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: auto; /* Pushes the table content to take available space */
+    table-layout: fixed; /* Ensures cells take equal width */
+    flex: none; /* Prevent table from growing */
+  }
+  
+
+  .player-table th,
+  .player-table td {
+    text-align: left;
+    padding: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .player-table th {
+    font-weight: 700;
+    color: #565d6d;
+    font-size: 14px;
+  }
+  
+  .player-table td {
+    font-weight: 400;
+    color: #171a1f;
+  }
+   
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #565d6d;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .pagination-controls button {
+    background: #f3f4f6;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .pagination-controls button.active {
+    background: #636ae8;
+    color: #ffffff;
+  }
+  
+  .pagination-controls button:hover {
+    background: #ced0f8;
+  }
+  
+  .player-table th:nth-child(2), /* Heart Rate Recovery */
+.player-table td:nth-child(2) {
+    width: 60px; 
+    text-align: center;
+}
+
+.player-table th:nth-child(3), /* No. of Injuries */
+.player-table td:nth-child(3) {
+    width: 60px;
+    text-align: center;
+}
+
+.player-table th:nth-child(4), /* Best Player Recommendation */
+.player-table td:nth-child(4) {
+    text-align: left;
+}
+
+.player-table th:nth-child(5), /* Worst Player Recommendation */
+.player-table td:nth-child(5) {
+    text-align: left;
+}
+
+.player-table th:nth-child(1) {
+  width: 40px;
+}
+
+/* Hover Effect */
+.player-table tr:hover {
+  background-color: #f9fafb;
+}

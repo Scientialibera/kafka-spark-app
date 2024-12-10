@@ -6,6 +6,8 @@ from backend.api.get_historical_stats import router as get_historical_stats_rout
 from backend.api.kafka_topics import router as kafka_topics_router
 from backend.tests.streaming.stream import router as test_streaming_router
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 
 # Include all routers
@@ -16,6 +18,14 @@ app.include_router(get_historical_stats_router)
 app.include_router(kafka_topics_router)
 app.include_router(test_streaming_router)
 
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Change this to your frontend domain in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def read_root():

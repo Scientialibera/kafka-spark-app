@@ -1,0 +1,415 @@
+/* Root container for TeamPage */
+.team-page {
+    display: flex;
+    height: 100vh;
+    background-color: #ffffff;
+  }
+  
+  /* Content area excluding the sidebar */
+  .team-page .page-content {
+    margin-left: 250px; /* Matches sidebar width */
+    padding: 20px;
+    flex: 1;
+  }
+  
+ 
+  /* Team Information section */
+  .team-page .team-info {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 1px rgba(23, 26, 31, 0.12), 0px 0px 2px rgba(23, 26, 31, 0.12);
+    margin-bottom: 20px;
+    width: 500px;
+    height: 200px;
+    position: relative;
+    margin-top: -30px
+  }
+  
+  /* Team avatar styling */
+  .team-page .team-avatar {
+    width: 133px;
+    height: 133px;
+    border-radius: 50%;
+    background-color: #f8cedb;
+    margin-left: 20px;
+    flex-shrink: 0;
+    position: absolute;
+    left: 20px;
+    top: 40px;
+    border: none;
+    object-fit: cover;
+  }
+  
+  /* Team details next to avatar */
+  .team-page .team-details {
+    margin-left: 200px; /* Ensures text is placed next to avatar */
+    font-family: "Inter", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .team-page .team-details h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    color: #171a1f;
+    margin-bottom: 20px;
+  }
+  
+  .team-page .team-details p {
+    font-size: 14px;
+    color: #565d6d;
+    margin: 4px 0;
+  }
+    
+  /* Container for Live Metrics and Heartbeat Chart */
+  .team-page .metrics-chart-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px; /* Add spacing between metrics and chart */
+    margin-top: 20px;
+    display: flex;
+  }
+  
+  /* Live Metrics Section */
+  .team-page .live-metrics-container {
+    flex: 1;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0px 0px 1px rgba(23, 26, 31, 0.12), 0px 0px 2px rgba(23, 26, 31, 0.12);
+    padding: 20px;
+    height: 312px;
+  }
+  
+  .team-page .live-metrics-title {
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    margin-top: 10px;
+  }
+  
+  .team-page .live-metrics {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .team-page .metric-box {
+    text-align: center;
+    flex: 1;
+    margin-top: 50px;
+  }
+  
+  .team-page .metric-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 10px auto;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+  }
+  
+  .team-page .metric-info h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  .team-page .metric-info p {
+    font-size: 14px;
+    margin: 4px 0 0 0;
+    color: #565d6d;
+  }
+  
+  .team-page .heartRate-icon {
+    background: #e8e7ff;
+  }
+  
+  .team-page .speed-icon {
+    background: #ffe6e6;
+  }
+  
+  .team-page .acceleration-icon {
+    background: #e6f4ff;
+  }
+  
+  .team-page .temperature-icon {
+    background: #fff4e6;
+  }
+  
+  /* Heartbeat Chart */
+  .team-page .heartbeat-chart-container {
+    flex: 1;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0px 0px 1px rgba(23, 26, 31, 0.12), 0px 0px 2px rgba(23, 26, 31, 0.12);
+    padding: 20px;
+  }
+  
+  /* Health information table */
+  .team-page .health-info {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #f3f4f6;
+    box-shadow: 0px 2px 5px rgba(23, 26, 31, 0.1), 0px 0px 2px rgba(23, 26, 31, 0.12);
+    padding: 20px;
+    margin-top: 20px;
+    height: 300px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .team-page .health-info h3 {
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #171a1f;
+  }
+  
+  /* Table styling */
+  .team-page .health-info table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Inter", sans-serif;
+    margin-bottom: auto;
+    table-layout: fixed;
+    flex: none;
+  }
+  
+  .team-page .health-info table th {
+    font-size: 14px;
+    font-weight: 700;
+    color: #565d6d;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .team-page .health-info table td {
+    font-size: 14px;
+    color: #323743;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #f3f4f6;
+    font-weight: 400;
+  }
+  
+  /* Health summary section */
+  .team-page .health-summary {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* Checkbox Styling */
+  .team-page .health-info table input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Hover Effect */
+  .team-page .health-info table tr:hover {
+    background-color: #f9fafb;
+  }
+  
+  .team-page .team-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  /* Container for action buttons */
+  .team-page .action-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two buttons per row */
+    gap: 20px; /* Space between buttons */
+    align-items: center;
+    justify-content: center;
+    margin-top: 45px;
+    width: 550px; /* Set consistent width for the buttons container */
+  }
+  
+  /* Individual button styling */
+  .team-page .action-buttons .button {
+    padding: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #636ae8;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    min-width: 250px; /* Ensures buttons are of equal width */
+  }
+  
+  .team-page .action-buttons .button:hover {
+    background-color: #4850e4;
+  }
+  
+  .team-page .action-buttons .button.grey {
+    background-color: #dcdcdc;
+    color: #565d6d;
+  }
+  
+  .team-page .action-buttons .button.grey:hover {
+    background-color: #c0c0c0;
+  }
+  
+  /* Example for a primary button */
+  .team-page .action-buttons .button.primary {
+    background-color: #636ae8;
+    color: white;
+  }
+  
+  .team-page .action-buttons .button.primary:hover {
+    background-color: #4850e4;
+  }
+  
+  .team-page .metric-icon .icon {
+    width: 30px; /* Adjust icon size */
+    height: 30px;
+  }
+  
+  .team-page .chart-wrapper {
+    width: 100%;
+    height: 250px; /* Adjust chart height */
+    display: flex;
+  }
+  
+  /* Performance Summary Section */
+  .performance-summary {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px; /* Space between the cards */
+    width: calc(100% - 20px); /* Stretch to match the width of the chart */
+    margin-top: 20px;
+    position: relative;
+  }
+  
+  /* Individual Performance Card */
+  .team-page .performance-card {
+    position: relative;
+    width: 326px;
+    height: 114px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #f3f4f6;
+    box-shadow: 0px 2px 5px rgba(23, 26, 31, 0.1), 0px 0px 2px rgba(23, 26, 31, 0.12);
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+  }
+  
+  /* Rectangle on the left */
+  .team-page .rectangle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    border-radius: 4px 0px 0px 4px;
+  }
+  
+  .team-page .rectangle.green {
+    background-color: #22ccb2;
+  }
+  
+  .team-page .rectangle.yellow {
+    background-color: #ffa500;
+  }
+  
+  .team-page .rectangle.red {
+    background-color: #e8618c;
+  }
+  
+  /* Text Container inside the Card */
+  .team-page .text-container {
+    margin-left: 32px;
+  }
+  
+  .team-page .summary-title {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 400;
+    color: #323743;
+    margin: 0;
+  }
+  
+  .team-page .summary-value {
+    font-family: "Archivo", sans-serif;
+    font-size: 24px;
+    line-height: 36px;
+    font-weight: 600;
+    color: #171a1f;
+    margin: 0;
+  }
+  
+  .team-page .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #565d6d;
+    margin-top: 20px;
+    padding: 10px; /* Add padding for better spacing */
+  }
+  
+  .team-page .pagination-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .team-page .pagination-controls button {
+    background: #f3f4f6;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Add smooth transitions */
+  }
+  
+  .team-page .pagination-controls button.active {
+    background: #636ae8;
+    color: #ffffff;
+  }
+  
+  .team-page .pagination-controls button:hover {
+    background: #ced0f8;
+    transform: translateY(-2px); /* Add a slight lift effect on hover */
+  }
+  
+  .team-page .pagination-controls button.disabled {
+    background: #e0e0e0;
+    cursor: not-allowed;
+    color: #a0a0a0;
+  }
+  
+  .team-page .pagination span {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    margin: 0 10px;
+  }
+  
+  
+  .team-page .health-info th:nth-child(1) {
+    width: 100px;
+  }
+  
+  
