@@ -1,10 +1,10 @@
 import json
 import os
 import datetime
-from utils.maths_functions import haversine_distance
 import math
 from datetime import datetime
 from fastapi import APIRouter, HTTPException
+
 from backend.config.config import HISTORICAL_DATA_PATH
 from utils.maths_functions import haversine_distance
 
@@ -105,7 +105,6 @@ def get_recommendations():
         return metrics["Recommendations"]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 
 def calculate_metrics():
