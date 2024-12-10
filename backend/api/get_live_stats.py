@@ -24,6 +24,7 @@ GET_INSTANT_SPEED_ACCEL_ENDPOINT: str = "/get-speed/{device_id}/{run_id}"
 START_STREAM_ENDPOINT: str = "/start-stream/{device_id}/{run_id}"
 END_STREAM_ENDPOINT: str = "/stop-stream/{device_id}/{run_id}"
 ALARM_ENDPOINT: str = "/get-notification/{device_id}/{run_id}"
+AVERAGE_STATS_ENDPOINT: str = "/get-team-average-stats/{num_players}/{run_id}"
 
 DEVICE_SCHEMA_PATH: str = SCHEMA_DATA_PATH
 
@@ -283,3 +284,53 @@ async def stop_stream(device_id: str, run_id: str) -> Dict[str, str]:
         raise http_ex
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to stop streaming: {str(e)}")
+
+
+@router.get(AVERAGE_STATS_ENDPOINT)
+async def get_team_instant_stats(
+    num_players: int,
+    run_id: str
+) -> Dict[str, Union[str, float]]:
+    """
+    For a given number of players and a run_id, this endpoint fetches speed and acceleration
+    from the individual player devices and computes the team averages.
+
+    We leverage concurrency by scheduling all requests at once using asyncio.gather.
+    """
+    device_ids = [f"gps_{i}" for i in range(1, num_players + 1)]
+
+    # Create tasks for speed and acceleration requests
+    speed_tasks = [asyncio.create_task(get_metric(device_id, run_id, "speed")) for device_id in device_ids]
+    accel_tasks = [asyncio.create_task(get_metric(device_id, run_id, "acceleration")) for device_id in device_ids]
+
+    # Run both sets of tasks concurrently
+    speeds_results, accels_results = await asyncio.gather(
+        asyncio.gather(*speed_tasks),
+        asyncio.gather(*accel_tasks),
+    )
+
+    # Process the results
+    valid_speeds = []
+    valid_accels = []
+
+    for data in speeds_results:
+        if "speed" not in data:
+            raise HTTPException(status_code=500, detail=f"No speed data returned for one of the devices.")
+        valid_speeds.append(data["speed"])
+
+    for data in accels_results:
+        if "acceleration" not in data:
+            raise HTTPException(status_code=500, detail=f"No acceleration data returned for one of the devices.")
+        valid_accels.append(data["acceleration"])
+
+    if not valid_speeds or not valid_accels:
+        raise HTTPException(status_code=500, detail="No valid speed or acceleration data retrieved.")
+
+    team_average_speed = sum(valid_speeds) / len(valid_speeds)
+    team_average_accel = sum(valid_accels) / len(valid_accels)
+
+    return {
+        "run_id": run_id,
+        "team_average_speed": team_average_speed,
+        "team_average_acceleration": team_average_accel
+    }

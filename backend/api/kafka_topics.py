@@ -3,6 +3,7 @@ from typing import Optional, List, Dict, Union
 
 from fastapi import APIRouter, HTTPException
 from confluent_kafka.admin import AdminClient
+import asyncio
 
 from utils.file_management import device_exists, kafka_topic_name
 from utils.kafka_producer import get_kafka_messages
@@ -13,6 +14,7 @@ router = APIRouter()
 SCHEMA_SAVE_PATH: str = SCHEMA_DATA_PATH
 
 GET_TOPIC_MESSAGES_ENDPOINT: str = "/get-topic-messages/{device_id}/{run_id}"
+GET_AVERAGE_TOPIC_MESSAGES_ENDPOINT: str = "/get-team-kafka-stats/{num_players}/{run_id}"
 DELETE_TOPIC_ENDPOINT: str = "/delete-topic/{device_id}/{run_id}"
 DELETE_ALL_TOPICS_ENDPOINT: str = "/delete-all-topics"
 LIST_TOPICS_ENDPOINT: str = "/list-topics"
@@ -128,3 +130,122 @@ async def list_topics() -> Dict[str, Union[str, List[str]]]:
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to list topics: {str(e)}")
+
+
+@router.get(GET_AVERAGE_TOPIC_MESSAGES_ENDPOINT)
+async def get_team_kafka_stats(
+    num_players: int,
+    run_id: str
+) -> Dict[str, Union[str, float]]:
+    """
+    For a given number of players and a run_id, this endpoint fetches heart_rate and temperature
+    from Kafka (latest messages) and computes the team averages.
+
+    Device IDs:
+    - Heart Rate devices: "player_heart_rate_1", ..., "player_heart_rate_{num_players}" (expects field: heart_rate)
+    - Temperature devices: "player_temperature_1", ..., "player_temperature_{num_players}" (expects field: temperature)
+
+    This endpoint calls get_topic_messages(device_id, run_id, limit=1) for each device
+    and aggregates the results.
+
+    Returns a JSON with:
+    {
+      "run_id": "...",
+      "team_average_heart_rate": ...,
+      "team_average_temperature": ...
+    }
+    """
+
+    heart_rate_devices = [f"player_heart_rate_{i}" for i in range(1, num_players + 1)]
+    temperature_devices = [f"player_temperature_{i}" for i in range(1, num_players + 1)]
+
+    async def fetch_latest_message(device_id: str):
+        # Directly call the internal async function rather than an HTTP request
+        response = await get_topic_messages(device_id, run_id, limit=1)
+        messages = response.get("messages", [])
+        return messages[0] if messages else None
+
+    # Create tasks for all heart_rate and temperature devices
+    tasks = [fetch_latest_message(d) for d in heart_rate_devices + temperature_devices]
+
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    # Separate the results by device type
+    heart_rate_results = results[0:len(heart_rate_devices)]
+    temperature_results = results[len(heart_rate_devices):]
+
+    # Extract and compute averages
+    heart_rates = []
+    for r in heart_rate_results:
+        if isinstance(r, dict) and "heart_rate" in r:
+            heart_rates.append(r["heart_rate"])
+
+    temperatures = []
+    for r in temperature_results:
+        if isinstance(r, dict) and "temperature" in r:
+            temperatures.append(r["temperature"])
+
+    # Validate that we got at least some data
+    if not heart_rates or not temperatures:
+        raise HTTPException(status_code=500, detail="No valid heart_rate or temperature data retrieved.")
+
+    avg_heart_rate = sum(heart_rates) / len(heart_rates)
+    avg_temperature = sum(temperatures) / len(temperatures)
+
+    return {
+        "run_id": run_id,
+        "team_average_heart_rate": avg_heart_rate,
+        "team_average_temperature": avg_temperature
+    }
+
+
+@router.get("/analyze-heart-rate/{num_players}/{run_id}")
+async def analyze_heart_rate(
+    num_players: int,
+    run_id: str,
+    limit: Optional[int] = 1,
+    triggers: Optional[Dict[str, List[int]]] = {"heart_rate": [70, 140]}
+) -> Dict[str, Union[str, List[Dict[str, Union[str, int]]]]]:
+    """
+    Analyze heart rate for multiple players and classify it as "low," "high," or "normal"
+    based on predefined triggers.
+    """
+    # Generate the device IDs
+    device_ids = [f"player_heart_rate_{i}" for i in range(1, num_players + 1)]
+
+    async def fetch_latest_message(device_id: str):
+        response = await get_topic_messages(device_id, run_id, limit=limit)
+        messages = response.get("messages", [])
+        return messages[0] if messages else None
+
+    def determine_alarm_type(heart_rate, triggers):
+        lower, upper = triggers["heart_rate"]
+        if heart_rate < lower:
+            return "low"
+        elif heart_rate > upper:
+            return "high"
+        else:
+            return "normal"
+
+    tasks = [fetch_latest_message(device_id) for device_id in device_ids]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    analyzed_data = []
+    for device_id, result in zip(device_ids, results):
+        if isinstance(result, dict) and "heart_rate" in result:
+            heart_rate = result["heart_rate"]
+            alarm_type = determine_alarm_type(heart_rate, triggers)
+            analyzed_data.append({
+                "device_id": device_id,
+                "heart_rate": heart_rate,
+                "alarm_type": alarm_type,
+                "timestamp": result.get("timestamp")
+            })
+        else:
+            analyzed_data.append({
+                "device_id": device_id,
+                "error": "No valid data retrieved"
+            })
+
+    # Ensure run_id is returned as a string, matching the expected response type
+    return {"run_id": run_id, "analyzed_data": analyzed_data}
