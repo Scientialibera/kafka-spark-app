@@ -6,9 +6,16 @@ stages:
   - push
 
 variables:
+  # Backend image variables
   DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/backend"
   IMAGE_TAG: "latest"
   FULL_IMAGE_PATH: "$DOCKER_IMAGE:$IMAGE_TAG"
+
+  # Frontend image variables
+  FRONTEND_DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/frontend"
+  FRONTEND_IMAGE_TAG: "latest"
+  FRONTEND_FULL_IMAGE_PATH: "$FRONTEND_DOCKER_IMAGE:$FRONTEND_IMAGE_TAG"
+
   NETWORK_NAME: "ci_pipeline_network"
   DOCKER_COMPOSE_FILE: "docker-compose.yml"
 
@@ -22,6 +29,13 @@ build_backend:
   script:
     - docker build -t $FULL_IMAGE_PATH -f backend/Dockerfile .
 
+build_frontend:
+  stage: build
+  tags:
+    - docker
+  script:
+    - docker build -t $FRONTEND_FULL_IMAGE_PATH -f frontend/Dockerfile .
+
 deploy_services:
   stage: deploy
   tags:
@@ -32,9 +46,10 @@ deploy_services:
       if ! docker network inspect "$NETWORK_NAME" >/dev/null 2>&1; then
         docker network create "$NETWORK_NAME"
       fi
-    - docker compose -f $DOCKER_COMPOSE_FILE down --remove-orphans 
+    - docker compose -f $DOCKER_COMPOSE_FILE down --remove-orphans
     - docker compose -f $DOCKER_COMPOSE_FILE up -d
-    - docker image prune -f 
+    - docker image prune -f
+    - docker volume prune -f
 
 test_api:
   stage: test
@@ -46,8 +61,10 @@ test_api:
     # Test the API health
     - curl --retry 5 --retry-delay 5 --retry-connrefused -s http://localhost:8000/health || exit 1
   after_script:
-    - docker compose -f $DOCKER_COMPOSE_FILE down
+    - docker compose -f $DOCKER_COMPOSE_FILE down --remove-orphans
     - docker network rm $NETWORK_NAME || true
+    - docker image prune -f
+    - docker volume prune -f
 
 deploy_to_runner:
   stage: deploy_to_runner
@@ -62,6 +79,7 @@ deploy_to_runner:
     - docker compose -f $DOCKER_COMPOSE_FILE down --remove-orphans
     - docker compose -f $DOCKER_COMPOSE_FILE up -d
     - docker image prune -f
+    - docker volume prune -f
     - echo "Services deployed permanently on the runner machine."
 
 push_backend:
@@ -70,5 +88,14 @@ push_backend:
     - docker
   script:
     - docker push $FULL_IMAGE_PATH
+  only:
+    - main
+
+push_frontend:
+  stage: push
+  tags:
+    - docker
+  script:
+    - docker push $FRONTEND_FULL_IMAGE_PATH
   only:
     - main
