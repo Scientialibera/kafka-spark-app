@@ -3,7 +3,8 @@
     justify-content: space-between;
     padding: 40px;
     font-family: "Inter", sans-serif;
-    background-color: #f8f9fa;
+    background-color: #f2f2fdff;
+    height: 89vh;
   }
   
   .register-card {
@@ -12,10 +13,14 @@
     background: white;
     border-radius: 12px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 100px;
+    margin-bottom: 5px;
+    margin-left: -200px;
   }
   
   .register-card h2 {
-    margin-bottom: 20px;
+    margin-top: -8px;
+    margin-bottom: 45px;
     font-weight: 600;
   }
   
@@ -40,6 +45,7 @@
     border-radius: 6px;
     font-size: 16px;
     cursor: pointer;
+    margin-top: 20px;
   }
   
   .register-button:hover {
@@ -50,12 +56,16 @@
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    font-size: 14px;
+    gap: 8px;
   }
   
   .register-info {
     width: 40%;
     padding: 40px;
-    background-color: #eef1f7;
+    background-color: #f2f2fdff;
     border-radius: 12px;
+    margin-top: 200px;
+    margin-bottom: 80px;
   }
   

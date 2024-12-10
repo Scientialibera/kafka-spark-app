@@ -140,3 +140,97 @@
   .menu-item.selected img {
     filter: brightness(0) invert(1); /* Turns the image white */
 }
+
+/* Dropdown toggle */
+.dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+}
+
+.arrow-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  right: 20px;
+  background: white;
+  box-shadow: 0px 4px 9px rgba(23, 26, 31, 0.1);
+  border-radius: 6px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  width: 140px;
+}
+
+.dropdown-menu button {
+  background: none;
+  border: none;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #171a1f;
+  transition: background 0.3s;
+}
+
+.dropdown-menu button:hover {
+  background: rgba(99, 106, 232, 0.1);
+  color: #636AE8;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 9px rgba(23, 26, 31, 0.1);
+  text-align: center;
+  width: 300px;
+}
+
+.modal h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #171a1f;
+}
+
+.modal button {
+  background: none;
+  border: 1px solid #636ae8;
+  border-radius: 6px;
+  padding: 10px 20px;
+  margin: 8px 0;
+  width: 100%;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #636ae8;
+  transition: background 0.3s, color 0.3s;
+}
+
+.modal button:hover {
+  background: #636ae8;
+  color: white;
+}

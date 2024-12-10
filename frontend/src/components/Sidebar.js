@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Sidebar.css";
 
 // Import icons
@@ -11,9 +11,30 @@ import LiveDataIcon from "../icons/live-data.png";
 import ReportsIcon from "../icons/report.png";
 import DevicesIcon from "../icons/devices.png";
 import NotificationsIcon from "../icons/notifications.png";
+import ArrowDownIcon from "../icons/arrow-down.png";
 
 const Sidebar = () => {
-  const location = useLocation(); // Get the current route
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+
+  const handleLogout = () => {
+    // Clear user data from localStorage and navigate to login page
+    localStorage.removeItem("loggedInUser");
+    navigate("/login");
+  };
+
+  const handleEditProfile = () => {
+    // Redirect to a profile edit page
+    navigate("/edit-profile");
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  // Retrieve logged-in user data
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
   return (
     <div className="sidebar">
@@ -22,7 +43,7 @@ const Sidebar = () => {
         <img src={LogoIcon} alt="Logo" className="logo-icon" />
         <div>
           <h2>Sports Prophet</h2>
-          <p>User Role</p>
+          <p>{loggedInUser?.role || "User Role"}</p>
         </div>
       </div>
 
@@ -37,9 +58,7 @@ const Sidebar = () => {
         </Link>
         <Link
           to="/players"
-          className={`menu-item ${
-            location.pathname === "/players" ? "selected" : ""
-          }`}
+          className={`menu-item ${location.pathname === "/players" ? "selected" : ""}`}
         >
           <img src={PlayersIcon} alt="Players" className="menu-icon" />
           Players
@@ -53,42 +72,30 @@ const Sidebar = () => {
         </Link>
         <Link
           to="/live-data"
-          className={`menu-item ${
-            location.pathname === "/live-data" ? "selected" : ""
-          }`}
+          className={`menu-item ${location.pathname === "/live-data" ? "selected" : ""}`}
         >
           <img src={LiveDataIcon} alt="Live Data" className="menu-icon" />
           Live Data
         </Link>
         <Link
           to="/reports"
-          className={`menu-item ${
-            location.pathname === "/reports" ? "selected" : ""
-          }`}
+          className={`menu-item ${location.pathname === "/reports" ? "selected" : ""}`}
         >
           <img src={ReportsIcon} alt="Reports" className="menu-icon" />
           Reports
         </Link>
         <Link
           to="/devices"
-          className={`menu-item ${
-            location.pathname === "/devices" ? "selected" : ""
-          }`}
+          className={`menu-item ${location.pathname === "/devices" ? "selected" : ""}`}
         >
           <img src={DevicesIcon} alt="Devices" className="menu-icon" />
           Devices
         </Link>
         <Link
           to="/notifications"
-          className={`menu-item ${
-            location.pathname === "/notifications" ? "selected" : ""
-          }`}
+          className={`menu-item ${location.pathname === "/notifications" ? "selected" : ""}`}
         >
-          <img
-            src={NotificationsIcon}
-            alt="Notifications"
-            className="menu-icon"
-          />
+          <img src={NotificationsIcon} alt="Notifications" className="menu-icon" />
           Notifications <span className="badge">9</span>
         </Link>
       </div>
@@ -101,11 +108,25 @@ const Sidebar = () => {
             alt="User Avatar"
           />
         </div>
-        <div>
-          <p className="user-name">Lara</p>
-          <p className="user-email">company@example.com</p>
+        <div className="user-info-details">
+        <p className="user-name">{loggedInUser?.firstName || "User Name"}</p> {/* Display the first name */}
+          <p className="user-email">{loggedInUser?.email || "user@example.com"}</p>
         </div>
+        <button className="dropdown-toggle" onClick={toggleModal}>
+          <img src={ArrowDownIcon} alt="Toggle Modal" className="arrow-icon" />
+        </button>
       </div>
+
+      {/* Modal for Profile/Logout */}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={toggleModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h3>User Actions</h3>
+            <button onClick={handleEditProfile}>Edit Profile</button>
+            <button onClick={handleLogout}>Log Out</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
