@@ -1,37 +1,22 @@
 [
     {
-        "device_name": "player_temperature_8",
-        "schema": {
-            "temperature": 36.41,
-            "timestamp": "2024-10-21T18:22:45"
-        }
+        "temperature": 36.41,
+        "timestamp": "2024-10-21T18:22:45"
     },
     {
-        "device_name": "player_temperature_8",
-        "schema": {
-            "temperature": 36.76,
-            "timestamp": "2024-10-21T18:22:45.500000"
-        }
+        "temperature": 36.76,
+        "timestamp": "2024-10-21T18:22:45.500000"
     },
     {
-        "device_name": "player_temperature_8",
-        "schema": {
-            "temperature": 38.0,
-            "timestamp": "2024-10-21T18:22:46"
-        }
+        "temperature": 38.0,
+        "timestamp": "2024-10-21T18:22:46"
     },
     {
-        "device_name": "player_temperature_8",
-        "schema": {
-            "temperature": 38.55,
-            "timestamp": "2024-10-21T18:22:46.500000"
-        }
+        "temperature": 38.55,
+        "timestamp": "2024-10-21T18:22:46.500000"
     },
     {
-        "device_name": "player_temperature_8",
-        "schema": {
-            "temperature": 36.96,
-            "timestamp": "2024-10-21T18:22:47"
-        }
+        "temperature": 36.96,
+        "timestamp": "2024-10-21T18:22:47"
     }
 ]

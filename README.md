@@ -1,4 +1,4 @@
-# Sports Prophet
+# Sports Prophet (Change CRLF to LF as soon as you fetch from GIT)
 
 Sports Prophet is a full-stack application designed to analyze soccer match data in real-time and ad-hoc. It ingests sensor streams from devices into Kafka topics and uses Spark for real-time aggregation or direct querying for on-demand data. Users can also manage sensor schemas through the API.
 
@@ -44,7 +44,9 @@ Below is a breakdown of each service and instructions to manage them.
 
 1. **Start Services**: 
    ```
-   docker-compose up --build
+   docker-compose pull
+   docker-compose build api
+   docker-compose up -d
    ```
    This command launches all services in detached mode.
 
@@ -614,13 +616,3 @@ Heart Rate Dynamics and Quantifying Physical Fatigue in Canadian Football.
 Applied Sciences, 2024, 14(5340).
 DOI: 10.3390/app14125340
 Key concepts from this research—such as HRmax, HRRpk, and CVC—have been incorporated into the calculations and recommendations provided by the API to enhance its accuracy and applicability for real-time fatigue monitoring and performance analysis.
-
-
-
-
-
-
-
-
-
-```

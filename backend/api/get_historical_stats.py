@@ -255,9 +255,9 @@ def team_speeds():
             with open(run_file_path, 'r') as file:
                 data = json.load(file)
             for entry in data:
-                speed_x = entry["schema"]["speed_x"]
-                speed_y = entry["schema"]["speed_y"]
-                speed_z = entry["schema"]["speed_z"]
+                speed_x = entry["speed_x"]
+                speed_y = entry["speed_y"]
+                speed_z = entry["speed_z"]
 
                 # Calculate the final vector of speed
                 speed_magnitude = math.sqrt(speed_x**2 + speed_y**2 + speed_z**2)
@@ -322,13 +322,13 @@ def heart_rate_recovery():
             run_heart_rate_count = 0
 
             for entry in data:
-                heart_rate = entry["schema"]["heart_rate"]
+                heart_rate = entry["heart_rate"]
                 run_total_heart_rate += heart_rate
                 run_heart_rate_count += 1
                 
 
 
-                timestamp = parse_timestamp(entry["schema"]["timestamp"])
+                timestamp = parse_timestamp(entry["timestamp"])
                 if heart_rate > max_heart_rate:
                     max_heart_rate = heart_rate
                     max_heart_rate_timestamp = timestamp
@@ -340,8 +340,8 @@ def heart_rate_recovery():
             # heart rate drop after 60s
             if max_heart_rate_timestamp:
                 for entry in data:
-                    heart_rate = entry["schema"]["heart_rate"]
-                    timestamp = parse_timestamp(entry["schema"]["timestamp"])
+                    heart_rate = entry["heart_rate"]
+                    timestamp = parse_timestamp(entry["timestamp"])
                     time_diff = (timestamp - max_heart_rate_timestamp).total_seconds()
 
                     if 1 <= time_diff <= 60:  # Check if within 60 seconds
@@ -397,7 +397,7 @@ def calculate_average_heart_rate():
             game_total = 0
             game_count = 0
             for entry in data:
-                heart_rate = entry["schema"]["heart_rate"]
+                heart_rate = entry["heart_rate"]
                 game_total += heart_rate
                 total_heart_rate += heart_rate
                 game_count += 1

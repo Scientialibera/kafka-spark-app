@@ -1,11 +1,16 @@
 stages:
   - build
+  - deploy
+  - test
+  - deploy_to_runner
   - push
 
 variables:
-  DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/backend"  # Base image name
-  IMAGE_TAG: "latest"  # Tag for the image
-  FULL_IMAGE_PATH: "$DOCKER_IMAGE:$IMAGE_TAG"  # Full image path with tag
+  DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/backend"
+  IMAGE_TAG: "latest"
+  FULL_IMAGE_PATH: "$DOCKER_IMAGE:$IMAGE_TAG"
+  NETWORK_NAME: "ci_pipeline_network"
+  DOCKER_COMPOSE_FILE: "docker-compose.yml"
 
 before_script:
   - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
@@ -17,10 +22,49 @@ build_backend:
   script:
     - docker build -t $FULL_IMAGE_PATH -f backend/Dockerfile .
 
+deploy_services:
+  stage: deploy
+  tags:
+    - docker
+  script:
+    - |
+      # Check if the Docker network exists, and create it if it doesn't
+      if ! docker network inspect "$NETWORK_NAME" >/dev/null 2>&1; then
+        docker network create "$NETWORK_NAME"
+      fi
+    - docker compose -f $DOCKER_COMPOSE_FILE up -d
+
+test_api:
+  stage: test
+  tags:
+    - docker
+  script:
+    # Wait for the API to be ready
+    - sleep 15
+    # Test the API health
+    - curl --retry 5 --retry-delay 5 --retry-connrefused -s http://localhost:8000/health || exit 1
+  after_script:
+    - docker compose -f $DOCKER_COMPOSE_FILE down
+    - docker network rm $NETWORK_NAME || true
+
+deploy_to_runner:
+  stage: deploy_to_runner
+  tags:
+    - docker
+  script:
+    - |
+      # Deploy services permanently to the runner machine
+      if ! docker network inspect "$NETWORK_NAME" >/dev/null 2>&1; then
+        docker network create "$NETWORK_NAME"
+      fi
+    - docker compose -f $DOCKER_COMPOSE_FILE up -d
+    - echo "Services deployed permanently on the runner machine."
+
 push_backend:
   stage: push
   tags:
     - docker
   script:
     - docker push $FULL_IMAGE_PATH
-
+  only:
+    - main
