@@ -6,7 +6,7 @@ Sports Prophet is a full-stack application designed to analyze soccer match data
 ### Key Directories & Files
 
 1. **backend**: Contains the API implementation using FastAPI, Kafka integration, and Spark processing logic.
-   - **api**: Holds individual API route files (`get_live_stats.py`, `register_device.py`, etc.).
+   - **api**: Holds individual API route files (`get_live_stats.py`, `register_device.py`, etc.). (`http://localhost:8000/docs`)
    - **config**: Configuration files, including environment settings.
    - **models**: Data models and schemas for validating requests. (For device registration only.)
    - **app.py**: Main entry point for the FastAPI application.
