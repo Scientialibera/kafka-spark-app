@@ -53,20 +53,21 @@ Below is a breakdown of each service and instructions to manage them.
    docker ps
    ```
    Displays all active containers along with their names, ports, and statuses.
+   API Docs: http://localhost:8000/docs
 
-3. **View Logs for a Specific Container**: 
+4. **View Logs for a Specific Container**: 
    ```
    docker logs <container_name>
    ```
    Replace `<container_name>` with the name of the container (e.g., `api`, `kafka`, etc.) to view its logs.
 
-4. **Stop Services**: 
+5. **Stop Services**: 
    ```
    docker-compose down
    ```
    Stops and removes all services defined in the `docker-compose.yml` file.
 
-5. **Rebuild a Specific Service** (useful after code updates):
+6. **Rebuild a Specific Service** (useful after code updates):
    ```
    docker-compose build <service_name>
    ```
