@@ -1,0 +1,114 @@
+.login-page {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  font-family: "Inter", sans-serif;
+  background-color: #f2f2fdff;
+  height: 89vh;
+}
+
+.login-card {
+  width: 50%;
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 150px;
+  margin-bottom: 80px;
+  margin-left: -200px;
+}
+
+.login-card h2 {
+  margin-bottom: 45px;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+}
+
+/* Flex container for "Remember me" and "Forgot password" */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Align checkbox and label */
+.remember-me-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between checkbox and label */
+  font-size: 14px;
+}
+
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+/* Style for "Forgot password" link */
+.forgot-password {
+  font-size: 14px;
+  text-decoration: none;
+  color: #636ae8;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #636ae8;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.login-button:hover {
+  background-color: #4850e4;
+}
+
+.login-info {
+  width: 30%;
+  padding: 40px;
+  background-color: f2f2fdff;
+  border-radius: 12px;
+  margin-top: 200px;
+  margin-bottom: 80px;
+
+}
+
+
+.logo-container {
+  display: flex;
+  margin-bottom: 20px; /* Add spacing below the logo container */
+}
+
+.logo {
+  height: 50px; /* Adjust logo size */
+  object-fit: contain; /* Ensure the logo maintains its aspect ratio */
+  margin-right: 10px; /* Add spacing between the logo and the text */
+}
+
+.logo-text {
+  font-size: 24px; /* Adjust font size */
+  font-weight: bold; /* Make the text bold */
+  color: #323743; /* Adjust text color */
+  font-family: "Inter", sans-serif;
+  white-space: nowrap; /* Prevent the text from breaking into multiple lines */
+  margin-top: 10px;
+}

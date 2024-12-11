@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   zookeeper:
     image: bitnami/zookeeper:latest
@@ -28,19 +30,19 @@ services:
       - kafka_network
 
   spark-master:
-      build:
-        context: .
-        dockerfile: Dockerfile.spark
-      hostname: spark-master
-      container_name: spark-master
-      environment:
-        - SPARK_MASTER_HOST=spark-master
-      ports:
-        - "8080:8080"
-        - "7077:7077"
-      command: ["/start-master.sh"]
-      networks:
-        - kafka_network
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
+    hostname: spark-master
+    container_name: spark-master
+    environment:
+      - SPARK_MASTER_HOST=spark-master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    command: ["/start-master.sh"]
+    networks:
+      - kafka_network
 
   spark-worker-1:
     build:
@@ -104,7 +106,7 @@ services:
       - "9000:9000"
     networks:
       - kafka_network
-      
+
   api:
     build:
       context: .
@@ -122,6 +124,20 @@ services:
       SPARK_MASTER_URL: spark://spark-master:7077
       HADOOP_URL: hdfs://hadoop:9000
     entrypoint: ["/bin/sh", "-c", "sleep 10 && uvicorn backend.app:app --host 0.0.0.0 --port 8000"]
+    networks:
+      - kafka_network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"  # Map the development server's port 3000 to the host
+    stdin_open: true  # Keep the container open for interactive input
+    tty: true         # Allocate a pseudo-TTY for the container
+    environment:
+      - NODE_ENV=development  # Optional: Explicitly set the environment to development
     networks:
       - kafka_network
 

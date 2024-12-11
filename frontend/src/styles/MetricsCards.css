@@ -1,0 +1,113 @@
+.metrics-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .metrics-card {
+    background: #ffffff;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .grouped-card {
+    padding: 16px;
+    align-items: left;
+    justify-content: space-between;
+  }
+  
+  .group-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+  }
+  
+  .group-item {
+    text-align: left;
+    flex: 1;
+  }
+  
+  .group-item:not(:last-child) {
+    margin-right: 16px; /* Space between grouped items */
+  }
+  
+  .group-item h4 {
+    font-size: 12px;
+    font-weight: 400;
+    color: #565d6d;
+    margin-bottom: 4px;
+  }
+  
+  .metrics-card h4 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #565d6d;
+    margin-bottom: 8px;
+  }
+  
+  .metrics-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #171a1f;
+  }
+  
+  .metrics-percentage {
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+  }
+  
+  .metrics-percentage.positive {
+    color: #22ccb2;
+  }
+  
+  .metrics-percentage.negative {
+    color: #e8618c;
+  }
+  
+  .grouped-card .group-item h4 {
+    color:#E8618C; 
+    font-weight: 700;
+  }
+
+  .metrics-card .distance-title {
+    color:#636AE8; 
+    font-weight: 700;
+  }
+
+  .metrics-card .recovery-title {
+    color:#22CCB2; 
+    font-weight: 700;
+  }
+
+  .arrow {
+    margin-right: 4px;
+    font-size: 10px;
+    display: inline-block;
+    line-height: 1;
+  }
+    
+  .metrics-arrow-percentage {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .metrics-arrow-percentage.positive {
+    color: #22ccb2; /* Green for positive direction */
+  }
+  
+  .metrics-arrow-percentage.negative {
+    color: #e8618c; /* Red for negative direction */
+  }
+  
+  

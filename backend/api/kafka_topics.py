@@ -197,3 +197,55 @@ async def get_team_kafka_stats(
         "team_average_heart_rate": avg_heart_rate,
         "team_average_temperature": avg_temperature
     }
+
+
+@router.get("/analyze-heart-rate/{num_players}/{run_id}")
+async def analyze_heart_rate(
+    num_players: int,
+    run_id: str,
+    limit: Optional[int] = 1,
+    triggers: Optional[Dict[str, List[int]]] = {"heart_rate": [70, 140]}
+) -> Dict[str, Union[str, List[Dict[str, Union[str, int]]]]]:
+    """
+    Analyze heart rate for multiple players and classify it as "low," "high," or "normal"
+    based on predefined triggers.
+    """
+    # Generate the device IDs
+    device_ids = [f"player_heart_rate_{i}" for i in range(1, num_players + 1)]
+
+    async def fetch_latest_message(device_id: str):
+        response = await get_topic_messages(device_id, run_id, limit=limit)
+        messages = response.get("messages", [])
+        return messages[0] if messages else None
+
+    def determine_alarm_type(heart_rate, triggers):
+        lower, upper = triggers["heart_rate"]
+        if heart_rate < lower:
+            return "low"
+        elif heart_rate > upper:
+            return "high"
+        else:
+            return "normal"
+
+    tasks = [fetch_latest_message(device_id) for device_id in device_ids]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    analyzed_data = []
+    for device_id, result in zip(device_ids, results):
+        if isinstance(result, dict) and "heart_rate" in result:
+            heart_rate = result["heart_rate"]
+            alarm_type = determine_alarm_type(heart_rate, triggers)
+            analyzed_data.append({
+                "device_id": device_id,
+                "heart_rate": heart_rate,
+                "alarm_type": alarm_type,
+                "timestamp": result.get("timestamp")
+            })
+        else:
+            analyzed_data.append({
+                "device_id": device_id,
+                "error": "No valid data retrieved"
+            })
+
+    # Ensure run_id is returned as a string, matching the expected response type
+    return {"run_id": run_id, "analyzed_data": analyzed_data}
