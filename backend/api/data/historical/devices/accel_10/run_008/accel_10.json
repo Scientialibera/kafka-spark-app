@@ -1,0 +1,47 @@
+[
+    {
+        "device_name": "accel_10",
+        "schema": {
+            "acceleration_x": 5.79,
+            "acceleration_y": -2.99,
+            "acceleration_z": 0.14,
+            "timestamp": "2024-10-21T18:22:45"
+        }
+    },
+    {
+        "device_name": "accel_10",
+        "schema": {
+            "acceleration_x": 8.94,
+            "acceleration_y": 9.29,
+            "acceleration_z": -1.06,
+            "timestamp": "2024-10-21T18:22:45.500000"
+        }
+    },
+    {
+        "device_name": "accel_10",
+        "schema": {
+            "acceleration_x": -2.24,
+            "acceleration_y": -2.87,
+            "acceleration_z": -6.07,
+            "timestamp": "2024-10-21T18:22:46"
+        }
+    },
+    {
+        "device_name": "accel_10",
+        "schema": {
+            "acceleration_x": 3.56,
+            "acceleration_y": -3.63,
+            "acceleration_z": 2.94,
+            "timestamp": "2024-10-21T18:22:46.500000"
+        }
+    },
+    {
+        "device_name": "accel_10",
+        "schema": {
+            "acceleration_x": 5.46,
+            "acceleration_y": 8.84,
+            "acceleration_z": 8.14,
+            "timestamp": "2024-10-21T18:22:47"
+        }
+    }
+]

@@ -1,0 +1,7 @@
+{
+    "device_name": "player_heart_rate_4",
+    "schema": {
+        "heart_rate": "int",
+        "timestamp": "string"
+    }
+}

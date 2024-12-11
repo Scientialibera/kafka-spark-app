@@ -118,7 +118,7 @@ def calculate_metrics():
     """
     # Team-related metrics
     team_distance = c_team_distance()  # Total and average distance per game
-    average_team_speed, max_team_speed = team_speeds()  # Speed metrics
+    average_team_speed, max_team_speed, max_speed_per_game = team_speeds()  # Speed metrics
     player_heart_rate_recovery, average_team_recovery_rate = heart_rate_recovery()  # Recovery metrics
     fatigue_levels = calculate_fatigue_levels()  # Fatigue levels for players and team
     injury_data = injuries()  # Injury data (total and per player)
@@ -182,6 +182,9 @@ def calculate_metrics():
         "Team Metrics": {
             "Total Distance Per Game": team_distance["Total Distance Per Game"],
             "Average Distance Per Game": team_distance["Average Distance Per Game"],
+            "Team Total Distance for All Games": team_distance["Team Total Distance for All Games"],
+            "Average Team Distance for All Games": team_distance["Average Team Distance for All Games"],
+            "Max Team Speed for All Games": max_speed_per_game,
             "Average Team Speed": average_team_speed,
             "Max Team Speed": max_team_speed,
             "Average Team Recovery Rate": average_team_recovery_rate,
@@ -196,20 +199,19 @@ def calculate_metrics():
 
 def c_team_distance():
     """
-
-    It calculates the total and average distance run per game as well as for all players
-
+    Calculates the total and average distance run per game as well as for all players.
     """
-    game_distances = {}  
+    game_distances = {}
 
-    for player_id in range(1, 11):  # for 10 players
+    for player_id in range(1, 11):  # Loop through 10 players
         gps_path = os.path.join(HISTORICAL_DATA_PATH, f"gps_{player_id}")
-        for run_path in os.listdir(gps_path):  # loop all games
-            if run_path == '.DS_Store':  # Skip system files
+        for run_path in os.listdir(gps_path):  # Loop through all games
+            if run_path == '.DS_Store':
                 continue
             run_file_path = os.path.join(gps_path, run_path, f"gps_{player_id}.json")
             with open(run_file_path, 'r') as file:
                 data = json.load(file)
+
             run_distance = 0
             for i in range(len(data) - 1):
                 point1 = data[i]
@@ -221,55 +223,61 @@ def c_team_distance():
                     lon2=point2["longitude"],
                 )
 
-
-
             if run_path not in game_distances:
                 game_distances[run_path] = 0
             game_distances[run_path] += run_distance
 
     total_games = len(game_distances)
     average_distances_per_game = {
-        game: round(total_distance / 10, 2)  # Divide by # of players
-        for game, total_distance in game_distances.items()
+        game: round(distance / 10, 2) for game, distance in game_distances.items()
+    }
+
+    total_distance_all_games = {
+        game: round(distance, 2) for game, distance in game_distances.items()
+    }
+
+    avg_team_distance_all_games = {
+        game: round(total_distance_all_games[game] / 10, 2) for game in total_distance_all_games
     }
 
     return {
-        "Total Distance Per Game": {game: round(distance, 2) for game, distance in game_distances.items()},
+        "Total Distance Per Game": total_distance_all_games,
         "Average Distance Per Game": average_distances_per_game,
+        "Team Total Distance for All Games": total_distance_all_games,
+        "Average Team Distance for All Games": avg_team_distance_all_games,
     }
 
 def team_speeds():
     """
-
-    It calculates average speed (km/h) and max team speed taking into account x,y,z coordinates
-
+    Calculates average speed (km/h) and max team speed, and tracks the speed for each game.
     """
-
-
     total_speeds = []
-    for player_id in range(1, 2):  # for 10 players
+    max_speeds_per_game = {}
+
+    for player_id in range(1, 11):  # Loop through 10 players
         speed_path = os.path.join(HISTORICAL_DATA_PATH, f"speed_{player_id}")
-        for run_path in os.listdir(speed_path):  # loop 15 games
+        for run_path in os.listdir(speed_path):  # Loop through all games
             run_file_path = os.path.join(speed_path, run_path, f"speed_{player_id}.json")
             with open(run_file_path, 'r') as file:
                 data = json.load(file)
+
+            max_speed = 0
             for entry in data:
                 speed_x = entry["speed_x"]
                 speed_y = entry["speed_y"]
                 speed_z = entry["speed_z"]
-
-                # Calculate the final vector of speed
                 speed_magnitude = math.sqrt(speed_x**2 + speed_y**2 + speed_z**2)
                 total_speeds.append(speed_magnitude)
+                max_speed = max(max_speed, speed_magnitude)
 
-    if total_speeds:
-        average_speed = round(sum(total_speeds) / len(total_speeds), 2)
-        max_speed = round(max(total_speeds), 2)
-    else:
-        average_speed = 0
-        max_speed = 0
+            if run_path not in max_speeds_per_game:
+                max_speeds_per_game[run_path] = 0
+            max_speeds_per_game[run_path] = max(max_speeds_per_game[run_path], max_speed)
 
-    return average_speed, max_speed
+    average_speed = round(sum(total_speeds) / len(total_speeds), 2) if total_speeds else 0
+    overall_max_speed = round(max(total_speeds), 2) if total_speeds else 0
+
+    return average_speed, overall_max_speed, max_speeds_per_game
 
 def parse_timestamp(timestamp):
     """
