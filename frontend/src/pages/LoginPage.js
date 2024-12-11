@@ -68,10 +68,10 @@ const LoginPage = () => {
           <button type="submit" className="login-button">
             Sign in
           </button>
-        </form>
-        <p>
+          <p>
           Need to register? <a href="/register">Sign up here</a>
         </p>
+        </form>
       </div>
       <div className="login-info">
         <h2>Great to have you back!</h2>
