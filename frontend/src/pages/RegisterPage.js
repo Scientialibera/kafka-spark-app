@@ -114,9 +114,9 @@ const RegisterPage = () => {
           <button type="submit" className="register-button">
             Register
           </button>
-          <p>
+          <label>
             Returning user? <a href="/login">Log in here</a>
-          </p>
+          </label>
         </form>
         
       </div>
