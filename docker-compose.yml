@@ -132,11 +132,12 @@ services:
       context: .
       dockerfile: frontend/Dockerfile
     container_name: frontend
-    command: ["npm", "start"]
     ports:
-      - "3000:3000"
-    depends_on:
-      - api
+      - "3000:3000"  # Map the development server's port 3000 to the host
+    stdin_open: true  # Keep the container open for interactive input
+    tty: true         # Allocate a pseudo-TTY for the container
+    environment:
+      - NODE_ENV=development  # Optional: Explicitly set the environment to development
     networks:
       - kafka_network
 
