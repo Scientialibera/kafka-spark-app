@@ -1,0 +1,114 @@
+.devices-page {
+  display: flex;
+  height: 1104px;
+  background-color: #ffffff;
+}
+
+.devices-page .page-content {
+  margin-left: 250px; /* Sidebar width */
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.devices-page .add-device-form,
+.devices-page .search-input {
+  display: flex;
+  gap: 10px;
+}
+
+.devices-page .search-input {
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.devices-page .add-device-form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.devices-page .add-device-form button {
+  padding: 10px 20px;
+  background-color: #636ae8;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.devices-page .add-device-form button:hover {
+  background-color: #4850e4;
+}
+
+.devices-page .devices-list {
+  background: #f9f9f9;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enable vertical scrolling */
+  flex: 1;
+}
+
+.devices-page .devices-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.devices-page .device-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.devices-page .device-item h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.devices-page .error-message,
+.devices-page .success-message {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.devices-page .error-message {
+  color: red;
+}
+
+.devices-page .success-message {
+  color: green;
+}
+
+.devices-page .delete-button {
+  background-color: #e8618c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.devices-page .delete-button:hover {
+  background-color: #d3507f;
+}
