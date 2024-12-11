@@ -47,15 +47,17 @@ def get_team_metrics():
         metrics = calculate_metrics()
         return {
             "Team Total Distance Per Game": metrics["Team Metrics"]["Total Distance Per Game"],
-            "Team average speeds per game": metrics["Team Metrics"]["Team average speeds per game"], 
-            "Team max speeds per game": metrics["Team Metrics"]["Team max speeds per game"], 
+            "Team Average Speeds per game": metrics["Team Metrics"]["Team Average Speeds per game"], 
+            "Team Max Speeds per Game": metrics["Team Metrics"]["Team Max Speeds per Game"], 
             "Team Total Injuries": metrics["Team Metrics"]["Total Injuries for All Games"],
-            "Overall max Team Speed": metrics["Team Metrics"]["Overall max Team Speed"],
+            "Team Overall max Speed": metrics["Team Metrics"]["Overall Max Team Speed"],
+            "Best and Worst Recommendations Per Game": metrics["Best and Worst Recommendations Per Game"],
             "Average Team Distance": metrics["Team Metrics"]["Average Distance for All Games"],
             "Average Team Recovery Rate": metrics["Team Metrics"]["Average Team Recovery Rate"],
-            "Average Heart Rate Recovery for All Players": metrics["Team Metrics"]["Average Heart Rate Recovery for All Players"],
-            "Best and Worst Recommendations Per Game": metrics["Best and Worst Recommendations Per Game"],
-            "Player average speeds per game": metrics["Team Metrics"]["Player average speeds per game"], 
+            "Player Average Heart Rate Recovery": metrics["Team Metrics"]["Average Heart Rate Recovery for All Players"],
+            "Player Average Speeds per Game": metrics["Team Metrics"]["Player Average Speeds per Game"], 
+            "Player Average Heart Rate": metrics["Team Metrics"]["Overall Average Heart Rate per Player"],  # New addition
+            "Player Max Heart Rate": metrics["Team Metrics"]["Overall Max Heart Rate per Player"],        # New addition
         }
 
 
@@ -84,17 +86,15 @@ def get_player_overview(player_id: int):
 @router.get("/fatigue-distribution")
 def get_fatigue_distribution():
     """
-    Endpoint to fetch fatigue level distribution across players.
+    Endpoint to fetch fatigue level distribution across players, per game, and for the entire team.
     """
     try:
         fatigue_data = calculate_fatigue_levels()
-        fatigue_levels = fatigue_data["Total Fatigue Levels"]
 
         return {
-            "Low Fatigue": fatigue_levels["Low"],
-            "Medium Fatigue": fatigue_levels["Medium"],
-            "High Fatigue": fatigue_levels["High"],
-            "Detailed Fatigue Data": fatigue_data["Fatigue Levels Per Player"]
+            "Total Fatigue Levels": fatigue_data["Total Fatigue Levels"],        # Aggregated team summary
+            "Fatigue Levels Per Game": fatigue_data["Fatigue Levels Per Game"],  # Fatigue summary per game
+            "Detailed Fatigue Data": fatigue_data["Fatigue Levels Per Player"]   # Fatigue levels per player per game
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -110,10 +110,12 @@ def get_recommendations():
         metrics = calculate_metrics()
         return {
             "Best and Worst Recommendations Per Game": metrics["Recommendations"]["Best and Worst"],
-            "Player Recommendations Per Game": metrics["Recommendations"]["Player Recommendations"]
+            "Player Recommendations Per Game": metrics["Recommendations"]["Player Recommendations"],
+            "Aggregated Team Recommendations": metrics["Recommendations"]["Team Recommendations"]  # New addition
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 
 
@@ -126,7 +128,7 @@ def calculate_metrics():
     # Team-related metrics
     team_distance = c_team_distance()
     average_speed, overall_max_speed, player_average_speeds_per_game, team_average_speeds_per_game, team_max_speeds_per_game = team_speeds()
-    player_heart_rate_recovery, average_team_recovery_rate, avg_heart_rate_recovery_all_players = heart_rate_recovery()
+    player_heart_rate_recovery, average_team_recovery_rate, all_players_recovery_details, player_avg_heart_rate, player_max_heart_rate = heart_rate_recovery()
     injury_data = calculate_injuries()
     fatigue_levels = calculate_fatigue_levels()
 
@@ -226,33 +228,52 @@ def calculate_metrics():
             "Worst Recommendation": worst_player[1],
         }
 
+        # Aggregate team recommendations based on the most frequent player recommendations per game
+        team_recommendations = {}
+        for game, player_recs in player_game_recommendations.items():
+            # Count the frequency of each recommendation
+            rec_count = {}
+            for rec in player_recs.values():
+                rec_count[rec] = rec_count.get(rec, 0) + 1
+            
+            # Find the most popular recommendation
+            most_popular_recommendation = max(rec_count, key=rec_count.get)
+            team_recommendations[game] = most_popular_recommendation
+
+
     return {
         "Team Metrics": {
             "Total Distance Per Game": team_distance["Total Distance Per Game"],
             "Team Total Distance for All Games": team_distance["Team Total Distance for All Games"],
             "Average Distance for All Games": team_distance["Average Distance for All Games"],
             "Average Team Recovery Rate": average_team_recovery_rate,
-            "Average Heart Rate Recovery for All Players": avg_heart_rate_recovery_all_players,
+            "Average Heart Rate Recovery for All Players": all_players_recovery_details,
             "Average Player Speed per Game": player_average_speeds_per_game,
             "Average Team Speed per Game": team_average_speeds_per_game,
             "Max Team Speed per Game": team_max_speeds_per_game,
-            "Total Injuries for All Games": {
+            "Overall Average Speed": average_speed,
+            "Overall Max Team Speed": overall_max_speed,
+            "Player Average Speeds per Game": player_average_speeds_per_game,
+            "Team Average Speeds per game": team_average_speeds_per_game,
+            "Team Max Speeds per Game": team_max_speeds_per_game,
+            "Overall Average Heart Rate per Player": player_avg_heart_rate,  # New addition
+            "Overall Max Heart Rate per Player": player_max_heart_rate,    # New addition
+
+            "Total Injuries for All Games": 
+            {
                 game: sum(player["Injuries"] for player in metrics_list)
                 for game, metrics_list in player_game_metrics.items()
             },
-            "Overall average Speed": average_speed,
-            "Overall max Team Speed": overall_max_speed,
-            "Player average speeds per game": player_average_speeds_per_game,
-            "Team average speeds per game": team_average_speeds_per_game,
-            "Team max speeds per game": team_max_speeds_per_game
+
         },
         "Best and Worst Recommendations Per Game": best_and_worst_recommendations_per_game,
         "Recommendations": {
             "Best and Worst": best_and_worst_recommendations_per_game,
-            "Player Recommendations": player_game_recommendations  # Add this line
-        }
-}
+            "Player Recommendations": player_game_recommendations,
+            "Team Recommendations": team_recommendations  # New addition
 
+        }
+    }
 
 def c_team_distance():
     """
@@ -392,24 +413,32 @@ def parse_timestamp(timestamp):
 def heart_rate_recovery():
     """
     Calculates the average heart rate recovery (beats per minute) per player, for each game,
-    and the detailed heart rate recovery for all players across all games.
+    the detailed heart rate recovery for all players across all games, overall average heart rate,
+    and overall maximum heart rate per player.
 
     Returns:
         Tuple:
             - Player recovery data with per-game recovery rates.
             - Average team recovery rate.
             - Detailed breakdown of heart rate recovery for all players and all games.
+            - Overall average heart rate for each player.
+            - Overall maximum heart rate for each player.
     """
     player_averages = {}
     total_team_recovery_rate = 0
     team_recovery_count = 0
     all_players_recovery_details = {}  # To store detailed recovery rates for all players
+    player_avg_heart_rate = {}         # To store overall average heart rate per player
+    player_max_heart_rate = {}         # To store overall maximum heart rate per player
 
     for player_id in range(1, 11):  # Loop through 10 players
         heart_rate_path = os.path.join(HISTORICAL_DATA_PATH, f"player_heart_rate_{player_id}")
 
         # Initialize metrics for players
         total_recovery_rate = 0
+        total_heart_rate = 0
+        max_heart_rate_overall = 0
+        total_readings = 0
         run_count = 0
         per_game_recovery_rates = {}
 
@@ -433,6 +462,11 @@ def heart_rate_recovery():
             for entry in data:
                 heart_rate = entry["heart_rate"]
                 timestamp = parse_timestamp(entry["timestamp"])
+
+                # Track overall heart rate metrics
+                total_heart_rate += heart_rate
+                total_readings += 1
+                max_heart_rate_overall = max(max_heart_rate_overall, heart_rate)
 
                 if heart_rate > max_heart_rate:
                     max_heart_rate = heart_rate
@@ -471,10 +505,14 @@ def heart_rate_recovery():
                 "Per Game Recovery Rates": per_game_recovery_rates,
             }
 
+        # Store overall average heart rate and max heart rate for each player
+        player_avg_heart_rate[player_id] = round(total_heart_rate / total_readings, 2) if total_readings > 0 else 0
+        player_max_heart_rate[player_id] = max_heart_rate_overall
+
     # Calculate average team recovery rate
     average_team_recovery_rate = round(total_team_recovery_rate / team_recovery_count, 2) if team_recovery_count > 0 else None
 
-    return player_averages, average_team_recovery_rate, all_players_recovery_details
+    return player_averages, average_team_recovery_rate, all_players_recovery_details, player_avg_heart_rate, player_max_heart_rate
 
 
 def calculate_injuries():
@@ -535,16 +573,21 @@ def calculate_fatigue_levels():
     Calculates the fatigue levels for each player based on percentage changes, consecutive declines, and variability in distances.
 
     Returns:
-        Dictionary: Fatigue levels for each player and overall totals.
+        Dictionary: 
+            - Fatigue levels for each player across all games.
+            - Aggregated fatigue levels as a string for the whole team.
+            - Fatigue levels aggregated for each game.
     """
     fatigue_levels = {"Low": 0, "Medium": 0, "High": 0}  # Overall fatigue levels
     player_fatigue_data = {}  # Fatigue levels per player
+    game_fatigue_data = {}  # Fatigue levels aggregated per game
 
     for player_folder in os.listdir(HISTORICAL_DATA_PATH):  # Loop through all player folders
         if not player_folder.startswith("gps_"):  # Skip non-GPS folders
             continue
 
         player_id = int(player_folder.split("_")[1])  # Extract player ID
+        player_fatigue_data[player_id] = {}  # Store fatigue levels per game for the player
         distances = []  # List to store total distances per game
 
         # Loop through game or run folders for each player
@@ -573,50 +616,65 @@ def calculate_fatigue_levels():
 
             distances.append(total_distance)
 
-        # Calculate percentage changes
-        percentage_changes = []
-        consecutive_declines = 0
-        max_consecutive_declines = 0
+            # Calculate fatigue level for this game
+            fatigue_level = determine_fatigue_level(distances)
+            player_fatigue_data[player_id][run_path] = fatigue_level
 
-        for i in range(1, len(distances)):
-            if distances[i - 1] != 0:
-                change = ((distances[i] - distances[i - 1]) / distances[i - 1]) * 100
-                percentage_changes.append(change)
+            # Aggregate fatigue levels per game
+            if run_path not in game_fatigue_data:
+                game_fatigue_data[run_path] = {"Low": 0, "Medium": 0, "High": 0}
+            game_fatigue_data[run_path][fatigue_level] += 1
 
-                # Track consecutive declines
-                if change < 0:
-                    consecutive_declines += 1
-                else:
-                    max_consecutive_declines = max(max_consecutive_declines, consecutive_declines)
-                    consecutive_declines = 0
+            # Update overall counts
+            fatigue_levels[fatigue_level] += 1
 
-        max_consecutive_declines = max(max_consecutive_declines, consecutive_declines)
+    # Convert overall fatigue levels to a string summary
+    team_fatigue_summary = f"Low: {fatigue_levels['Low']}, Medium: {fatigue_levels['Medium']}, High: {fatigue_levels['High']}"
 
-        # Calculate standard deviation of distances
-        std_dev = np.std(distances) if len(distances) > 1 else 0
-        avg_percentage_change = sum(percentage_changes) / len(percentage_changes) if percentage_changes else 0
-
-        # Determine fatigue level based on multiple factors
-        if avg_percentage_change >= -5 and max_consecutive_declines <= 2 and std_dev < 1000:
-            fatigue_level = "Low"
-        elif -15 < avg_percentage_change < -5 or (2 < max_consecutive_declines <= 4) or (1000 <= std_dev < 2000):
-            fatigue_level = "Medium"
-        else:
-            fatigue_level = "High"
-
-        # Update player fatigue data
-        player_fatigue_data[player_id] = {
-            "Fatigue Level": fatigue_level,
-            "Distances": distances,
-            "Average Percentage Change": round(avg_percentage_change, 2),
-            "Max Consecutive Declines": max_consecutive_declines,
-            "Standard Deviation": round(std_dev, 2),
-        }
-
-        fatigue_levels[fatigue_level] += 1  # Update overall counts
+    # Convert game fatigue levels to string summaries
+    game_fatigue_summary = {
+        game: f"Low: {counts['Low']}, Medium: {counts['Medium']}, High: {counts['High']}"
+        for game, counts in game_fatigue_data.items()
+    }
 
     return {
         "Fatigue Levels Per Player": player_fatigue_data,
-        "Total Fatigue Levels": fatigue_levels,
+        "Total Fatigue Levels": team_fatigue_summary,
+        "Fatigue Levels Per Game": game_fatigue_summary,
     }
 
+
+def determine_fatigue_level(distances):
+    """
+    Helper function to determine the fatigue level based on distances.
+    """
+    # Calculate percentage changes
+    percentage_changes = []
+    consecutive_declines = 0
+    max_consecutive_declines = 0
+
+    for i in range(1, len(distances)):
+        if distances[i - 1] != 0:
+            change = ((distances[i] - distances[i - 1]) / distances[i - 1]) * 100
+            percentage_changes.append(change)
+
+            # Track consecutive declines
+            if change < 0:
+                consecutive_declines += 1
+            else:
+                max_consecutive_declines = max(max_consecutive_declines, consecutive_declines)
+                consecutive_declines = 0
+
+    max_consecutive_declines = max(max_consecutive_declines, consecutive_declines)
+
+    # Calculate standard deviation of distances
+    std_dev = np.std(distances) if len(distances) > 1 else 0
+    avg_percentage_change = sum(percentage_changes) / len(percentage_changes) if percentage_changes else 0
+
+    # Determine fatigue level based on multiple factors
+    if avg_percentage_change >= -5 and max_consecutive_declines <= 2 and std_dev < 1000:
+        return "Low"
+    elif -15 < avg_percentage_change < -5 or (2 < max_consecutive_declines <= 4) or (1000 <= std_dev < 2000):
+        return "Medium"
+    else:
+        return "High"
