@@ -14,22 +14,41 @@ GAME_DURATION_MINUTES = 90
 # Time interval in seconds (0.5 seconds)
 INTERVAL_SECONDS = 0.5
 
-# Speed value ranges (arbitrary ranges for synthetic data)
-SPEED_X_RANGE = (0, 10)
-SPEED_Y_RANGE = (0, 10)
-SPEED_Z_RANGE = (0, 10)
+# Speed value ranges (updated ranges for more variability)
+SPEED_X_RANGE = (0, 12)  # Increased upper bound
+SPEED_Y_RANGE = (0, 12)
+SPEED_Z_RANGE = (0, 5)   # More limited Z variation
 
-# Function to generate synthetic speed data
+# Function to generate synthetic speed data with variability patterns
 def generate_speed_data(start_time, game_duration_minutes, interval_seconds):
     num_points = int((game_duration_minutes * 60) / interval_seconds)
     speed_data = []
     timestamp = start_time
 
-    for _ in range(num_points):
-        # Generate random speeds within the defined ranges
-        speed_x = round(random.uniform(*SPEED_X_RANGE), 2)
-        speed_y = round(random.uniform(*SPEED_Y_RANGE), 2)
+    for i in range(num_points):
+        # Introduce variability patterns by alternating high and low speed phases
+        phase = i // 300  # Each phase lasts 300 intervals (~2.5 minutes)
+        if phase % 2 == 0:
+            # Higher speeds in this phase
+            speed_x = round(random.uniform(5, 12), 2)
+            speed_y = round(random.uniform(5, 12), 2)
+        else:
+            # Lower speeds in this phase
+            speed_x = round(random.uniform(0, 6), 2)
+            speed_y = round(random.uniform(0, 6), 2)
+
+        # Random Z speed within the defined range
         speed_z = round(random.uniform(*SPEED_Z_RANGE), 2)
+
+        # Random small modifiers for additional variability
+        speed_x += round(random.uniform(-1, 1), 2)
+        speed_y += round(random.uniform(-1, 1), 2)
+        speed_z += round(random.uniform(-0.5, 0.5), 2)
+
+        # Ensure speeds are not negative
+        speed_x = max(speed_x, 0)
+        speed_y = max(speed_y, 0)
+        speed_z = max(speed_z, 0)
 
         # Format timestamp with milliseconds
         formatted_timestamp = timestamp.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3]

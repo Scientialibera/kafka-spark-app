@@ -2,7 +2,7 @@
     "players": {
         "1": {
             "run_001": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_002": {
                 "injuries": 0
@@ -26,7 +26,7 @@
                 "injuries": 0
             },
             "run_009": {
-                "injuries": 2
+                "injuries": 0
             },
             "run_010": {
                 "injuries": 1
@@ -91,12 +91,12 @@
                 "injuries": 0
             },
             "run_015": {
-                "injuries": 2
+                "injuries": 0
             }
         },
         "3": {
             "run_001": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_002": {
                 "injuries": 0
@@ -108,13 +108,13 @@
                 "injuries": 0
             },
             "run_005": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_006": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_007": {
-                "injuries": 2
+                "injuries": 0
             },
             "run_008": {
                 "injuries": 0
@@ -126,10 +126,10 @@
                 "injuries": 0
             },
             "run_011": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_012": {
-                "injuries": 2
+                "injuries": 0
             },
             "run_013": {
                 "injuries": 0
@@ -143,13 +143,13 @@
         },
         "4": {
             "run_001": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_002": {
                 "injuries": 0
             },
             "run_003": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_004": {
                 "injuries": 0
@@ -170,7 +170,7 @@
                 "injuries": 0
             },
             "run_010": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_011": {
                 "injuries": 0
@@ -193,13 +193,13 @@
                 "injuries": 0
             },
             "run_002": {
-                "injuries": 0
+                "injuries": 1
             },
             "run_003": {
                 "injuries": 0
             },
             "run_004": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_005": {
                 "injuries": 0
@@ -208,7 +208,7 @@
                 "injuries": 0
             },
             "run_007": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_008": {
                 "injuries": 0
@@ -232,7 +232,7 @@
                 "injuries": 0
             },
             "run_015": {
-                "injuries": 2
+                "injuries": 0
             }
         },
         "6": {
@@ -252,7 +252,7 @@
                 "injuries": 0
             },
             "run_006": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_007": {
                 "injuries": 0
@@ -261,7 +261,7 @@
                 "injuries": 0
             },
             "run_009": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_010": {
                 "injuries": 0
@@ -270,7 +270,7 @@
                 "injuries": 0
             },
             "run_012": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_013": {
                 "injuries": 0
@@ -279,7 +279,7 @@
                 "injuries": 0
             },
             "run_015": {
-                "injuries": 1
+                "injuries": 0
             }
         },
         "7": {
@@ -287,10 +287,10 @@
                 "injuries": 0
             },
             "run_002": {
-                "injuries": 0
+                "injuries": 1
             },
             "run_003": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_004": {
                 "injuries": 0
@@ -302,13 +302,13 @@
                 "injuries": 0
             },
             "run_007": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_008": {
                 "injuries": 0
             },
             "run_009": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_010": {
                 "injuries": 0
@@ -320,7 +320,7 @@
                 "injuries": 0
             },
             "run_013": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_014": {
                 "injuries": 0
@@ -334,10 +334,10 @@
                 "injuries": 0
             },
             "run_002": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_003": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_004": {
                 "injuries": 0
@@ -352,13 +352,13 @@
                 "injuries": 0
             },
             "run_008": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_009": {
                 "injuries": 0
             },
             "run_010": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_011": {
                 "injuries": 0
@@ -370,10 +370,10 @@
                 "injuries": 0
             },
             "run_014": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_015": {
-                "injuries": 1
+                "injuries": 0
             }
         },
         "9": {
@@ -387,19 +387,19 @@
                 "injuries": 0
             },
             "run_004": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_005": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_006": {
                 "injuries": 0
             },
             "run_007": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_008": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_009": {
                 "injuries": 0
@@ -411,7 +411,7 @@
                 "injuries": 0
             },
             "run_012": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_013": {
                 "injuries": 0
@@ -420,7 +420,7 @@
                 "injuries": 0
             },
             "run_015": {
-                "injuries": 1
+                "injuries": 0
             }
         },
         "10": {
@@ -428,7 +428,7 @@
                 "injuries": 0
             },
             "run_002": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_003": {
                 "injuries": 0
@@ -437,7 +437,7 @@
                 "injuries": 0
             },
             "run_005": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_006": {
                 "injuries": 0
@@ -464,10 +464,10 @@
                 "injuries": 1
             },
             "run_014": {
-                "injuries": 1
+                "injuries": 0
             },
             "run_015": {
-                "injuries": 2
+                "injuries": 0
             }
         }
     }
