@@ -1,0 +1,37 @@
+[
+    {
+        "device_name": "player_heart_rate_2",
+        "schema": {
+            "heart_rate": 145,
+            "timestamp": "2024-10-22T19:30:12"
+        }
+    },
+    {
+        "device_name": "player_heart_rate_2",
+        "schema": {
+            "heart_rate": 150,
+            "timestamp": "2024-10-22T19:30:20"
+        }
+    },
+    {
+        "device_name": "player_heart_rate_2",
+        "schema": {
+            "heart_rate": 158,
+            "timestamp": "2024-10-22T19:30:50"
+        }
+    },
+    {
+        "device_name": "player_heart_rate_2",
+        "schema": {
+            "heart_rate": 140,
+            "timestamp": "2024-10-22T19:31:20"
+        }
+    },
+    {
+        "device_name": "player_heart_rate_2",
+        "schema": {
+            "heart_rate": 130,
+            "timestamp": "2024-10-22T19:32:00"
+        }
+    }
+]

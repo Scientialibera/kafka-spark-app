@@ -1,0 +1,7 @@
+{
+    "device_name": "player_temperature_6",
+    "schema": {
+        "temperature": "float",
+        "timestamp": "string"
+    }
+}

@@ -1,22 +1,1006 @@
 [
     {
+        "heart_rate": 131,
+        "timestamp": "2024-12-11T11:28:36"
+    },
+    {
+        "heart_rate": 175,
+        "timestamp": "2024-12-11T11:28:45.057"
+    },
+    {
+        "heart_rate": 151,
+        "timestamp": "2024-12-11T11:29:00"
+    },
+    {
+        "heart_rate": 178,
+        "timestamp": "2024-12-11T11:29:14.057"
+    },
+    {
+        "heart_rate": 161,
+        "timestamp": "2024-12-11T11:29:25"
+    },
+    {
+        "heart_rate": 147,
+        "timestamp": "2024-12-11T11:29:50.057"
+    },
+    {
+        "heart_rate": 175,
+        "timestamp": "2024-12-11T11:30:16"
+    },
+    {
+        "heart_rate": 162,
+        "timestamp": "2024-12-11T11:30:21.057"
+    },
+    {
+        "heart_rate": 161,
+        "timestamp": "2024-12-11T11:30:39"
+    },
+    {
         "heart_rate": 152,
-        "timestamp": "2024-10-21T18:22:45"
+        "timestamp": "2024-12-11T11:30:51.057"
     },
     {
-        "heart_rate": 70,
-        "timestamp": "2024-10-21T18:22:45.500000"
+        "heart_rate": 165,
+        "timestamp": "2024-12-11T11:31:21"
     },
     {
-        "heart_rate": 61,
-        "timestamp": "2024-10-21T18:22:46"
+        "heart_rate": 152,
+        "timestamp": "2024-12-11T11:31:51.057"
+    },
+    {
+        "heart_rate": 166,
+        "timestamp": "2024-12-11T11:32:03"
+    },
+    {
+        "heart_rate": 170,
+        "timestamp": "2024-12-11T11:32:09.057"
+    },
+    {
+        "heart_rate": 173,
+        "timestamp": "2024-12-11T11:32:23"
+    },
+    {
+        "heart_rate": 133,
+        "timestamp": "2024-12-11T11:32:31.057"
+    },
+    {
+        "heart_rate": 142,
+        "timestamp": "2024-12-11T11:33:00"
+    },
+    {
+        "heart_rate": 173,
+        "timestamp": "2024-12-11T11:33:17.057"
+    },
+    {
+        "heart_rate": 160,
+        "timestamp": "2024-12-11T11:33:36"
     },
     {
         "heart_rate": 131,
-        "timestamp": "2024-10-21T18:22:46.500000"
+        "timestamp": "2024-12-11T11:34:02.057"
     },
     {
-        "heart_rate": 62,
-        "timestamp": "2024-10-21T18:22:47"
+        "heart_rate": 147,
+        "timestamp": "2024-12-11T11:34:27"
+    },
+    {
+        "heart_rate": 152,
+        "timestamp": "2024-12-11T11:34:46.057"
+    },
+    {
+        "heart_rate": 135,
+        "timestamp": "2024-12-11T11:34:55"
+    },
+    {
+        "heart_rate": 153,
+        "timestamp": "2024-12-11T11:35:07.057"
+    },
+    {
+        "heart_rate": 126,
+        "timestamp": "2024-12-11T11:35:32"
+    },
+    {
+        "heart_rate": 137,
+        "timestamp": "2024-12-11T11:35:59.057"
+    },
+    {
+        "heart_rate": 171,
+        "timestamp": "2024-12-11T11:36:22"
+    },
+    {
+        "heart_rate": 158,
+        "timestamp": "2024-12-11T11:36:47.057"
+    },
+    {
+        "heart_rate": 132,
+        "timestamp": "2024-12-11T11:37:02"
+    },
+    {
+        "heart_rate": 134,
+        "timestamp": "2024-12-11T11:37:24.057"
+    },
+    {
+        "heart_rate": 163,
+        "timestamp": "2024-12-11T11:37:48"
+    },
+    {
+        "heart_rate": 169,
+        "timestamp": "2024-12-11T11:37:59.057"
+    },
+    {
+        "heart_rate": 142,
+        "timestamp": "2024-12-11T11:38:04"
+    },
+    {
+        "heart_rate": 130,
+        "timestamp": "2024-12-11T11:38:30.057"
+    },
+    {
+        "heart_rate": 149,
+        "timestamp": "2024-12-11T11:38:59"
+    },
+    {
+        "heart_rate": 163,
+        "timestamp": "2024-12-11T11:39:26.057"
+    },
+    {
+        "heart_rate": 127,
+        "timestamp": "2024-12-11T11:39:38"
+    },
+    {
+        "heart_rate": 177,
+        "timestamp": "2024-12-11T11:39:58.057"
+    },
+    {
+        "heart_rate": 136,
+        "timestamp": "2024-12-11T11:40:21"
+    },
+    {
+        "heart_rate": 125,
+        "timestamp": "2024-12-11T11:40:40.057"
+    },
+    {
+        "heart_rate": 151,
+        "timestamp": "2024-12-11T11:40:51"
+    },
+    {
+        "heart_rate": 139,
+        "timestamp": "2024-12-11T11:40:57.057"
+    },
+    {
+        "heart_rate": 125,
+        "timestamp": "2024-12-11T11:41:08"
+    },
+    {
+        "heart_rate": 139,
+        "timestamp": "2024-12-11T11:41:33.057"
+    },
+    {
+        "heart_rate": 127,
+        "timestamp": "2024-12-11T11:41:58"
+    },
+    {
+        "heart_rate": 154,
+        "timestamp": "2024-12-11T11:42:18.057"
+    },
+    {
+        "heart_rate": 148,
+        "timestamp": "2024-12-11T11:42:25"
+    },
+    {
+        "heart_rate": 154,
+        "timestamp": "2024-12-11T11:42:38.057"
+    },
+    {
+        "heart_rate": 135,
+        "timestamp": "2024-12-11T11:42:46"
+    },
+    {
+        "heart_rate": 142,
+        "timestamp": "2024-12-11T11:42:52.057"
+    },
+    {
+        "heart_rate": 147,
+        "timestamp": "2024-12-11T11:43:05"
+    },
+    {
+        "heart_rate": 146,
+        "timestamp": "2024-12-11T11:43:29.057"
+    },
+    {
+        "heart_rate": 147,
+        "timestamp": "2024-12-11T11:43:58"
+    },
+    {
+        "heart_rate": 121,
+        "timestamp": "2024-12-11T11:44:22.057"
+    },
+    {
+        "heart_rate": 166,
+        "timestamp": "2024-12-11T11:44:51"
+    },
+    {
+        "heart_rate": 121,
+        "timestamp": "2024-12-11T11:44:56.057"
+    },
+    {
+        "heart_rate": 155,
+        "timestamp": "2024-12-11T11:45:12"
+    },
+    {
+        "heart_rate": 167,
+        "timestamp": "2024-12-11T11:45:17.057"
+    },
+    {
+        "heart_rate": 142,
+        "timestamp": "2024-12-11T11:45:39"
+    },
+    {
+        "heart_rate": 174,
+        "timestamp": "2024-12-11T11:45:45.057"
+    },
+    {
+        "heart_rate": 146,
+        "timestamp": "2024-12-11T11:45:57"
+    },
+    {
+        "heart_rate": 137,
+        "timestamp": "2024-12-11T11:46:27.057"
+    },
+    {
+        "heart_rate": 148,
+        "timestamp": "2024-12-11T11:46:39"
+    },
+    {
+        "heart_rate": 147,
+        "timestamp": "2024-12-11T11:46:58.057"
+    },
+    {
+        "heart_rate": 174,
+        "timestamp": "2024-12-11T11:47:25"
+    },
+    {
+        "heart_rate": 139,
+        "timestamp": "2024-12-11T11:47:42.057"
+    },
+    {
+        "heart_rate": 123,
+        "timestamp": "2024-12-11T11:47:59"
+    },
+    {
+        "heart_rate": 175,
+        "timestamp": "2024-12-11T11:48:27.057"
+    },
+    {
+        "heart_rate": 141,
+        "timestamp": "2024-12-11T11:48:48"
+    },
+    {
+        "heart_rate": 165,
+        "timestamp": "2024-12-11T11:49:17.057"
+    },
+    {
+        "heart_rate": 144,
+        "timestamp": "2024-12-11T11:49:29"
+    },
+    {
+        "heart_rate": 157,
+        "timestamp": "2024-12-11T11:49:49.057"
+    },
+    {
+        "heart_rate": 135,
+        "timestamp": "2024-12-11T11:50:07"
+    },
+    {
+        "heart_rate": 168,
+        "timestamp": "2024-12-11T11:50:34.057"
+    },
+    {
+        "heart_rate": 140,
+        "timestamp": "2024-12-11T11:51:00"
+    },
+    {
+        "heart_rate": 178,
+        "timestamp": "2024-12-11T11:51:27.057"
+    },
+    {
+        "heart_rate": 143,
+        "timestamp": "2024-12-11T11:51:44"
+    },
+    {
+        "heart_rate": 148,
+        "timestamp": "2024-12-11T11:51:53.057"
+    },
+    {
+        "heart_rate": 122,
+        "timestamp": "2024-12-11T11:51:59"
+    },
+    {
+        "heart_rate": 140,
+        "timestamp": "2024-12-11T11:52:08.057"
+    },
+    {
+        "heart_rate": 172,
+        "timestamp": "2024-12-11T11:52:15"
+    },
+    {
+        "heart_rate": 124,
+        "timestamp": "2024-12-11T11:52:26.057"
+    },
+    {
+        "heart_rate": 163,
+        "timestamp": "2024-12-11T11:52:53"
+    },
+    {
+        "heart_rate": 153,
+        "timestamp": "2024-12-11T11:53:14.057"
+    },
+    {
+        "heart_rate": 134,
+        "timestamp": "2024-12-11T11:53:27"
+    },
+    {
+        "heart_rate": 140,
+        "timestamp": "2024-12-11T11:53:42.057"
+    },
+    {
+        "heart_rate": 135,
+        "timestamp": "2024-12-11T11:54:00"
+    },
+    {
+        "heart_rate": 148,
+        "timestamp": "2024-12-11T11:54:18.057"
+    },
+    {
+        "heart_rate": 142,
+        "timestamp": "2024-12-11T11:54:25"
+    },
+    {
+        "heart_rate": 170,
+        "timestamp": "2024-12-11T11:54:54.057"
+    },
+    {
+        "heart_rate": 176,
+        "timestamp": "2024-12-11T11:54:59"
+    },
+    {
+        "heart_rate": 124,
+        "timestamp": "2024-12-11T11:55:19.057"
+    },
+    {
+        "heart_rate": 122,
+        "timestamp": "2024-12-11T11:55:46"
+    },
+    {
+        "heart_rate": 157,
+        "timestamp": "2024-12-11T11:56:01.057"
+    },
+    {
+        "heart_rate": 166,
+        "timestamp": "2024-12-11T11:56:14"
+    },
+    {
+        "heart_rate": 166,
+        "timestamp": "2024-12-11T11:56:39.057"
+    },
+    {
+        "heart_rate": 172,
+        "timestamp": "2024-12-11T11:56:47"
+    },
+    {
+        "heart_rate": 139,
+        "timestamp": "2024-12-11T11:57:09.057"
+    },
+    {
+        "heart_rate": 170,
+        "timestamp": "2024-12-11T11:57:22"
+    },
+    {
+        "heart_rate": 171,
+        "timestamp": "2024-12-11T11:57:42.057"
+    },
+    {
+        "heart_rate": 127,
+        "timestamp": "2024-12-11T11:57:48"
+    },
+    {
+        "heart_rate": 139,
+        "timestamp": "2024-12-11T11:58:08.057"
+    },
+    {
+        "heart_rate": 146,
+        "timestamp": "2024-12-11T11:58:13"
+    },
+    {
+        "heart_rate": 124,
+        "timestamp": "2024-12-11T11:58:29.057"
+    },
+    {
+        "heart_rate": 170,
+        "timestamp": "2024-12-11T11:58:54"
+    },
+    {
+        "heart_rate": 126,
+        "timestamp": "2024-12-11T11:59:12.057"
+    },
+    {
+        "heart_rate": 150,
+        "timestamp": "2024-12-11T11:59:19"
+    },
+    {
+        "heart_rate": 179,
+        "timestamp": "2024-12-11T11:59:30.057"
+    },
+    {
+        "heart_rate": 144,
+        "timestamp": "2024-12-11T11:59:44"
+    },
+    {
+        "heart_rate": 170,
+        "timestamp": "2024-12-11T12:00:13.057"
+    },
+    {
+        "heart_rate": 150,
+        "timestamp": "2024-12-11T12:00:21"
+    },
+    {
+        "heart_rate": 125,
+        "timestamp": "2024-12-11T12:00:28.057"
+    },
+    {
+        "heart_rate": 167,
+        "timestamp": "2024-12-11T12:00:43"
+    },
+    {
+        "heart_rate": 133,
+        "timestamp": "2024-12-11T12:00:57.057"
+    },
+    {
+        "heart_rate": 164,
+        "timestamp": "2024-12-11T12:01:10"
+    },
+    {
+        "heart_rate": 152,
+        "timestamp": "2024-12-11T12:01:30.057"
+    },
+    {
+        "heart_rate": 158,
+        "timestamp": "2024-12-11T12:01:36"
+    },
+    {
+        "heart_rate": 133,
+        "timestamp": "2024-12-11T12:02:06.057"
+    },
+    {
+        "heart_rate": 163,
+        "timestamp": "2024-12-11T12:02:24"
+    },
+    {
+        "heart_rate": 124,
+        "timestamp": "2024-12-11T12:02:43.057"
+    },
+    {
+        "heart_rate": 159,
+        "timestamp": "2024-12-11T12:03:12"
+    },
+    {
+        "heart_rate": 169,
+        "timestamp": "2024-12-11T12:03:34.057"
+    },
+    {
+        "heart_rate": 179,
+        "timestamp": "2024-12-11T12:03:47"
+    },
+    {
+        "heart_rate": 147,
+        "timestamp": "2024-12-11T12:04:11.057"
+    },
+    {
+        "heart_rate": 139,
+        "timestamp": "2024-12-11T12:04:38"
+    },
+    {
+        "heart_rate": 175,
+        "timestamp": "2024-12-11T12:04:47.057"
+    },
+    {
+        "heart_rate": 130,
+        "timestamp": "2024-12-11T12:04:55"
+    },
+    {
+        "heart_rate": 177,
+        "timestamp": "2024-12-11T12:05:02.057"
+    },
+    {
+        "heart_rate": 170,
+        "timestamp": "2024-12-11T12:05:09"
+    },
+    {
+        "heart_rate": 171,
+        "timestamp": "2024-12-11T12:05:27.057"
+    },
+    {
+        "heart_rate": 137,
+        "timestamp": "2024-12-11T12:05:52"
+    },
+    {
+        "heart_rate": 134,
+        "timestamp": "2024-12-11T12:06:05.057"
+    },
+    {
+        "heart_rate": 137,
+        "timestamp": "2024-12-11T12:06:25"
+    },
+    {
+        "heart_rate": 169,
+        "timestamp": "2024-12-11T12:06:50.057"
+    },
+    {
+        "heart_rate": 143,
+        "timestamp": "2024-12-11T12:07:07"
+    },
+    {
+        "heart_rate": 171,
+        "timestamp": "2024-12-11T12:07:30.057"
+    },
+    {
+        "heart_rate": 129,
+        "timestamp": "2024-12-11T12:07:50"
+    },
+    {
+        "heart_rate": 177,
+        "timestamp": "2024-12-11T12:08:19.057"
+    },
+    {
+        "heart_rate": 136,
+        "timestamp": "2024-12-11T12:08:28"
+    },
+    {
+        "heart_rate": 155,
+        "timestamp": "2024-12-11T12:08:58.057"
+    },
+    {
+        "heart_rate": 171,
+        "timestamp": "2024-12-11T12:09:23"
+    },
+    {
+        "heart_rate": 129,
+        "timestamp": "2024-12-11T12:09:47.057"
+    },
+    {
+        "heart_rate": 157,
+        "timestamp": "2024-12-11T12:10:01"
+    },
+    {
+        "heart_rate": 123,
+        "timestamp": "2024-12-11T12:10:15.057"
+    },
+    {
+        "heart_rate": 156,
+        "timestamp": "2024-12-11T12:10:36"
+    },
+    {
+        "heart_rate": 153,
+        "timestamp": "2024-12-11T12:10:49.057"
+    },
+    {
+        "heart_rate": 128,
+        "timestamp": "2024-12-11T12:11:02"
+    },
+    {
+        "heart_rate": 132,
+        "timestamp": "2024-12-11T12:11:30.057"
+    },
+    {
+        "heart_rate": 176,
+        "timestamp": "2024-12-11T12:11:36"
+    },
+    {
+        "heart_rate": 140,
+        "timestamp": "2024-12-11T12:11:57.057"
+    },
+    {
+        "heart_rate": 124,
+        "timestamp": "2024-12-11T12:12:13"
+    },
+    {
+        "heart_rate": 128,
+        "timestamp": "2024-12-11T12:12:31.057"
+    },
+    {
+        "heart_rate": 166,
+        "timestamp": "2024-12-11T12:12:57"
+    },
+    {
+        "heart_rate": 143,
+        "timestamp": "2024-12-11T12:13:06.057"
+    },
+    {
+        "heart_rate": 167,
+        "timestamp": "2024-12-11T12:13:32"
+    },
+    {
+        "heart_rate": 140,
+        "timestamp": "2024-12-11T12:13:44.057"
+    },
+    {
+        "heart_rate": 135,
+        "timestamp": "2024-12-11T12:14:04"
+    },
+    {
+        "heart_rate": 156,
+        "timestamp": "2024-12-11T12:14:10.057"
+    },
+    {
+        "heart_rate": 165,
+        "timestamp": "2024-12-11T12:14:30"
+    },
+    {
+        "heart_rate": 154,
+        "timestamp": "2024-12-11T12:14:48.057"
+    },
+    {
+        "heart_rate": 177,
+        "timestamp": "2024-12-11T12:15:09"
+    },
+    {
+        "heart_rate": 126,
+        "timestamp": "2024-12-11T12:15:26.057"
+    },
+    {
+        "heart_rate": 125,
+        "timestamp": "2024-12-11T12:15:33"
+    },
+    {
+        "heart_rate": 135,
+        "timestamp": "2024-12-11T12:15:49.057"
+    },
+    {
+        "heart_rate": 175,
+        "timestamp": "2024-12-11T12:16:07"
+    },
+    {
+        "heart_rate": 180,
+        "timestamp": "2024-12-11T12:16:14.057"
+    },
+    {
+        "heart_rate": 138,
+        "timestamp": "2024-12-11T12:16:37"
+    },
+    {
+        "heart_rate": 174,
+        "timestamp": "2024-12-11T12:17:02.057"
+    },
+    {
+        "heart_rate": 146,
+        "timestamp": "2024-12-11T12:17:28"
+    },
+    {
+        "heart_rate": 171,
+        "timestamp": "2024-12-11T12:17:54.057"
+    },
+    {
+        "heart_rate": 134,
+        "timestamp": "2024-12-11T12:18:03"
+    },
+    {
+        "heart_rate": 149,
+        "timestamp": "2024-12-11T12:18:17.057"
+    },
+    {
+        "heart_rate": 138,
+        "timestamp": "2024-12-11T12:18:44"
+    },
+    {
+        "heart_rate": 142,
+        "timestamp": "2024-12-11T12:19:13.057"
+    },
+    {
+        "heart_rate": 162,
+        "timestamp": "2024-12-11T12:19:22"
+    },
+    {
+        "heart_rate": 168,
+        "timestamp": "2024-12-11T12:19:50.057"
+    },
+    {
+        "heart_rate": 131,
+        "timestamp": "2024-12-11T12:20:00"
+    },
+    {
+        "heart_rate": 141,
+        "timestamp": "2024-12-11T12:20:10.057"
+    },
+    {
+        "heart_rate": 135,
+        "timestamp": "2024-12-11T12:20:32"
+    },
+    {
+        "heart_rate": 124,
+        "timestamp": "2024-12-11T12:20:45.057"
+    },
+    {
+        "heart_rate": 134,
+        "timestamp": "2024-12-11T12:21:02"
+    },
+    {
+        "heart_rate": 148,
+        "timestamp": "2024-12-11T12:21:26.057"
+    },
+    {
+        "heart_rate": 132,
+        "timestamp": "2024-12-11T12:21:46"
+    },
+    {
+        "heart_rate": 125,
+        "timestamp": "2024-12-11T12:21:54.057"
+    },
+    {
+        "heart_rate": 158,
+        "timestamp": "2024-12-11T12:22:01"
+    },
+    {
+        "heart_rate": 149,
+        "timestamp": "2024-12-11T12:22:07.057"
+    },
+    {
+        "heart_rate": 178,
+        "timestamp": "2024-12-11T12:22:19"
+    },
+    {
+        "heart_rate": 167,
+        "timestamp": "2024-12-11T12:22:41.057"
+    },
+    {
+        "heart_rate": 151,
+        "timestamp": "2024-12-11T12:22:46"
+    },
+    {
+        "heart_rate": 137,
+        "timestamp": "2024-12-11T12:22:57.057"
+    },
+    {
+        "heart_rate": 145,
+        "timestamp": "2024-12-11T12:23:11"
+    },
+    {
+        "heart_rate": 164,
+        "timestamp": "2024-12-11T12:23:35.057"
+    },
+    {
+        "heart_rate": 143,
+        "timestamp": "2024-12-11T12:23:45"
+    },
+    {
+        "heart_rate": 147,
+        "timestamp": "2024-12-11T12:24:07.057"
+    },
+    {
+        "heart_rate": 140,
+        "timestamp": "2024-12-11T12:24:13"
+    },
+    {
+        "heart_rate": 137,
+        "timestamp": "2024-12-11T12:24:32.057"
+    },
+    {
+        "heart_rate": 133,
+        "timestamp": "2024-12-11T12:24:52"
+    },
+    {
+        "heart_rate": 135,
+        "timestamp": "2024-12-11T12:25:00.057"
+    },
+    {
+        "heart_rate": 130,
+        "timestamp": "2024-12-11T12:25:07"
+    },
+    {
+        "heart_rate": 142,
+        "timestamp": "2024-12-11T12:25:32.057"
+    },
+    {
+        "heart_rate": 160,
+        "timestamp": "2024-12-11T12:26:00"
+    },
+    {
+        "heart_rate": 145,
+        "timestamp": "2024-12-11T12:26:07.057"
+    },
+    {
+        "heart_rate": 143,
+        "timestamp": "2024-12-11T12:26:34"
+    },
+    {
+        "heart_rate": 171,
+        "timestamp": "2024-12-11T12:27:04.057"
+    },
+    {
+        "heart_rate": 152,
+        "timestamp": "2024-12-11T12:27:23"
+    },
+    {
+        "heart_rate": 131,
+        "timestamp": "2024-12-11T12:27:44.057"
+    },
+    {
+        "heart_rate": 134,
+        "timestamp": "2024-12-11T12:27:52"
+    },
+    {
+        "heart_rate": 172,
+        "timestamp": "2024-12-11T12:28:10.057"
+    },
+    {
+        "heart_rate": 154,
+        "timestamp": "2024-12-11T12:28:31"
+    },
+    {
+        "heart_rate": 120,
+        "timestamp": "2024-12-11T12:28:40.057"
+    },
+    {
+        "heart_rate": 131,
+        "timestamp": "2024-12-11T12:28:56"
+    },
+    {
+        "heart_rate": 158,
+        "timestamp": "2024-12-11T12:29:19.057"
+    },
+    {
+        "heart_rate": 122,
+        "timestamp": "2024-12-11T12:29:43"
+    },
+    {
+        "heart_rate": 174,
+        "timestamp": "2024-12-11T12:30:06.057"
+    },
+    {
+        "heart_rate": 124,
+        "timestamp": "2024-12-11T12:30:12"
+    },
+    {
+        "heart_rate": 135,
+        "timestamp": "2024-12-11T12:30:26.057"
+    },
+    {
+        "heart_rate": 167,
+        "timestamp": "2024-12-11T12:30:47"
+    },
+    {
+        "heart_rate": 161,
+        "timestamp": "2024-12-11T12:31:05.057"
+    },
+    {
+        "heart_rate": 126,
+        "timestamp": "2024-12-11T12:31:20"
+    },
+    {
+        "heart_rate": 129,
+        "timestamp": "2024-12-11T12:31:44.057"
+    },
+    {
+        "heart_rate": 143,
+        "timestamp": "2024-12-11T12:31:58"
+    },
+    {
+        "heart_rate": 127,
+        "timestamp": "2024-12-11T12:32:18.057"
+    },
+    {
+        "heart_rate": 131,
+        "timestamp": "2024-12-11T12:32:25"
+    },
+    {
+        "heart_rate": 162,
+        "timestamp": "2024-12-11T12:32:40.057"
+    },
+    {
+        "heart_rate": 149,
+        "timestamp": "2024-12-11T12:33:10"
+    },
+    {
+        "heart_rate": 169,
+        "timestamp": "2024-12-11T12:33:28.057"
+    },
+    {
+        "heart_rate": 173,
+        "timestamp": "2024-12-11T12:33:36"
+    },
+    {
+        "heart_rate": 161,
+        "timestamp": "2024-12-11T12:34:05.057"
+    },
+    {
+        "heart_rate": 172,
+        "timestamp": "2024-12-11T12:34:28"
+    },
+    {
+        "heart_rate": 140,
+        "timestamp": "2024-12-11T12:34:46.057"
+    },
+    {
+        "heart_rate": 141,
+        "timestamp": "2024-12-11T12:35:03"
+    },
+    {
+        "heart_rate": 155,
+        "timestamp": "2024-12-11T12:35:19.057"
+    },
+    {
+        "heart_rate": 174,
+        "timestamp": "2024-12-11T12:35:40"
+    },
+    {
+        "heart_rate": 167,
+        "timestamp": "2024-12-11T12:36:10.057"
+    },
+    {
+        "heart_rate": 131,
+        "timestamp": "2024-12-11T12:36:40"
+    },
+    {
+        "heart_rate": 148,
+        "timestamp": "2024-12-11T12:36:57.057"
+    },
+    {
+        "heart_rate": 173,
+        "timestamp": "2024-12-11T12:37:17"
+    },
+    {
+        "heart_rate": 177,
+        "timestamp": "2024-12-11T12:37:46.057"
+    },
+    {
+        "heart_rate": 152,
+        "timestamp": "2024-12-11T12:37:56"
+    },
+    {
+        "heart_rate": 141,
+        "timestamp": "2024-12-11T12:38:12.057"
+    },
+    {
+        "heart_rate": 125,
+        "timestamp": "2024-12-11T12:38:24"
+    },
+    {
+        "heart_rate": 167,
+        "timestamp": "2024-12-11T12:38:54.057"
+    },
+    {
+        "heart_rate": 168,
+        "timestamp": "2024-12-11T12:39:04"
+    },
+    {
+        "heart_rate": 163,
+        "timestamp": "2024-12-11T12:39:24.057"
+    },
+    {
+        "heart_rate": 157,
+        "timestamp": "2024-12-11T12:39:42"
+    },
+    {
+        "heart_rate": 165,
+        "timestamp": "2024-12-11T12:40:03.057"
+    },
+    {
+        "heart_rate": 132,
+        "timestamp": "2024-12-11T12:40:26"
+    },
+    {
+        "heart_rate": 146,
+        "timestamp": "2024-12-11T12:40:40.057"
+    },
+    {
+        "heart_rate": 162,
+        "timestamp": "2024-12-11T12:41:10"
+    },
+    {
+        "heart_rate": 170,
+        "timestamp": "2024-12-11T12:41:27.057"
+    },
+    {
+        "heart_rate": 174,
+        "timestamp": "2024-12-11T12:41:36"
     }
 ]
