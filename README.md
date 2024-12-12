@@ -2,6 +2,9 @@
 
 Sports Prophet is a full-stack application designed to analyze soccer match data in real-time and ad-hoc. It ingests sensor streams from devices into Kafka topics and uses Spark for real-time aggregation or direct querying for on-demand data. Users can also manage sensor schemas through the API.
 
+## Access
+On VM (10.24.5.31) navigate to `http://localhost:3000` and follow steps on WIKI `https://git.ecdf.ed.ac.uk/sdol2425/Duncan-Proctor/sports_project/-/wikis/Sports-Prophet/Frontend`
+
 
 ### Key Directories & Files
 
