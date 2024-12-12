@@ -82,6 +82,7 @@ def create_device(num, schema_type):
                 }
             }
             sendPayload(payload, "register-device")
+
 def generate_temperature():
     """Generate a random temperature between TEMP_MIN and TEMP_MAX."""
     return round(random.uniform(TEMP_MIN, TEMP_MAX), 1)
@@ -126,7 +127,7 @@ async def send_synthetic_data():
                 await websocket.send(data_str)
                 print(f"Sent data from {device_id} (run {run_id}): {data_str}")
 
-            elif schema_type == "heart_rate":
+            elif schema_type == "player_heart_rate":
                 heart_rate = generate_heart_rate()
                 data = {
                     "heart_rate": heart_rate,
