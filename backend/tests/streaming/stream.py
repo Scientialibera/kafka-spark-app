@@ -33,7 +33,7 @@ def generate_heart_rate():
 
 def check_if_device_exists(name):
 
-    url = BASE_URL + "/devices/" + name
+    url = BASE_URL + "/device/" + name
 
     response = requests.get(url)
     status = response.status_code
@@ -59,7 +59,8 @@ def create_device(num, schema_type):
                         "timestamp": "string"
                     }
                 }
-            }   
+            }
+            sendPayload(payload,"register-device")   
     elif schema_type == "heart_rate":
         if not check_if_device_exists(strnum):
             # Define the payload (device registration details)
@@ -73,8 +74,10 @@ def create_device(num, schema_type):
                     }
                 }
             }
+            sendPayload(payload, "register-device")
 
-    url = BASE_URL + "/register-device"
+def sendPayload(payload, endpoint):
+    url = BASE_URL + "/" + endpoint
     # Send a POST request with the JSON payload
     response = requests.post(url, json=payload)
 
@@ -122,14 +125,14 @@ async def send_synthetic_data(device_id, run_id, schema_type):
             # Wait for the specified interval before sending the next message
             thread.sleep(INTERVAL_SECONDS)
 
-@router.post(GEN_TEST_DATA_ENDPOINT)
-def main():
-    for player in range(1, 21, 1):
+@router.get(GEN_TEST_DATA_ENDPOINT)
+async def main():
+    for player in range(1, 11, 1):
         create_device(player, "gps")
         create_device(player, "player_heart_rate")
         for run in range(1, 11, 1):
             run_id = generate_padded_string("run", run)
             device_id = generate_string("gps", player)
-            send_synthetic_data(device_id, run_id, "gps")
+            await send_synthetic_data(device_id, run_id, "gps")
             device_id = generate_string("player_heart_rate", player)
-            send_synthetic_data(device_id, run_id, "player_heart_rate")
+            await send_synthetic_data(device_id, run_id, "player_heart_rate")
