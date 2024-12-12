@@ -7,9 +7,10 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import PlayersPage from "./pages/PlayersPage";
-import TeamPage from "./pages/TeamPage";
+import TeamPage from "./pages/TeamPageWithBackend";
 import LiveDataPage from "./pages/LiveDataPage";
 import EditProfile from "./pages/EditProfile";
+import DevicesPage from "./pages/DevicesPage";
 import "./App.css";
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/team" element={<TeamPage />} />
                     <Route path="/live-data" element={<LiveDataPage />} />
                     <Route path="/edit-profile" element={<EditProfile />} />
+                    <Route path="/devices" element={<DevicesPage />} />
                     {/* Fallback Route */}
                     <Route path="*" element={<Navigate to="/dashboard" />} />
                   </Routes>
