@@ -84,7 +84,7 @@
   
   .player-table th:nth-child(2), /* Heart Rate Recovery */
 .player-table td:nth-child(2) {
-    width: 60px; 
+    width: 80px; 
     text-align: center;
 }
 
@@ -105,7 +105,7 @@
 }
 
 .player-table th:nth-child(1) {
-  width: 40px;
+  width: 50px;
 }
 
 /* Hover Effect */

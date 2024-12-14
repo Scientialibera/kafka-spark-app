@@ -1,71 +1,169 @@
 .register-page {
-    display: flex;
-    justify-content: space-between;
-    padding: 40px;
-    font-family: "Inter", sans-serif;
-    background-color: #f2f2fdff;
-    height: 89vh;
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  min-height: 100vh; /* Ensure it covers the full height of the viewport */
+  background-color: #f2f2fdff;
+  box-sizing: border-box; /* Include padding and borders in height/width calculation */
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.logo-container {
+  display: flex; /* Use flexbox for alignment */
+  align-items: left; /* Vertically align items */
+  justify-content: left; /* Center horizontally */
+  gap: 10px; /* Add spacing between the logo and the text */
+  margin-bottom: 20px; /* Add spacing below the logo container */
+}
+
+.logo-container img {
+  height: 50px; /* Adjust size of the logo */
+  width: auto; /* Maintain aspect ratio */
+}
+
+.logo-container .logo-text {
+  font-size: 24px; /* Adjust font size */
+  font-weight: 600; /* Make the text bold */
+  color: #323743; /* Adjust text color */
+  font-family: "Inter", sans-serif; /* Keep the same font */
+  white-space: nowrap; /* Prevent the text from wrapping */
+}
+
+.register-card {
+  width: 50%;
+  max-width: 500px; /* Ensure a maximum width for the form */
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 0 auto; /* Center the form horizontally */
+}
+
+.register-card h2 {
+  margin-top: -8px;
+  margin-bottom: 45px;
+  font-weight: 600;
+  text-align: left; 
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group input,
+.form-group select {
+  width: 104%;
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+}
+
+.register-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #636ae8;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.register-button:hover {
+  background-color: #4850e4;
+}
+
+.terms {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+  gap: 8px;
+}
+
+.register-info {
+  width: 40%;
+  max-width: 500px; /* Ensure a maximum width for the info box */
+  padding: 40px;
+  background-color: #f2f2fdff;
+  border-radius: 12px;
+  margin: 100px auto 0 auto; /* Center the info box and add space above */
+}
+
+.register-info h2 {
+  margin-top: 0;
+  text-align: left; /* Center align the title */
+  font-weight: 600;
+}
+
+.register-info ul {
+  padding-left: 20px;
+}
+
+
+@media (max-width: 1024px) {
+  .register-page {
+    height: auto; /* Allow height to adjust for smaller screens */
+    justify-content: center; /* Center content horizontally */
   }
-  
+
   .register-card {
-    width: 50%;
-    padding: 40px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 100px;
-    margin-bottom: 5px;
-    margin-left: -200px;
+    width: 80%;
+    margin: 20px auto; /* Add spacing for smaller screens */
   }
-  
-  .register-card h2 {
-    margin-top: -8px;
-    margin-bottom: 45px;
-    font-weight: 600;
+
+  .register-info {
+    width: 80%;
+    margin: 20px auto; /* Add spacing for smaller screens */
   }
-  
-  .form-group {
-    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .register-page {
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center align items */
   }
-  
+
+  .register-card {
+    width: 90%; /* Take almost full width */
+    margin: 10px auto; /* Adjust spacing */
+  }
+
+  .register-info {
+    width: 90%; /* Take almost full width */
+    margin: 20px auto; /* Adjust spacing */
+  }
+}
+
+@media (max-width: 480px) {
+  .register-card,
+  .register-info {
+    padding: 20px; /* Reduce padding for smaller screens */
+  }
+
+  .register-card h2,
+  .register-info h2 {
+    font-size: 20px; /* Adjust font size */
+  }
+
   .form-group input,
   .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #dcdcdc;
-    border-radius: 6px;
+    padding: 8px; /* Reduce padding for smaller inputs */
   }
-  
+
   .register-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #636ae8;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 20px;
+    padding: 10px; /* Adjust button padding */
+    font-size: 14px; /* Reduce font size */
   }
-  
-  .register-button:hover {
-    background-color: #4850e4;
+
+  .logo-container img {
+    height: 40px; /* Adjust logo size */
   }
-  
-  .terms {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 14px;
-    gap: 8px;
+
+  .logo-container .logo-text {
+    font-size: 20px; /* Adjust font size */
   }
-  
-  .register-info {
-    width: 40%;
-    padding: 40px;
-    background-color: #f2f2fdff;
-    border-radius: 12px;
-    margin-top: 200px;
-    margin-bottom: 80px;
-  }
-  
+}
+
+

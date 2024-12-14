@@ -1,37 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import MetricsCards from "./MetricsCardsWithBackend";
 import FatigueLevelDistribution from "./FatigueLevelDistributionWithBackend";
 import TeamStatistics from "./TeamStatisticsWithBackend";
-import PlayerOverview from "./PlayerOverview";
+import PlayerOverview from "./PlayerOverviewWithBackend";
 import "../styles/Dashboard.css";
+import { exportDashboardData } from "../context/ExportExcel"; // Import the export function
 
 const Dashboard = () => {
+  const [buttonState, setButtonState] = useState("Export Dashboard Data"); // State for the export button
+
+  const handleExportToExcel = () => {
+    setButtonState("Fetching Data..."); // Temporarily update button text
+    exportDashboardData(setButtonState); // Fetch data and export
+  };
+
   return (
     <div className="dashboard">
       {/* Dashboard Header */}
       <div className="dashboard-header">
-        <h1 className="text">Dashboard</h1>
-        <button className="button">Start Live Stream</button>
+        <h1 className="text">Dashboard - Lakeside FC</h1>
+        <button
+          className={`button primary ${buttonState === "Fetching Data..." || buttonState === "Exporting..." ? "disabled" : ""}`}
+          onClick={handleExportToExcel}
+          disabled={buttonState === "Fetching Data..." || buttonState === "Exporting..."} // Disable button during export
+        >
+          {buttonState}
+        </button>
       </div>
 
-      {/* Containers for Dashboard Sections */}
+      {/* Dashboard Sections */}
       <div className="dashboard-layout">
-        {/* Team Statistics Container */}
         <div className="container team-statistics">
           <TeamStatistics />
         </div>
-
-        {/* Metrics Cards */}
         <div className="container metrics-section">
           <MetricsCards />
         </div>
-
-        {/* Player Overview Table */}
         <div className="container player-overview">
           <PlayerOverview />
         </div>
-
-        {/* Fatigue Level Distribution Chart */}
         <div className="container fatigue-level">
           <FatigueLevelDistribution />
         </div>

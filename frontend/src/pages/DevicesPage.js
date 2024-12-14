@@ -16,8 +16,9 @@ const DevicesPage = () => {
       const response = await fetch("http://localhost:8000/devices");
       const data = await response.json();
       if (Array.isArray(data.devices)) {
-        setDevices(data.devices);
-        setFilteredDevices(data.devices);
+        const sortedDevices = data.devices.sort((a, b) => a.localeCompare(b)); // Sort alphabetically
+        setDevices(sortedDevices);
+        setFilteredDevices(sortedDevices);
       } else {
         throw new Error("Invalid data format from API");
       }
@@ -102,13 +103,14 @@ const DevicesPage = () => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
 
-    // Safely filter devices by ensuring the device is a string
-    setFilteredDevices(
-      devices.filter(
+    const sortedFilteredDevices = devices
+      .filter(
         (device) =>
           typeof device === "string" && device.toLowerCase().includes(term)
       )
-    );
+      .sort((a, b) => a.localeCompare(b)); // Sort alphabetically after filtering
+
+    setFilteredDevices(sortedFilteredDevices);
   };
 
   return (

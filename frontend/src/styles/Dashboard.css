@@ -56,7 +56,7 @@
     align-items: center;
     justify-content: center;
     font-family: "Inter", sans-serif; /* Use Inter font as per wireframe */
-    font-size: 14px;
+    font-size: 11px;
     line-height: 22px;
     font-weight: 500; /* Slightly bold */
     color: #ffffff; /* White text */
@@ -85,3 +85,24 @@
     opacity: 0.4;
     cursor: not-allowed; /* Show not-allowed cursor when disabled */
 }
+
+/* Team name display */
+.team-name-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px; /* Match button padding */
+  width: 160px; /* Same fixed width */
+  height: 36px; /* Same fixed height */
+  font-family: "Inter", sans-serif; /* Keep the font consistent */
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 500; /* Bold for emphasis */
+  color: #ffffff; /* White text */
+  background: #636ae8; /* Primary purple color */
+  border-radius: 6px; /* Rounded corners */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  text-align: center; /* Center align text */
+  cursor: default; /* No pointer cursor to show it's not clickable */
+}
+
