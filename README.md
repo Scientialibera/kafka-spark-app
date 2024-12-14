@@ -608,6 +608,9 @@ async def main_get_speed_test():
 # Run the main_get_speed_test function
 await main_get_speed_test()
 
+```
+
+
 
 
 ## References
