@@ -28,7 +28,6 @@ On VM (10.24.5.31) navigate to `http://localhost:3000` and follow steps on WIKI 
 
 7. **utils**: Utility scripts for Kafka management, file operations, and Spark stream processing.
 
-
 ## Docker Details
 
 The Sports Prophet application utilizes Docker and Docker Compose to manage and orchestrate its services. 
@@ -80,6 +79,72 @@ Below is a breakdown of each service and instructions to manage them.
 ### Docker Networking
 
 All services are connected to a shared network, `kafka_network` for communication between Kafka, Zookeeper, Spark, and the API service.
+
+
+## Historical data analytics and game data structure (backend/historical)
+
+Historical data and folder structure:
+The parameters chosen for the analysis of each football player are: acceleration, speed, distance, temperature, and heart rate, the app is managing and analyzing player and team performance data. Real-time insights and suggestions are made possible by checking all aparameters and making decisions forfor football analytics.
+
+Endpoints Overview
+The endpoints are providing:
+
+1. **Game Statistics**: Fetches win/loss/draw data.
+2. **Team Metrics**: Analyzes recovery rates and distance metrics.
+3. **Player Overview**: Offers player-specific insights, including fatigue and recovery rates.
+4. **Fatigue Distribution**: Aggregates fatigue levels for tactical decision-making.
+5. **Recommendations**: Summarizes personalized and team-wide recommendations.
+
+### Structure of the historical data
+
+sports_project/
+│
+├── data/
+│   └── historical/
+│       └── devices/
+│           ├── gps_<player_id>/
+│           ├── speed_<player_id>/
+│           └── player_heart_rate_<player_id>/
+│
+├── utils/
+│   ├── maths_functions.py
+│   └── __init__.py
+│
+├── backend
+├── api/
+│   └── get_historical_data.py (this file)
+│
+└── README.md (this documentation)
+
+
+### Important Directories and Files:
+
+data/historical/devices/: Contains GPS, speed, and heart rate historical data files.
+utils/: Provides math functions like haversine_distance. get_historical_data.py: Specifies the  logic and API routes for analytics.
+
+### Calculations and Metrics
+
+1. Team Distance computes the average and total distances that each player runs during a game.
+C_team_distance() is the corresponding function.
+2. Team Speeds Uses vector computations to determine the average and maximum team speeds.
+The team_speeds() is the corresponding function.
+3. Recovery of Heart Rate
+examines each player's and team's average recovery rate.
+Heart_rate_recovery() is the corresponding function.
+4. tiredness Levels Assesses tiredness patterns by looking at declining performance indicators.
+Calculate_fatigue_levels() is the corresponding function.
+5. Analysis of Injuries
+combines injury information from past documents.
+Function: injuries()
+
+Usage:
+Start the server.
+Access endpoints via a browser or Postman.
+Example request:
+bash
+Copy code
+curl http://127.0.0.1:8000/team-metrics
+
 
 ## API Documentation
 
@@ -544,78 +609,3 @@ async def main_get_speed_test():
 await main_get_speed_test()
 
 
-### Historical data analytics and game data structure
-
-Historical data and folder structure
-With an emphasis on parameters like speed, distance, tiredness, and recovery, this repository offers APIs for managing and analyzing player and team performance data. Real-time insights and suggestions are made possible by its architecture for sports analytics applications.
-
-Endpoints Overview
-The endpoints are providing:
-
-1. **Team Statistics**: Provides metrics such as total distance and average speed.
-2. **Game Statistics**: Fetches win/loss/draw data.
-3. **Team Metrics**: Analyzes recovery rates and distance metrics.
-4. **Player Overview**: Offers player-specific insights, including fatigue and recovery rates.
-5. **Fatigue Distribution**: Aggregates fatigue levels for tactical decision-making.
-6. **Recommendations**: Summarizes personalized and team-wide recommendations.
-
-## Structure of the historical data
-
-sports_project/
-│
-├── data/
-│   └── historical/
-│       └── devices/
-│           ├── gps_<player_id>/
-│           ├── speed_<player_id>/
-│           └── player_heart_rate_<player_id>/
-│
-├── utils/
-│   ├── maths_functions.py
-│   └── __init__.py
-│
-├── backend
-├── api/
-│   └── get_historical_data.py (this file)
-│
-└── README.md (this documentation)
-
-
-## Important Directories and Files:
-data/historical/devices/: Contains GPS, speed, and heart rate historical data files.
-utils/: Provides math functions like haversine_distance. get_historical_data.py: Specifies the  logic and API routes for analytics.
-
-## Calculations and Metrics
-1. Team Distance computes the average and total distances that each player runs during a game.
-C_team_distance() is the corresponding function.
-2. Team Speeds Uses vector computations to determine the average and maximum team speeds.
-The team_speeds() is the corresponding function.
-3. Recovery of Heart Rate
-examines each player's and team's average recovery rate.
-Heart_rate_recovery() is the corresponding function.
-4. tiredness Levels Assesses tiredness patterns by looking at declining performance indicators.
-Calculate_fatigue_levels() is the corresponding function.
-5. Analysis of Injuries
-combines injury information from past documents.
-Function: injuries()
-
-Usage:
-Start the server.
-Access endpoints via a browser or Postman.
-Example request:
-bash
-Copy code
-curl http://127.0.0.1:8000/team-statistics
-
-
-## Inspiration from Research
-This repository integrates findings from the study Heart Rate Dynamics and Quantifying Physical Fatigue in Canadian Football (Zafar et al., 2024) to enhance its analysis and recommendation system. Key insights adapted include:
-
-## References
-This repository leverages concepts and methodologies discussed in the following research paper:
-
-Zafar, A., Guay, S., Vinet, S.-A., Pilon, F., Martens, G., Prince, F., & De Beaumont, L.
-Heart Rate Dynamics and Quantifying Physical Fatigue in Canadian Football.
-Applied Sciences, 2024, 14(5340).
-DOI: 10.3390/app14125340
-Key concepts from this research—such as HRmax, HRRpk, and CVC—have been incorporated into the calculations and recommendations provided by the API to enhance its accuracy and applicability for real-time fatigue monitoring and performance analysis.
