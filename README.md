@@ -81,10 +81,11 @@ Below is a breakdown of each service and instructions to manage them.
 All services are connected to a shared network, `kafka_network` for communication between Kafka, Zookeeper, Spark, and the API service.
 
 
-## Historical data analytics and game data structure (backend/historical)
+
+### Historical data analytics and game data structure (backend/historical)
 
 Historical data and folder structure:
-The parameters chosen for the analysis of each football player are: acceleration, speed, distance, temperature, and heart rate, the app is managing and analyzing player and team performance data. Real-time insights and suggestions are made possible by checking all aparameters and making decisions forfor football analytics.
+The parameters chosen for the analysis of each football player are: acceleration, speed, location, temperature, and heart rate, the app is managing and analysing player and team performance data, by utilizing the heart rate recovery metric Research Paper: Heart Rate Dynamics and Quantifying Physical Fatigue in Canadian Football. Applied Sciences, 2024 (See References part). Real-time insights and suggestions are made possible by checking all parameters and making decisions for football analytics.
 
 Endpoints Overview
 The endpoints are providing:
@@ -95,7 +96,7 @@ The endpoints are providing:
 4. **Fatigue Distribution**: Aggregates fatigue levels for tactical decision-making.
 5. **Recommendations**: Summarizes personalized and team-wide recommendations.
 
-### Structure of the historical data
+#### Structure of the historical data
 
 sports_project/
 │
@@ -117,12 +118,12 @@ sports_project/
 └── README.md (this documentation)
 
 
-### Important Directories and Files:
+#### Important Directories and Files:
 
 data/historical/devices/: Contains GPS, speed, and heart rate historical data files.
 utils/: Provides math functions like haversine_distance. get_historical_data.py: Specifies the  logic and API routes for analytics.
 
-### Calculations and Metrics
+#### Calculations and Metrics
 
 1. Team Distance computes the average and total distances that each player runs during a game.
 C_team_distance() is the corresponding function.
@@ -135,7 +136,7 @@ Heart_rate_recovery() is the corresponding function.
 Calculate_fatigue_levels() is the corresponding function.
 5. Analysis of Injuries
 combines injury information from past documents.
-Function: injuries()
+Function: calculate_injuries()
 
 Usage:
 Start the server.
@@ -144,7 +145,6 @@ Example request:
 bash
 Copy code
 curl http://127.0.0.1:8000/team-metrics
-
 
 ## API Documentation
 
@@ -609,3 +609,12 @@ async def main_get_speed_test():
 await main_get_speed_test()
 
 
+
+## References
+This repository leverages concepts and methodologies discussed in the following research paper:
+
+Zafar, A., Guay, S., Vinet, S.-A., Pilon, F., Martens, G., Prince, F., & De Beaumont, L.
+Heart Rate Dynamics and Quantifying Physical Fatigue in Canadian Football.
+Applied Sciences, 2024, 14(5340).
+DOI: 10.3390/app14125340
+Key concepts from this research—such as HRR calculations and recommendations provided by the API to enhance its accuracy and applicability for real-time fatigue monitoring and performance analysis.
