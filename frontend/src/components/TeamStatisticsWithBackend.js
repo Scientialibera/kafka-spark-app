@@ -33,40 +33,40 @@ const TeamStatisticsWithBackend = () => {
     // Fetch data from the backend
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/team-statistics");
+        const response = await axios.get("http://127.0.0.1:8000/team-metrics");
         const data = response.data;
 
-        // Extract Total Distance Per Game
-        const labels = Object.keys(data["Total Distance Per Game"]).map(
+        // Extract data for the chart
+        const labels = Object.keys(data["Team Total Distance Per Game"]).map(
           (key, index) => `Game ${index + 1}`
         );
-        const totalDistanceData = Object.values(data["Total Distance Per Game"]);
-
-        // Handle Average Speed and Max Speed (currently single values)
-        const avgSpeed = Array(labels.length).fill(data["Average Speed Per Game"]);
-        const maxSpeed = Array(labels.length).fill(data["Max Speed Per Game"]);
+        const totalDistanceData = Object.values(data["Team Total Distance Per Game"]).map(
+          (distance) => distance / 1000 // Convert meters to kilometers
+        );
+        const avgSpeedData = Object.values(data["Team Average Speeds per game"]);
+        const maxSpeedData = Object.values(data["Team Max Speeds per Game"]);
 
         // Prepare data for the chart
         setChartData({
           labels,
           datasets: [
             {
-              label: "Total Distance",
+              label: "Total Distance (km)",
               data: totalDistanceData,
               borderColor: "#636AE8",
               backgroundColor: "rgba(99, 106, 232, 0.2)",
               tension: 0.4,
             },
             {
-              label: "Avg Speed",
-              data: avgSpeed,
+              label: "Avg Speed (km/h)",
+              data: avgSpeedData,
               borderColor: "#22CCB2",
               backgroundColor: "rgba(34, 204, 178, 0.2)",
               tension: 0.4,
             },
             {
-              label: "Max Speed",
-              data: maxSpeed,
+              label: "Max Speed (km/h)",
+              data: maxSpeedData,
               borderColor: "#E8618C",
               backgroundColor: "rgba(232, 97, 140, 0.2)",
               tension: 0.4,

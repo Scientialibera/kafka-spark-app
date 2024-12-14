@@ -77,7 +77,7 @@ const RegisterPage = () => {
                 Select your role
               </option>
               <option value="player">Player</option>
-              <option value="coach">Team Manager</option>
+              <option value="manager">Manager</option>
               <option value="physiotherapist">Physiotherapist</option>
             </select>
           </div>
@@ -114,11 +114,10 @@ const RegisterPage = () => {
           <button type="submit" className="register-button">
             Register
           </button>
-          <label>
-            Returning user? <a href="/login">Log in here</a>
-          </label>
         </form>
-        
+        <p>
+          Returning user? <a href="/login">Log in here</a>
+        </p>
       </div>
       <div className="register-info">
         <h2>Come join us</h2>

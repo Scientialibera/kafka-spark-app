@@ -8,15 +8,20 @@ import DashboardIcon from "../icons/dashboard.png";
 import PlayersIcon from "../icons/players.png";
 import TeamIcon from "../icons/team.png";
 import LiveDataIcon from "../icons/live-data.png";
-import ReportsIcon from "../icons/report.png";
 import DevicesIcon from "../icons/devices.png";
 import NotificationsIcon from "../icons/notifications.png";
 import ArrowDownIcon from "../icons/arrow-down.png";
+
+import { useNotifications } from "../context/NotificationContext";
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+
+  // Access notifications from the Notification Context
+  const { notifications } = useNotifications();
+  const unreadCount = notifications.filter((notification) => !notification.isRead).length; // Count unread notifications
 
   const handleLogout = () => {
     // Clear user data from localStorage and navigate to login page
@@ -40,10 +45,12 @@ const Sidebar = () => {
     <div className="sidebar">
       {/* Logo Section */}
       <div className="sidebar-logo">
-        <img src={LogoIcon} alt="Logo" className="logo-icon" />
+        <Link to="/dashboard"> {/* Making the logo clickable */}
+          <img src={LogoIcon} alt="Logo" className="logo-icon" />
+        </Link>
         <div>
           <h2>Sports Prophet</h2>
-          <p>{loggedInUser?.role || "User Role"}</p>
+          <p>{loggedInUser?.role ? loggedInUser.role.charAt(0).toUpperCase() + loggedInUser.role.slice(1) : "User Role"}</p>
         </div>
       </div>
 
@@ -78,13 +85,6 @@ const Sidebar = () => {
           Live Data
         </Link>
         <Link
-          to="/reports"
-          className={`menu-item ${location.pathname === "/reports" ? "selected" : ""}`}
-        >
-          <img src={ReportsIcon} alt="Reports" className="menu-icon" />
-          Reports
-        </Link>
-        <Link
           to="/devices"
           className={`menu-item ${location.pathname === "/devices" ? "selected" : ""}`}
         >
@@ -96,18 +96,26 @@ const Sidebar = () => {
           className={`menu-item ${location.pathname === "/notifications" ? "selected" : ""}`}
         >
           <img src={NotificationsIcon} alt="Notifications" className="menu-icon" />
-          Notifications <span className="badge">9</span>
+          Notifications
+          {/* Display the unread count badge */}
+          {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
         </Link>
       </div>
 
       {/* User Info Section */}
       <div className="user-info">
-        <div className="user-avatar">
+      <div className="user-avatar">
+        {loggedInUser?.firstName ? (
+          <div className="avatar-initials">
+            {loggedInUser.firstName.charAt(0).toUpperCase()}
+          </div>
+        ) : (
           <img
             src="https://via.placeholder.com/36"
             alt="User Avatar"
           />
-        </div>
+        )}
+      </div>
         <div className="user-info-details">
         <p className="user-name">{loggedInUser?.firstName || "User Name"}</p> {/* Display the first name */}
           <p className="user-email">{loggedInUser?.email || "user@example.com"}</p>

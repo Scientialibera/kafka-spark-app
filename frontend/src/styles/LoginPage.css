@@ -2,25 +2,42 @@
   display: flex;
   justify-content: space-between;
   padding: 40px;
-  font-family: "Inter", sans-serif;
+  min-height: 100vh; /* Ensure it covers the full height of the viewport */
   background-color: #f2f2fdff;
-  height: 89vh;
+  box-sizing: border-box; /* Include padding and borders in height/width calculation */
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.logo-container {
+  width: 100%;
+  text-align: left; /* Center align the logo */
+  margin-bottom: 20px; /* Add spacing below the logo */
+}
+
+.logo-container img {
+  height: 50px; /* Adjust size of the logo */
+}
+
+.logo-container .logo-text {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 10px;
 }
 
 .login-card {
   width: 50%;
+  max-width: 500px; /* Ensure a maximum width for the form */
   padding: 40px;
   background: white;
   border-radius: 12px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 150px;
-  margin-bottom: 80px;
-  margin-left: -200px;
+  margin: 0 auto; /* Center the form horizontally */
 }
 
 .login-card h2 {
   margin-bottom: 45px;
   font-weight: 600;
+  text-align: left; 
 }
 
 .form-group {
@@ -42,7 +59,6 @@
   margin-bottom: 20px;
 }
 
-/* Align checkbox and label */
 .remember-me-container {
   display: flex;
   align-items: center;
@@ -55,7 +71,6 @@ input[type="checkbox"] {
   height: 16px;
 }
 
-/* Style for "Forgot password" link */
 .forgot-password {
   font-size: 14px;
   text-decoration: none;
@@ -83,32 +98,83 @@ input[type="checkbox"] {
 }
 
 .login-info {
-  width: 30%;
+  width: 40%;
+  max-width: 500px; /* Ensure a maximum width for the info box */
   padding: 40px;
-  background-color: f2f2fdff;
+  background-color: #f2f2fdff;
   border-radius: 12px;
-  margin-top: 200px;
-  margin-bottom: 80px;
-
+  margin: 100px auto 0 auto; /* Center the info box and add space above */
 }
 
-
-.logo-container {
-  display: flex;
-  margin-bottom: 20px; /* Add spacing below the logo container */
+.login-info h2 {
+  margin-top: 0;
+  text-align: left; /* Align the title to the left */
+  font-weight: 600;
 }
 
-.logo {
-  height: 50px; /* Adjust logo size */
-  object-fit: contain; /* Ensure the logo maintains its aspect ratio */
-  margin-right: 10px; /* Add spacing between the logo and the text */
+.login-info ul {
+  padding-left: 20px;
 }
 
-.logo-text {
-  font-size: 24px; /* Adjust font size */
-  font-weight: bold; /* Make the text bold */
-  color: #323743; /* Adjust text color */
-  font-family: "Inter", sans-serif;
-  white-space: nowrap; /* Prevent the text from breaking into multiple lines */
-  margin-top: 10px;
+@media (max-width: 1024px) {
+  .login-page {
+    height: auto; /* Allow height to adjust for smaller screens */
+    justify-content: center; /* Center content horizontally */
+  }
+
+  .login-card {
+    width: 80%;
+    margin: 20px auto; /* Add spacing for smaller screens */
+  }
+
+  .login-info {
+    width: 80%;
+    margin: 20px auto; /* Add spacing for smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .login-page {
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center align items */
+  }
+
+  .login-card {
+    width: 90%; /* Take almost full width */
+    margin: 10px auto; /* Adjust spacing */
+  }
+
+  .login-info {
+    width: 90%; /* Take almost full width */
+    margin: 20px auto; /* Adjust spacing */
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card,
+  .login-info {
+    padding: 20px; /* Reduce padding for smaller screens */
+  }
+
+  .login-card h2,
+  .login-info h2 {
+    font-size: 20px; /* Adjust font size */
+  }
+
+  .form-group input {
+    padding: 8px; /* Reduce padding for smaller inputs */
+  }
+
+  .login-button {
+    padding: 10px; /* Adjust button padding */
+    font-size: 14px; /* Reduce font size */
+  }
+
+  .logo-container img {
+    height: 40px; /* Adjust logo size */
+  }
+
+  .logo-container .logo-text {
+    font-size: 20px; /* Adjust font size */
+  }
 }

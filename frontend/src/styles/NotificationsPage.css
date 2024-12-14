@@ -1,0 +1,160 @@
+/* Notifications Page Container */
+.notifications-page {
+    padding: 20px;
+    margin-left: 250px; /* Assuming the sidebar width is 250px */
+    height: 1104px; /* Match the height of the viewport */
+    max-height: 1104px;
+    overflow-y: auto; /* Allow scrolling if content exceeds the page */
+    background-color: #f9f9f9; /* Light background for contrast */
+  }
+  
+  /* Page Title */
+  .notifications-page h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Buttons Container */
+  .buttons-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .mark-all-btn {
+    background-color: #636ae8;
+    color: #ffffff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .mark-all-btn:hover {
+    background-color: #636ae8;
+    opacity: 60%;
+  }
+  
+  /* Notifications List */
+  .notifications-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Notification Item */
+  .notification-item {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .notification-item.unread {
+    border-left: 5px solid #e8618c; /* Stripe for unread messages */
+  }
+  
+  .notification-item.read {
+    border-left: 5px solid #cccccc; /* Grey stripe for read messages */
+  }
+  
+  /* Notification Summary */
+  .notification-summary {
+    display: grid;
+    grid-template-columns: 23% 13% 13% 21% 12% 12%; /* Each column gets a percentage of width */
+    align-items: center; /* Align items vertically */
+    gap: 10px; /* Space between columns */
+  }
+  
+  .notification-summary p {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  .notification-summary strong {
+    font-weight: bold;
+  }
+  
+  .read-more-btn {
+    background-color: #636ae8;
+    color: #ffffff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .read-more-btn:hover {
+    background-color: #636ae8;
+    opacity: 60%;
+  }
+  
+  .mark-read-btn {
+    background-color: #22ccb2;
+    color: #ffffff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .mark-read-btn:hover {
+    background-color: #22ccb2;
+    opacity: 60%;
+  }
+  
+  /* Expanded Notification Details */
+  .notification-details {
+    padding: 10px;
+    background-color: #f7f9fc;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .notification-details p {
+    font-size: 14px;
+    margin: 0 0 10px;
+  }
+  
+  /* Reply Section */
+  .reply-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .reply-section textarea {
+    width: 100%;
+    max-width: 98%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    resize: none; /* Prevent resizing */
+  }
+  
+  .send-reply-btn {
+    background-color: #22ccb2;
+    color: #ffffff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-end; /* Align button to the right */
+  }
+  
+  .send-reply-btn:hover {
+    background-color: #218838;
+  }
+  

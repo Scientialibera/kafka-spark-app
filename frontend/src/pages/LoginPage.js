@@ -68,17 +68,17 @@ const LoginPage = () => {
           <button type="submit" className="login-button">
             Sign in
           </button>
-          <label>
-          Need to register? <a href="/register">Sign up here</a>
-          </label>
         </form>
+        <p>
+          Need to register? <a href="/register">Sign up here</a>
+        </p>
       </div>
       <div className="login-info">
         <h2>Great to have you back!</h2>
         <ul>
           <li>Stay on top of your game</li>
           <li>Get insights for each session</li>
-          <li>Receive injury risk alerts</li>
+          <li>Receive training recommendations</li>
           <li>Never miss an update</li>
         </ul>
       </div>

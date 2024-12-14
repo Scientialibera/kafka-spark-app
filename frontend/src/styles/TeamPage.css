@@ -25,20 +25,20 @@
     width: 500px;
     height: 200px;
     position: relative;
-    margin-top: -30px
+    margin-top: -35px
   }
   
   /* Team avatar styling */
   .team-page .team-avatar {
-    width: 133px;
-    height: 133px;
+    width: 175px;
+    height: 175px;
     border-radius: 50%;
     background-color: #f8cedb;
-    margin-left: 20px;
+    margin-left: 0px;
     flex-shrink: 0;
     position: absolute;
     left: 20px;
-    top: 40px;
+    top: 20px;
     border: none;
     object-fit: cover;
   }
@@ -65,7 +65,35 @@
     color: #565d6d;
     margin: 4px 0;
   }
-    
+
+
+  
+  .team-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: relative; /* Important: allows absolute positioning inside */
+    gap: 5px;
+}
+
+.status-message {
+    position: absolute;      /* Position this element absolutely */
+    right: 16px;             /* Align its right edge to match the button’s right spacing */
+    bottom: -20px;           /* Adjust vertical positioning if needed, depending on your layout */
+    margin: 0;
+    color: #171a1f;
+    font-size: 11px;
+    text-align: right;       /* Keeps the end aligned at the right edge */
+    visibility: visible;
+    display: inline-block;   /* Inline-block to respect text-align and white-space */
+    white-space: nowrap;     /* Single line only */
+    z-index: 1;
+    /* No fixed width, so it can extend to the left as needed */
+}
+
+
+
+  
   /* Container for Live Metrics and Heartbeat Chart */
   .team-page .metrics-chart-section {
     display: flex;
@@ -407,9 +435,140 @@
     margin: 0 10px;
   }
   
-  
-  .team-page .health-info th:nth-child(1) {
+  .team-page .health-info th:nth-child(1),
+  .team-page .health-info td:nth-child(1) {
+    width: 60px;
+  }
+
+  .team-page .health-info th:nth-child(2),
+  .team-page .health-info td:nth-child(2) {
+    width: 120px;
+    text-align: center;
+  }
+
+  .team-page .health-info th:nth-child(3),
+  .team-page .health-info td:nth-child(3) {
+    width: 200px;
+    text-align: center;
+  }
+
+  .team-page .health-info th:nth-child(5),
+  .team-page .health-info td:nth-child(5) {
     width: 100px;
+    text-align: center;
   }
   
+.team-page .team-header {
+    overflow: visible;
+    position: relative; /* Allow the status-message to position itself correctly */
+}
+
+.team-page {
+    overflow: visible;
+}
   
+/* Style the buttons with a fixed width */
+.team-page .form-buttons .button.small {
+  padding: 5px 10px; /* Smaller padding */
+  font-size: 12px; /* Smaller font */
+  border-radius: 4px;
+  width: 80px; /* Set a fixed width */
+  text-align: center; /* Center align the text */
+}
+
+/* Adjust spacing between buttons */
+.team-page .form-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px; /* Add space between the buttons */
+  margin-top: 10px;
+  margin-left: -70px;
+}
+
+/* Reduce font size for labels */
+.team-page .form-row label {
+  font-size: 13px; /* Slightly smaller font size */
+  margin-right: 8px;
+}
+
+/* Reduce font size for input fields */
+.team-page .form-row input {
+  font-size: 13px; /* Match the label font size */
+  flex: 1;
+}
+
+.team-page .form-row {
+  margin-bottom: 1.5px; /* Add a small margin to increase the spacing */
+}
+
+.team-page .button.disabled {
+  opacity: 0.6; /* Make it appear grayed out */
+  pointer-events: none; /* Prevent clicks */
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.delete-icon {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.delete-icon:hover {
+  color: darkred;
+  transform: scale(1.1);
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 10px; /* Add space between buttons */
+  align-items: flex-end; /* Align buttons to the right */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between; /* Space between the title and the buttons */
+  align-items: center; /* Align everything vertically */
+  margin-bottom: 20px;
+}
+
+
+.close-button {
+  margin-top: 20px; /* Add some space above the close button */
+}
+
+.actions-and-table {
+  display: flex;
+  align-items: flex-start; /* Align buttons with the first row of the table */
+  gap: 20px; /* Space between buttons and the table */
+}
+
+.button-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between the buttons */
+  margin-top: 20px; /* Optional: Adjust spacing to align better */
+}
+
+.table-column {
+  flex: 1; /* Ensure the table takes the remaining space */
+}
+
+.timetable-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modal-body {
+  margin-top: 20px; /* Adds spacing between the header and the content */
+}
+
+.no-sessions-message {
+  font-size: 16px;
+  color: #666;
+  margin-top: 20px;
+  text-align: center;
+}

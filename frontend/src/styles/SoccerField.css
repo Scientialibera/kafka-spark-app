@@ -5,6 +5,7 @@
     gap: 20px;
     padding: 20px;
     width: 100%; /* Ensure the container spans the full width */
+    padding-top: 20px;
 }
 
 .soccer-field {
@@ -19,7 +20,6 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,7 +49,7 @@
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     font-size: 12px;
     color: #171a1f;
-    z-index: 1000;
+    z-index: 9999;
     pointer-events: none; /* Prevent interaction with the tooltip */
     transform: translate(-50%, -100%);
   }
@@ -59,3 +59,140 @@
     font-weight: 500;
   }
   
+
+  /* SoccerField.css */
+
+.soccer-field-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin: 20px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Button styles */
+.soccer-field-header .button {
+    margin-bottom: 5px; /* Space between the button and the status message */
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #636ae8;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+/* Button hover and active states */
+.soccer-field-header .button:hover {
+    background-color: #4850e4;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .soccer-field-header .button:active {
+    background-color: #2c35e0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .soccer-field-header .button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* Adjust the container to position the button correctly */
+.soccer-field-header {
+    position: absolute; /* Allows precise placement */
+    top: -90px; /* Pushes the header down from the top of the page */
+    right: 20px; /* Aligns the header to the right of the page */
+    display: flex;
+    flex-direction: column; /* Stack the button and status message vertically */
+    align-items: flex-end; /* Aligns the button and status message to the right */
+    z-index: 10; /* Ensures it stays above the soccer field */
+  }
+  
+
+/* Status message styling */
+.soccer-field-header .status-message {
+    font-size: 12px; /* Slightly smaller text */
+    color: #171a1f; /* Neutral color for readability */
+    text-align: right;
+    margin: 0;
+  }
+  
+  
+  .soccer-field {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+  }
+  
+  .player-marker {
+    position: absolute;
+    width: 25px; /* Increased size for better visibility */
+    height: 25px; /* Increased size for better visibility */
+    background-color: red;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transform: translate(-50%, -50%); /* Centers the marker */
+    transition: left 0.5s ease, top 0.5s ease; /* Smooth movement */
+    z-index: 2; /* Ensure markers are above the field background */
+  }
+  
+  .tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 10;
+    font-size: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -100%);
+  }
+  
+  /* Adjust for left edge */
+  .tooltip.edge-left {
+    transform: translate(0, -100%);
+  }
+  
+  /* Adjust for right edge */
+  .tooltip.edge-right {
+    transform: translate(-100%, -100%);
+  }
+  
+  /* Adjust for bottom edge */
+  .tooltip.edge-bottom {
+    transform: translate(-50%, 0);
+  }
+ 
+  @media (max-width: 1024px) {
+    .soccer-field-container {
+      margin: 10px;
+    }
+  
+    .soccer-field {
+      width: 100%;
+      height: auto;
+      padding-bottom: 66.666%; /* Maintain 3:2 aspect ratio */
+    }
+  
+    .player-marker {
+      width: 20px;
+      height: 20px;
+    }
+  }

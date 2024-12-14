@@ -18,6 +18,7 @@
     font-weight: 700;
     color: #171a1f;
     margin-bottom: 20px;
+    margin-left: 20px;
   }
   
   .live-data-page .live-data-content {
@@ -27,3 +28,82 @@
     gap: 20px;
   }
   
+  .live-alarms {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-left: auto;
+    margin-right: auto; /* Center the container */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    max-width: calc(100% - 40px); /* Keep a margin on both sides */
+    overflow-x: auto; /* Enable horizontal scrolling only within the container */
+  }
+  
+  .table-heading {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .live-alarms-table {
+    width: 100%; /* Ensure the table spans the container width */
+    border-collapse: collapse;
+    table-layout: fixed; /* Prevents the table from exceeding the container width */
+    text-align: center;
+    font-size: 12px;
+  }
+  
+  .live-alarms-table th,
+  .live-alarms-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    word-wrap: break-word; /* Prevents text overflow */
+    overflow-wrap: break-word; /* Adds compatibility for older browsers */
+  }
+  
+  .live-alarms-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
+  .live-alarms-table td {
+    background-color: #fff;
+  }
+  
+  .status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  
+  .status.normal {
+    background-color: #d4edda;
+    color: #34d399;
+  }
+  
+  .status.abnormal {
+    background-color: #f8d7da;
+    color: #e8618c;
+  }
+
+  .status.na {
+    background-color: transparent; /* No background */
+    color: inherit; /* Use default text color */
+  }
+  
+  /* Ensure responsiveness on smaller screens */
+  @media (max-width: 768px) {
+    .live-alarms-table {
+      font-size: 12px; /* Reduce font size on smaller screens */
+    }
+  
+    .live-alarms-table th,
+    .live-alarms-table td {
+      padding: 5px; /* Reduce padding for smaller screens */
+    }
+  }

@@ -38,14 +38,9 @@ const MetricsCardsWithBackend = () => {
         const response = await fetch("http://127.0.0.1:8000/team-metrics");
         const data = await response.json();
 
-        // Calculate the average of all runs for "Total Distance Per Game"
-        const distances = Object.values(data["Total Distance Per Game"]);
-        const averageDistance =
-          distances.reduce((acc, value) => acc + value, 0) / distances.length;
-
         setTeamMetrics({
-          totalDistance: averageDistance.toFixed(2), // Round to 2 decimal places
-          recoveryRate: data["Average Team Recovery Rate"].toFixed(2),
+          totalDistance: (data["Average Team Distance"] / 1000).toFixed(2), // Convert meters to km and round to 2 decimals
+          recoveryRate: data["Average Team Recovery Rate"].toFixed(2), // Round to 2 decimals
         });
       } catch (error) {
         console.error("Error fetching team metrics:", error);

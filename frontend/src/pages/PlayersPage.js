@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2"; // Import the Line chart component
 import "../styles/PlayersPage.css";
 import Sidebar from "../components/Sidebar";
@@ -14,9 +14,9 @@ const ITEMS_PER_PAGE = 3; // Number of items per page for pagination
 const PlayersPage = () => {
   const players = [
     {
-      id: "player-a",
-      name: "John Doe",
-      age: 20,
+      id: "1",
+      name: "Liam Carter",
+      age: 25,
       team: "Team A",
       position: "Midfielder",
       fatigueLevel: "High",
@@ -45,29 +45,11 @@ const PlayersPage = () => {
           fatigueLevel: "Moderate",
           recommendation: "Light training only",
         },
-        {
-          game: "3",
-          heartRateRecovery: "95 BPM",
-          fatigueLevel: "Low",
-          recommendation: "Attend physiotherapy session",
-        },
-        {
-          game: "4",
-          heartRateRecovery: "72 BPM",
-          fatigueLevel: "Moderate",
-          recommendation: "Stretch regularly",
-        },
-        {
-          game: "5",
-          heartRateRecovery: "102 BPM",
-          fatigueLevel: "High",
-          recommendation: "Reduce overhead lifting",
-        },
       ],
     },
     {
-      id: "player-b",
-      name: "Jane Smith",
+      id: "2",
+      name: "Ethan Brooks",
       age: 23,
       team: "Team B",
       position: "Defender",
@@ -86,16 +68,10 @@ const PlayersPage = () => {
       },
       games: [
         {
-          game: "5",
+          game: "1",
           heartRateRecovery: "102 BPM",
           fatigueLevel: "High",
           recommendation: "Reduce overhead lifting",
-        },
-        {
-          game: "4",
-          heartRateRecovery: "72 BPM",
-          fatigueLevel: "Moderate",
-          recommendation: "Stretch regularly",
         },
       ],
     },
@@ -103,6 +79,44 @@ const PlayersPage = () => {
 
   const [selectedPlayer, setSelectedPlayer] = useState(players[0]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [fatigueLevels, setFatigueLevels] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  // Fetch fatigue data
+  useEffect(() => {
+    const fetchFatigueData = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/fatigue-distribution");
+        const data = await response.json();
+        console.log("Fetched fatigue data:", data);
+        setFatigueLevels(data["Detailed Fatigue Data"]);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching fatigue data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchFatigueData();
+  }, []);
+
+  // Get the latest fatigue level for the selected player
+  const getLatestFatigueLevel = (playerId) => {
+    if (loading) return "Loading...";
+    console.log("Player ID:", playerId);
+    console.log("Fatigue Data:", fatigueLevels);
+    const playerFatigueData = fatigueLevels[playerId];
+    if (playerFatigueData) {
+      const latestRun = Object.keys(playerFatigueData)
+        .map((run) => parseInt(run.split("_")[1])) // Extract run numbers
+        .sort((a, b) => b - a)[0]; // Get the highest run number
+      const latestRunKey = `run_${String(latestRun).padStart(3, "0")}`; // Zero-pad to 3 digits
+      console.log("Latest Run Key:", latestRunKey, "Value:", playerFatigueData[latestRunKey]);
+      return playerFatigueData[latestRunKey] || "Unknown";
+    }
+    console.log("No fatigue data found for player:", playerId);
+    return "Unknown";
+  };
 
   const handlePlayerChange = (event) => {
     const selectedId = event.target.value;
@@ -199,20 +213,19 @@ const PlayersPage = () => {
         <div className="player-section">
           <div className="container player-info">
             <img
-              src="https://via.placeholder.com/133"
+              src={`https://via.placeholder.com/133?text=${selectedPlayer.name.charAt(0)}`}
               alt={selectedPlayer.name}
               className="player-avatar"
             />
             <div className="player-details">
               <h2>{selectedPlayer.name}</h2>
               <p>
-                {selectedPlayer.position} | {selectedPlayer.age} years |{" "}
-                {selectedPlayer.team}
+                #{selectedPlayer.id} | {selectedPlayer.position} | {selectedPlayer.age} years
               </p>
               <span
-                className={`badge ${selectedPlayer.fatigueLevel.toLowerCase()}-fatigue`}
+                className={`badge ${getLatestFatigueLevel(selectedPlayer.id)?.toLowerCase()}-fatigue`}
               >
-                {selectedPlayer.fatigueLevel} Fatigue
+                {getLatestFatigueLevel(selectedPlayer.id)} Fatigue
               </span>
             </div>
           </div>
@@ -313,7 +326,8 @@ const PlayersPage = () => {
                       checked={game.actionTaken}
                       onChange={() => {
                         const updatedGames = [...selectedPlayer.games];
-                        updatedGames[(currentPage - 1) * ITEMS_PER_PAGE + index].actionTaken = !game.actionTaken;
+                        updatedGames[(currentPage - 1) * ITEMS_PER_PAGE + index].actionTaken =
+                          !game.actionTaken;
                         setSelectedPlayer({
                           ...selectedPlayer,
                           games: updatedGames,
