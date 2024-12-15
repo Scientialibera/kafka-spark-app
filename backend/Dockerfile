@@ -21,10 +21,8 @@ ENV PATH="$JAVA_HOME/bin:$PATH"
 # Verify Java installation during build (for debugging purposes)
 RUN java -version
 
-# Copy requirements first for better layer caching
-COPY backend/requirements.txt .
-
-# Install Python dependencies
+# Force no-cache for Python dependencies by invalidating the cache step
+ADD backend/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application files

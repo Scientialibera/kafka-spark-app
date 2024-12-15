@@ -37,7 +37,7 @@ const customModalStyles = {
 };
 
 const ITEMS_PER_PAGE = 2;
-const STREAM_SECONDS = 30; // Duration for live data streaming
+const STREAM_SECONDS = 100; // Duration for live data streaming
 
 const PlayersPageWithBackend = () => {
 
