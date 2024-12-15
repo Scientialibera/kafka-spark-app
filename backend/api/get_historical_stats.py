@@ -1,4 +1,4 @@
-# This file is getting, analyzing, categorizing the historical data to rprovide later recommendations to the manager.
+# This file is getting, analyzing, categorizing the historical data to provide final recommendations to the manager for the team, players and games
 
 import json
 import os
