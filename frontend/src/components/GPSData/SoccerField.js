@@ -6,7 +6,7 @@ const SoccerField = ({ runId, players }) => {
   // Field Dimensions in Pixels
   const FIELD_WIDTH = 900; // Increased width
   const FIELD_HEIGHT = 600; // Increased height
-  const STREAM_SECONDS = 30; // Duration of the live stream in seconds
+  const STREAM_SECONDS = 100; // Duration of the live stream in seconds
 
   // Define GPS Bounds (Adjust these based on your synthetic or real GPS data)
   const MIN_LATITUDE = 40.00042;

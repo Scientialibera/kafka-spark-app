@@ -326,8 +326,8 @@ async def get_team_instant_stats(
     if not valid_speeds or not valid_accels:
         raise HTTPException(status_code=500, detail="No valid speed or acceleration data retrieved.")
 
-    team_average_speed = (sum(valid_speeds) / len(valid_speeds)) / 10
-    team_average_accel = (sum(valid_accels) / len(valid_accels)) / 10
+    team_average_speed = (sum(valid_speeds) / len(valid_speeds))*10
+    team_average_accel = (sum(valid_accels) / len(valid_accels))*10
 
     return {
         "run_id": run_id,

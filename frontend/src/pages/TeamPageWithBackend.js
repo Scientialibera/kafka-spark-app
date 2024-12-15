@@ -36,7 +36,7 @@ const customModalStyles = {
 };
 
 const ITEMS_PER_PAGE = 3; // Number of items per page for pagination
-const STREAM_SECONDS = 30; // Duration for the synthetic data stream
+const STREAM_SECONDS = 100; // Duration for the synthetic data stream
 
 const TeamPageWithBackend = () => {
   // Editable team information
@@ -507,9 +507,12 @@ const TeamPageWithBackend = () => {
     setStatusMessage("");
     console.log("Status message cleared:", statusMessage);
     setButtonText("Starting...");
-    fetch(`http://localhost:8000/start-synthetic-data?num_players=10&stream_seconds=${STREAM_SECONDS}`, {
-      method: "POST",
-    })
+    fetch(
+      `http://localhost:8000/start-synthetic-data?num_players=10&stream_seconds=${STREAM_SECONDS}`,
+      {
+        method: "POST",
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log("Synthetic data stream started:", data);
@@ -517,17 +520,25 @@ const TeamPageWithBackend = () => {
         setButtonText("Streaming...");
         setStatusMessage("Streaming started...");
         console.log("Status message updated to:", "Streaming started...");
-        
+  
+        // Wait for 8 seconds before fetching metrics
+        setTimeout(() => {
+          console.log("Fetching metrics after 8 seconds delay...");
+          fetchMetricsAndHeartbeat();
+        }, 8000);
+  
         // After STREAM_SECONDS, stop streaming
         setTimeout(() => {
           console.log("Stopping live stream after timeout...");
           setIsStreaming(false);
           setButtonText("Start Live Stream");
-          setStatusMessage("Streaming ended. Press 'Start Live Stream' again to restart.");
+          setStatusMessage(
+            "Streaming ended. Press 'Start Live Stream' again to restart."
+          );
           console.log(
             "Status message updated to:",
             "Streaming ended. Press 'Start Live Stream' again to restart."
-            );
+          );
         }, STREAM_SECONDS * 1000);
       })
       .catch((error) => {
@@ -537,6 +548,7 @@ const TeamPageWithBackend = () => {
         console.log("Status message updated to:", "Failed to start streaming.");
       });
   };
+  
 
   const fetchMetricsAndHeartbeat = async () => {
     try {
