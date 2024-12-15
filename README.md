@@ -85,7 +85,10 @@ All services are connected to a shared network, `kafka_network` for communicatio
 ### Historical data analytics and game data structure (backend/historical)
 
 Historical data and folder structure:
+
 The parameters chosen for the analysis of each football player are: acceleration, speed, location, temperature, and heart rate, the app is managing and analysing player and team performance data, by utilizing the heart rate recovery metric Research Paper: Heart Rate Dynamics and Quantifying Physical Fatigue in Canadian Football. Applied Sciences, 2024 (See References part). Real-time insights and suggestions are made possible by checking all parameters and making decisions for football analytics.
+
+The data used for this application as sensor data, are json files of acceleration, speed, temperature, heart rate per player and per game. The sensor data come in timestamps every 5 seconds, for the total maximum of 90 minutes, for each sensor category. The raw sensor data are then analyzed to provide the analytics needed. 
 
 Endpoints Overview
 The endpoints are providing:
@@ -113,7 +116,7 @@ sports_project/
 │
 ├── backend
 ├── api/
-│   └── get_historical_data.py (this file)
+│   └── get_historical_data.py
 │
 └── README.md (this documentation)
 
