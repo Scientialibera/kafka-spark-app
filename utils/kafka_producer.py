@@ -1,36 +1,113 @@
-import json
+"""
+Kafka producer and consumer utilities for streaming data.
+"""
 import asyncio
-from typing import Optional, List, Dict, Union
+import json
+import logging
+from typing import Any, Dict, List, Optional, Union
 
-from fastapi import HTTPException
 from aiokafka import AIOKafkaConsumer
+from fastapi import HTTPException
 from kafka import KafkaProducer
 
 from backend.config.config import KAFKA_BROKER_URL
 from utils.file_management import kafka_topic_name
 
+logger = logging.getLogger(__name__)
+
+
+class KafkaProducerWrapper:
+    """
+    Wrapper class for Kafka producer with JSON serialization.
+    
+    Provides a simplified interface for sending JSON data to Kafka topics.
+    """
+    
+    def __init__(self, bootstrap_servers: str = KAFKA_BROKER_URL):
+        """
+        Initialize the Kafka producer.
+        
+        Args:
+            bootstrap_servers: Kafka broker connection string
+        """
+        self._bootstrap_servers = bootstrap_servers
+        self._producer: Optional[KafkaProducer] = None
+    
+    @property
+    def producer(self) -> KafkaProducer:
+        """Lazy initialization of Kafka producer."""
+        if self._producer is None:
+            self._producer = KafkaProducer(
+                bootstrap_servers=self._bootstrap_servers,
+                value_serializer=lambda v: json.dumps(v).encode("utf-8"),
+            )
+        return self._producer
+
+    def send(self, topic: str, value: Dict[str, Any]) -> None:
+        """
+        Send a message to a Kafka topic.
+        
+        Args:
+            topic: Target Kafka topic
+            value: Dictionary to send as JSON
+        """
+        self.producer.send(topic, value=value)
+
+    def flush(self) -> None:
+        """Flush all pending messages to Kafka."""
+        if self._producer is not None:
+            self._producer.flush()
+
+    def close(self) -> None:
+        """Close the Kafka producer connection."""
+        if self._producer is not None:
+            self._producer.close()
+            self._producer = None
+
+
+def send_data_to_kafka(
+    producer: KafkaProducerWrapper,
+    topic: str,
+    data: Dict[str, Any]
+) -> None:
+    """
+    Send data to Kafka using the provided producer.
+    
+    Args:
+        producer: KafkaProducerWrapper instance
+        topic: Target Kafka topic
+        data: Data dictionary to send
+    """
+    producer.send(topic, value=data)
+
+
 async def get_kafka_messages(
     device_id: str,
     run_id: str,
-    schema_fields: Dict[str, Union[type, str]],
-    limit: Optional[int] = None
-) -> Union[List[Dict[str, Union[str, int, float, bool]]], Dict[str, str]]:
+    schema_fields: Dict[str, str],
+    limit: Optional[int] = None,
+    timeout_seconds: int = 5
+) -> List[Dict[str, Union[str, int, float, bool]]]:
     """
-    Asynchronously reads messages from the Kafka topic corresponding to the device_id and run_id.
-    Retrieves up to 'limit' latest messages with a 5-second timeout if no new messages.
-
+    Asynchronously read messages from a Kafka topic.
+    
+    Retrieves up to 'limit' latest messages with a configurable timeout.
+    
     Args:
-        device_id (str): The ID of the device.
-        run_id (str): The ID of the run associated with the device.
-        schema_fields (Dict[str, Union[type, str]]): A dictionary representing the schema fields of the messages.
-        limit (Optional[int], optional): The maximum number of messages to retrieve. Defaults to None.
-
+        device_id: The device identifier
+        run_id: The run identifier
+        schema_fields: Schema definition for message validation
+        limit: Maximum number of messages to retrieve
+        timeout_seconds: Timeout in seconds for waiting for messages
+        
     Returns:
-        Union[List[Dict[str, Union[str, int, float, bool]]], Dict[str, str]]: 
-        A list of messages if successful, or a message indicating no new data if timed out.
+        List of message dictionaries
+        
+    Raises:
+        HTTPException: If an error occurs reading from Kafka
     """
-    topic: str = kafka_topic_name(device_id, run_id)
-
+    topic = kafka_topic_name(device_id, run_id)
+    
     consumer = AIOKafkaConsumer(
         topic,
         bootstrap_servers=KAFKA_BROKER_URL,
@@ -42,52 +119,42 @@ async def get_kafka_messages(
 
     await consumer.start()
     messages: List[Dict[str, Union[str, int, float, bool]]] = []
-    timeout_seconds: int = 5
+    
+    # Default limit if not specified
+    if limit is None:
+        limit = 100
 
     try:
         while len(messages) < limit:
             try:
-                message = await asyncio.wait_for(consumer.getone(), timeout=timeout_seconds)
+                message = await asyncio.wait_for(
+                    consumer.getone(),
+                    timeout=timeout_seconds
+                )
                 value = message.value
 
+                # Validate message schema
                 if set(value.keys()) != set(schema_fields.keys()):
-                    raise ValueError(f"Invalid message schema for message: {value}")
+                    logger.warning(
+                        f"Invalid message schema for topic {topic}: {value}"
+                    )
+                    continue
 
                 messages.append(value)
 
             except asyncio.TimeoutError:
-                # If we time out, return the messages we have gathered so far
+                # Return messages gathered so far on timeout
                 break
 
         return messages
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error reading from Kafka topic: {str(e)}")
+        logger.error(f"Error reading from Kafka topic {topic}: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error reading from Kafka topic: {str(e)}"
+        )
 
     finally:
         await consumer.stop()
-
-
-class KafkaProducerWrapper:
-    def __init__(self, bootstrap_servers=KAFKA_BROKER_URL):
-        self.producer = KafkaProducer(
-            bootstrap_servers=bootstrap_servers,
-            value_serializer=lambda v: json.dumps(v).encode("utf-8"),
-        )
-
-    def send(self, topic: str, value: dict):
-        self.producer.send(topic, value=value)
-
-    def flush(self):
-        self.producer.flush()
-
-    def close(self):
-        self.producer.close()
-
-
-def send_data_to_kafka(producer: KafkaProducerWrapper, topic: str, data: dict):
-    """
-    Sends data to Kafka using the provided Kafka producer.
-    """
-    producer.send(topic, value=data)
 

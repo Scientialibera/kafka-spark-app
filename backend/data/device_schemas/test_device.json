@@ -1,0 +1,8 @@
+{
+    "device_name": "test_device",
+    "schema": {
+        "player_id": "int",
+        "heart_rate": "int",
+        "timestamp": "string"
+    }
+}

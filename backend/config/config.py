@@ -1,28 +1,107 @@
-import os
+"""
+Application configuration settings.
 
-# Update default values to use Docker network service names
-def is_running_in_docker():
-    """Check if the application is running in a Docker container."""
+This module provides configuration settings for Kafka, Spark, and file paths,
+with automatic detection of Docker vs local environments.
+"""
+import os
+from typing import Optional
+
+
+def is_running_in_docker() -> bool:
+    """
+    Check if the application is running in a Docker container.
+    
+    Returns:
+        bool: True if running in Docker, False otherwise.
+    """
     try:
         with open('/proc/1/cgroup', 'rt') as f:
             return 'docker' in f.read()
     except FileNotFoundError:
         return False
 
-# Set KAFKA_BROKER_URL based on environment
-if is_running_in_docker():
-    KAFKA_BROKER_URL = os.getenv("KAFKA_BROKER_URL", "kafka:9092")  # Use Docker hostname
-    SPARK_MASTER_URL = os.getenv("SPARK_MASTER_URL", "spark://spark-master:7077")  # Use Docker hostname
-    HADOOP_URL = os.getenv("HADOOP_URL", "hdfs://hadoop:9000")  # Consistent with the others
-else:
-    KAFKA_BROKER_URL = os.getenv("KAFKA_BROKER_URL", "localhost:9092")  # Local setup
-    SPARK_MASTER_URL = os.getenv("SPARK_MASTER_URL", "local[*]")  # Local setup
-    HADOOP_URL = os.getenv("HADOOP_URL", "hdfs://localhost:9000")  # Local setup
+
+def get_env_var(key: str, docker_default: str, local_default: str) -> str:
+    """
+    Get environment variable with different defaults for Docker and local environments.
+    
+    Args:
+        key: Environment variable name
+        docker_default: Default value when running in Docker
+        local_default: Default value when running locally
+        
+    Returns:
+        The environment variable value or appropriate default
+    """
+    default = docker_default if is_running_in_docker() else local_default
+    return os.getenv(key, default)
 
 
-MAX_WORKERS = int(os.getenv("MAX_WORKERS", 16))
+# =============================================================================
+# Kafka Configuration
+# =============================================================================
 
-SPARK_APP_NAME = os.getenv("SPARK_APP_NAME", "Kafka Streaming Stats")
+KAFKA_BROKER_URL: str = get_env_var(
+    "KAFKA_BROKER_URL",
+    docker_default="kafka:9092",
+    local_default="localhost:9092"
+)
 
-HISTORICAL_DATA_PATH = os.getenv("HISTORICAL_DATA_PATH", "backend/data/historical/devices")
-SCHEMA_DATA_PATH = os.getenv("HISTORICAL_DATA_PATH", "backend/data/device_schemas")
+# =============================================================================
+# Spark Configuration
+# =============================================================================
+
+SPARK_MASTER_URL: str = get_env_var(
+    "SPARK_MASTER_URL",
+    docker_default="spark://spark-master:7077",
+    local_default="local[*]"
+)
+
+SPARK_APP_NAME: str = os.getenv("SPARK_APP_NAME", "Kafka Streaming Stats")
+
+# =============================================================================
+# Hadoop Configuration
+# =============================================================================
+
+HADOOP_URL: str = get_env_var(
+    "HADOOP_URL",
+    docker_default="hdfs://hadoop:9000",
+    local_default="hdfs://localhost:9000"
+)
+
+# =============================================================================
+# Worker Configuration
+# =============================================================================
+
+MAX_WORKERS: int = int(os.getenv("MAX_WORKERS", "16"))
+
+# =============================================================================
+# File Paths
+# =============================================================================
+
+# Base paths
+_BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+HISTORICAL_DATA_PATH: str = os.getenv(
+    "HISTORICAL_DATA_PATH",
+    os.path.join(_BASE_PATH, "data", "historical", "devices")
+)
+
+SCHEMA_DATA_PATH: str = os.getenv(
+    "SCHEMA_DATA_PATH",
+    os.path.join(_BASE_PATH, "data", "device_schemas")
+)
+
+# =============================================================================
+# API Configuration
+# =============================================================================
+
+API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
+API_PORT: int = int(os.getenv("API_PORT", "8000"))
+
+# CORS Origins
+CORS_ORIGINS: list = os.getenv(
+    "CORS_ORIGINS",
+    "http://localhost:3000,http://127.0.0.1:3000"
+).split(",")

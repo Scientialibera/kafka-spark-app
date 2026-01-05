@@ -1,0 +1,70 @@
+[
+    {
+        "temperature": 37.0,
+        "timestamp": "2026-01-04T20:03:24.338509"
+    },
+    {
+        "temperature": 39.0,
+        "timestamp": "2026-01-04T20:03:25.726337"
+    },
+    {
+        "temperature": 37.4,
+        "timestamp": "2026-01-04T20:03:26.722886"
+    },
+    {
+        "temperature": 38.9,
+        "timestamp": "2026-01-04T20:03:27.226559"
+    },
+    {
+        "temperature": 36.1,
+        "timestamp": "2026-01-04T20:03:27.741967"
+    },
+    {
+        "temperature": 37.9,
+        "timestamp": "2026-01-04T20:03:28.243147"
+    },
+    {
+        "temperature": 37.6,
+        "timestamp": "2026-01-04T20:03:28.744804"
+    },
+    {
+        "temperature": 37.2,
+        "timestamp": "2026-01-04T20:03:29.257690"
+    },
+    {
+        "temperature": 38.4,
+        "timestamp": "2026-01-04T20:03:29.758805"
+    },
+    {
+        "temperature": 38.2,
+        "timestamp": "2026-01-04T20:03:30.274556"
+    },
+    {
+        "temperature": 37.4,
+        "timestamp": "2026-01-04T20:03:30.787424"
+    },
+    {
+        "temperature": 37.3,
+        "timestamp": "2026-01-04T20:03:31.299719"
+    },
+    {
+        "temperature": 38.0,
+        "timestamp": "2026-01-04T20:03:31.815338"
+    },
+    {
+        "temperature": 36.5,
+        "timestamp": "2026-01-04T20:03:32.327738"
+    },
+    {
+        "temperature": 38.2,
+        "timestamp": "2026-01-04T20:03:32.836509"
+    },
+    {
+        "temperature": 38.4,
+        "timestamp": "2026-01-04T20:03:33.352010"
+    },
+    {
+        "temperature": 38.5,
+        "timestamp": "2026-01-04T20:03:33.864049"
+    }
+]

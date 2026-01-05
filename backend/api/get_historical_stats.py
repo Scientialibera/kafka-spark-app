@@ -65,16 +65,37 @@ def get_player_overview(player_id: int):
     This endpoint gets all the historical data for one player
     """
     try:
-
-        metrics = calculate_metrics()
-
-        player_metrics = metrics["Player Metrics"].get(player_id, None)
-        if not player_metrics:
-
+        # Get all metrics data
+        team_distance = c_team_distance()
+        average_speed, overall_max_speed, player_average_speeds_per_game, team_average_speeds_per_game, team_max_speeds_per_game = team_speeds()
+        player_heart_rate_recovery, average_team_recovery_rate, all_players_recovery_details, player_avg_heart_rate, player_max_heart_rate = heart_rate_recovery()
+        injury_data = calculate_injuries()
+        fatigue_data = calculate_fatigue_levels()
+        
+        # Check if player exists in any data
+        player_recovery = player_heart_rate_recovery.get(player_id, {})
+        player_injuries = injury_data["Injuries Per Player"].get(player_id, {})
+        player_fatigue = fatigue_data["Fatigue Levels Per Player"].get(player_id, {})
+        player_hr_recovery = all_players_recovery_details.get(str(player_id), all_players_recovery_details.get(player_id, {}))
+        
+        if not player_recovery and not player_injuries and not player_fatigue:
             raise HTTPException(status_code=404, detail="Player data not found.")
-        return player_metrics
+        
+        return {
+            "player_id": player_id,
+            "average_heart_rate": player_avg_heart_rate.get(player_id, 0),
+            "max_heart_rate": player_max_heart_rate.get(player_id, 0),
+            "heart_rate_recovery_per_game": player_hr_recovery,
+            "average_recovery_rate": player_recovery.get("Average Recovery Rate", 0),
+            "recovery_rates_per_game": player_recovery.get("Per Game Recovery Rates", {}),
+            "total_injuries": player_injuries.get("Total Injuries", 0),
+            "injuries_per_game": player_injuries.get("Per Game Injuries", {}),
+            "fatigue_level": player_fatigue.get("Fatigue Level", "Unknown"),
+            "fatigue_details": player_fatigue,
+        }
+    except HTTPException:
+        raise
     except Exception as e:
-
         raise HTTPException(status_code=500, detail=str(e))
 
 

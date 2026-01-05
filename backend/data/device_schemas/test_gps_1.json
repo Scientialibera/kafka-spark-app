@@ -1,0 +1,8 @@
+{
+    "device_name": "test_gps_1",
+    "schema": {
+        "latitude": "float",
+        "longitude": "float",
+        "timestamp": "string"
+    }
+}

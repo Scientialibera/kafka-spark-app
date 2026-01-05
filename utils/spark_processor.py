@@ -1,132 +1,226 @@
+"""
+Spark processing utilities for Kafka stream analysis.
+
+This module provides functions for reading Kafka data with Spark,
+performing aggregations, and managing streaming queries.
+"""
 import asyncio
-import math
+import logging
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 from fastapi import HTTPException
-from pyspark.sql import SparkSession
+from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.functions import col, from_json
-from pyspark.sql.types import StructField, StructType,  FloatType, IntegerType, StringType
+from pyspark.sql.streaming import StreamingQuery
+from pyspark.sql.types import FloatType, IntegerType, StringType, StructField, StructType
 
+from backend.config.config import (
+    KAFKA_BROKER_URL,
+    MAX_WORKERS,
+    SCHEMA_DATA_PATH,
+    SPARK_APP_NAME,
+    SPARK_MASTER_URL,
+)
 from utils.file_management import device_exists, kafka_topic_name
-from backend.config.config import MAX_WORKERS, SPARK_APP_NAME, SPARK_MASTER_URL, KAFKA_BROKER_URL, SCHEMA_DATA_PATH
 
+logger = logging.getLogger(__name__)
+
+# Path to device schemas
 DEVICE_SCHEMA_PATH = SCHEMA_DATA_PATH
 
-# Create a ThreadPoolExecutor for concurrent Spark jobs
+# Thread pool for concurrent Spark jobs
 executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
-def check_if_session_exists():
-    """Check if a Spark session exists."""
-    spark = SparkSession.getActiveSession()
-    if not spark:
-        return
-    return spark
+# Dictionary to track active streaming queries
+streaming_queries: Dict[str, StreamingQuery] = {}
 
 
-def convert_schema_to_structtype(schema_fields):
+def check_if_session_exists() -> Optional[SparkSession]:
     """
-    Convert schema_fields dictionary into a PySpark StructType schema.
-    """
-    struct_fields = []
+    Check if an active Spark session exists.
     
-    for field_name, field_type in schema_fields.items():
-        if field_type == "float":
-            struct_fields.append(StructField(field_name, FloatType(), True))
-        elif field_type == "int":
-            struct_fields.append(StructField(field_name, IntegerType(), True))
-        elif field_type == "string":
-            struct_fields.append(StructField(field_name, StringType(), True))
-        else:
-            raise ValueError(f"Unsupported data type: {field_type}")
+    Returns:
+        Active SparkSession or None
+    """
+    return SparkSession.getActiveSession()
 
+
+def convert_schema_to_structtype(schema_fields: Dict[str, str]) -> StructType:
+    """
+    Convert a schema dictionary into a PySpark StructType.
+    
+    Args:
+        schema_fields: Dictionary mapping field names to type strings
+        
+    Returns:
+        PySpark StructType schema
+        
+    Raises:
+        ValueError: If an unsupported data type is encountered
+    """
+    type_mapping = {
+        "float": FloatType(),
+        "int": IntegerType(),
+        "string": StringType(),
+    }
+    
+    struct_fields = []
+    for field_name, field_type in schema_fields.items():
+        spark_type = type_mapping.get(field_type)
+        if spark_type is None:
+            raise ValueError(f"Unsupported data type: {field_type}")
+        struct_fields.append(StructField(field_name, spark_type, True))
+    
     return StructType(struct_fields)
 
 
-def get_spark_session(app_name="Kafka Streaming Stats", master_url=SPARK_MASTER_URL):
+def get_spark_session(
+    app_name: str = SPARK_APP_NAME,
+    master_url: str = SPARK_MASTER_URL
+) -> SparkSession:
+    """
+    Get or create a Spark session.
+    
+    Args:
+        app_name: Name for the Spark application
+        master_url: Spark master URL
+        
+    Returns:
+        SparkSession instance
+        
+    Raises:
+        Exception: If session creation fails
+    """
     try:
-        spark = SparkSession.builder \
-            .appName(app_name) \
-            .master(master_url) \
-            .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
+        spark = (
+            SparkSession.builder
+            .appName(app_name)
+            .master(master_url)
+            .config(
+                "spark.jars.packages",
+                "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3"
+            )
             .getOrCreate()
-        print("Spark session created successfully.")
+        )
+        logger.info("Spark session created successfully")
         return spark
     except Exception as e:
-        print("Failed to create Spark session:", e)
+        logger.error(f"Failed to create Spark session: {e}")
         raise
 
 
-def read_kafka_stream(spark, kafka_topic: str, offset: str = "latest"):
+def read_kafka_stream(
+    spark: SparkSession,
+    kafka_topic: str,
+    offset: str = "latest"
+) -> DataFrame:
     """
-    Reads and returns a streaming DataFrame from Kafka for the given topic.
+    Read a streaming DataFrame from Kafka.
+    
+    Args:
+        spark: SparkSession instance
+        kafka_topic: Kafka topic to subscribe to
+        offset: Starting offset ('latest' or 'earliest')
+        
+    Returns:
+        Streaming DataFrame
     """
-    return spark.readStream \
-        .format("kafka") \
-        .option("kafka.bootstrap.servers", KAFKA_BROKER_URL) \
-        .option("subscribe", kafka_topic) \
-        .option("startingOffsets", offset) \
+    return (
+        spark.readStream
+        .format("kafka")
+        .option("kafka.bootstrap.servers", KAFKA_BROKER_URL)
+        .option("subscribe", kafka_topic)
+        .option("startingOffsets", offset)
         .load()
+    )
 
 
-def read_kafka_batch(spark, kafka_topic: str, offset: str = "earliest"):
+def read_kafka_batch(
+    spark: SparkSession,
+    kafka_topic: str,
+    offset: str = "earliest"
+) -> DataFrame:
     """
-    Reads and returns a batch DataFrame from Kafka for the given topic.
+    Read a batch DataFrame from Kafka.
+    
+    Args:
+        spark: SparkSession instance
+        kafka_topic: Kafka topic to read from
+        offset: Starting offset ('latest' or 'earliest')
+        
+    Returns:
+        Batch DataFrame
     """
-    return spark.read \
-        .format("kafka") \
-        .option("kafka.bootstrap.servers", KAFKA_BROKER_URL) \
-        .option("subscribe", kafka_topic) \
-        .option("startingOffsets", offset) \
+    return (
+        spark.read
+        .format("kafka")
+        .option("kafka.bootstrap.servers", KAFKA_BROKER_URL)
+        .option("subscribe", kafka_topic)
+        .option("startingOffsets", offset)
         .load()
+    )
 
 
-def write_stream_to_memory(stream_df, table_name, trigger_time=5):
+def write_stream_to_memory(
+    stream_df: DataFrame,
+    table_name: str,
+    trigger_time: int = 5
+) -> StreamingQuery:
     """
-    Write the streaming DataFrame to an in-memory table with the given name.
+    Write a streaming DataFrame to an in-memory table.
+    
+    Args:
+        stream_df: Streaming DataFrame to write
+        table_name: Name for the in-memory table
+        trigger_time: Processing trigger interval in seconds
+        
+    Returns:
+        StreamingQuery handle
     """
-    return stream_df.writeStream \
-        .outputMode("append") \
-        .format("memory") \
-        .queryName(table_name) \
-        .trigger(processingTime=f'{trigger_time} seconds') \
+    return (
+        stream_df.writeStream
+        .outputMode("append")
+        .format("memory")
+        .queryName(table_name)
+        .trigger(processingTime=f'{trigger_time} seconds')
         .start()
+    )
 
 
-def read_kafka_data(device_id: str, schema_fields: dict, time_window_seconds: int = None):
+def read_kafka_data(
+    device_id: str,
+    schema_fields: Dict[str, str],
+    time_window_seconds: Optional[int] = None
+) -> DataFrame:
     """
-    Read and process Kafka data based on the device ID and schema.
-    If time_window_seconds is provided, it filters the data to only include the last messages within that time window.
+    Read and process Kafka data for a device.
+    
+    Args:
+        device_id: Device identifier (used as Kafka topic)
+        schema_fields: Schema definition for parsing messages
+        time_window_seconds: Optional time window filter in seconds
+        
+    Returns:
+        Processed DataFrame with parsed data
+        
+    Raises:
+        HTTPException: If an error occurs reading the data
     """
     try:
-        # Create Spark session
         spark = get_spark_session()
         
-        # Print Spark session and configuration details
-        print("Spark session information:")
-        print(f" - App Name: {spark.sparkContext.appName}")
-        print(f" - Master URL: {spark.sparkContext.master}")
-        print(f" - Spark UI URL: {spark.sparkContext.uiWebUrl}")
-        print(f" - Spark Version: {spark.version}")
+        logger.debug(f"Reading Kafka data for device: {device_id}")
+        logger.debug(f"Spark Master: {spark.sparkContext.master}")
         
-        # Get Spark configuration settings
-        print("Spark Configuration:")
-        for key, value in spark.sparkContext.getConf().getAll():
-            print(f"   {key}: {value}")
-        
-        # Print worker details
-        print("Spark Workers Information:")
-        print(f" - Executor memory: {spark.sparkContext.getConf().get('spark.executor.memory')}")
-        print(f" - Executor cores: {spark.sparkContext.getConf().get('spark.executor.cores')}")
-        
-        # Convert the dictionary schema_fields into a PySpark StructType
+        # Convert schema to StructType
         struct_schema = convert_schema_to_structtype(schema_fields)
 
-        # Read data from Kafka topic in batch mode using the "earliest" offset
+        # Read data from Kafka topic in batch mode
         kafka_df = read_kafka_batch(spark, device_id)
 
-        # Convert the binary 'value' column from Kafka to a string and drop the Kafka timestamp
+        # Convert binary value to string
         value_df = kafka_df.selectExpr("CAST(value AS STRING) as json_string")
 
         # Parse the JSON string into a DataFrame using the StructType schema
@@ -164,76 +258,85 @@ streaming_queries = {}
 
 def start_streaming_aggregation(kafka_topic: str, schema_fields: dict, window_seconds: int, triggers: dict, table_preappend: str = None, kafka_streaming_app: str = SPARK_APP_NAME, exclude_normal: bool = False):
     """
-    Set up a streaming threshold check on the Kafka stream for the given Kafka topic.
-    If the query is already running, it will return the existing query.
+    Set up streaming threshold monitoring on a Kafka topic.
+    
+    Creates a streaming query that checks values against thresholds
+    and writes alerts to an in-memory table.
+    
+    Args:
+        kafka_topic: Kafka topic to monitor
+        schema_fields: Schema definition for the topic
+        window_seconds: Processing window in seconds
+        triggers: Dictionary mapping fields to (min, max) thresholds
+        table_preappend: Optional prefix for the table name
+        kafka_streaming_app: Spark application name
+        exclude_normal: Whether to exclude normal values
+        
+    Returns:
+        StreamingQuery handle
     """
-    # Create Spark session
     spark = get_spark_session(kafka_streaming_app)
     
     table_name = f"{table_preappend}_{kafka_topic}" if table_preappend else kafka_topic
 
-    # Check if a streaming query with this Kafka topic is already running
+    # Check for existing query
     active_queries = [q for q in spark.streams.active if q.name == table_name]
-
     if active_queries:
-        print(f"Streaming query for topic {kafka_topic} is already running.")
+        logger.info(f"Streaming query for topic {kafka_topic} is already running")
         return active_queries[0]
 
-    # Convert the dictionary schema_fields into a PySpark StructType
-    struct_schema = StructType([
-        StructField(field, FloatType() if ftype == "float" else StringType() if ftype == "string" else IntegerType(), True)
-        for field, ftype in schema_fields.items()
-    ])
+    # Convert schema to StructType
+    struct_schema = convert_schema_to_structtype(schema_fields)
 
-    # Read the streaming data from Kafka
+    # Read streaming data from Kafka
     kafka_stream = read_kafka_stream(spark, kafka_topic)
 
-    # Convert the binary 'value' column from Kafka to a string and drop the Kafka timestamp
+    # Parse JSON messages
     value_df = kafka_stream.selectExpr("CAST(value AS STRING) as json_string")
-
-    # Parse the JSON string into a DataFrame using the StructType schema
     json_df = value_df.select(
         from_json(col("json_string"), struct_schema).alias("data")
     )
-
-    # Flatten the nested 'data' column to access individual fields, including the timestamp from the JSON data
     data_df = json_df.select("data.*")
 
-    # Ensure the timestamp column from the JSON is cast as a timestamp type
+    # Cast timestamp column
     data_df = data_df.withColumn("timestamp", col("timestamp").cast("timestamp"))
 
+    # Add status columns for threshold checking
     status_columns = []
     for field, (min_val, max_val) in triggers.items():
         if field in schema_fields and schema_fields[field] in ["float", "int"]:
-            print(f"Adding status check for field: {field} with min: {min_val} and max: {max_val}.")
+            logger.debug(f"Adding threshold check for {field}: [{min_val}, {max_val}]")
             
-            status_column = F.when(F.col(field) < F.lit(min_val), "low") \
-                             .when(F.col(field) > F.lit(max_val), "high") \
-                             .otherwise("normal")
+            status_column = (
+                F.when(F.col(field) < F.lit(min_val), "low")
+                .when(F.col(field) > F.lit(max_val), "high")
+                .otherwise("normal")
+            )
             
             status_column_name = f"{field}_status"
             data_df = data_df.withColumn(status_column_name, status_column)
             status_columns.append(status_column_name)
 
+    # Build filter condition for non-normal values
     combined_condition = F.lit(False)
     for col_name in status_columns:
         combined_condition = combined_condition | (F.col(col_name) != "normal")
 
-    # Apply the filter to exclude rows where all status columns are 'normal'
+    # Apply filter to exclude normal values
     data_df = data_df.filter(combined_condition).coalesce(1)
 
-    # Write the result with status checks to an in-memory table with a unique query name for this device
+    # Write to in-memory table
     query = write_stream_to_memory(data_df, table_name, window_seconds)
 
-    # Store the reference to the query so we can manage it later
+    # Track the query
     streaming_queries[kafka_topic] = query
 
-    print(f"Streaming initialized for topic: {kafka_topic}")
+    logger.info(f"Streaming initialized for topic: {kafka_topic}")
 
     return query
 
 
-def get_aggregation_function(agg_type):
+def get_aggregation_function(agg_type: str):
     """Return the appropriate aggregation function based on the aggregation type."""
     if agg_type == 'average':
         return F.avg
