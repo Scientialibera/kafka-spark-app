@@ -14,6 +14,7 @@ from backend.config.config import (
     API_HOST,
     API_PORT,
     CORS_ORIGINS,
+    API_ADMIN_KEY,
 )
 from backend.config.logging_config import logger, setup_logging
 
@@ -28,6 +29,7 @@ __all__ = [
     "API_HOST",
     "API_PORT",
     "CORS_ORIGINS",
+    "API_ADMIN_KEY",
     "logger",
     "setup_logging",
 ]

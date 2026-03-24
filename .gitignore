@@ -147,8 +147,15 @@ Thumbs.db
 *.log
 logs/
 
-# Node modules (frontend)
+# Node modules
 node_modules/
+
+# Root-level duplicate package files (frontend has its own)
+/package.json
+/package-lock.json
+
+# Duplicate data directories
+backend/api/data/
 
 # Frontend build
 frontend/build/

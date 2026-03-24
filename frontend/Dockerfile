@@ -1,19 +1,18 @@
-FROM node:18-alpine
+FROM node:18-alpine AS builder
 
-# Set the working directory to frontend
-WORKDIR /app/frontend
+WORKDIR /app
 
-# Copy package.json and lock files separately to ensure no caching of dependencies
 COPY frontend/package*.json ./
+RUN npm ci --no-audit
 
-# Force install fresh dependencies by removing the npm cache and avoiding cached layers
-RUN npm cache clean --force && npm install
-
-# Copy the rest of the frontend directory
 COPY frontend/ .
+RUN npm run build
 
-# Expose the port your frontend development server will run on
-EXPOSE 3000
+FROM nginx:1.27-alpine
 
-# Start the development server
-CMD ["npm", "start"]
+COPY --from=builder /app/build /usr/share/nginx/html
+COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

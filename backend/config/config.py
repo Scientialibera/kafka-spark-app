@@ -11,13 +11,17 @@ from typing import Optional
 def is_running_in_docker() -> bool:
     """
     Check if the application is running in a Docker container.
+    Works with both cgroup v1 and v2 (modern Docker/containerd).
     
     Returns:
         bool: True if running in Docker, False otherwise.
     """
+    if os.path.exists('/.dockerenv'):
+        return True
     try:
         with open('/proc/1/cgroup', 'rt') as f:
-            return 'docker' in f.read()
+            content = f.read()
+            return 'docker' in content or '/lxc/' in content
     except FileNotFoundError:
         return False
 
@@ -105,3 +109,6 @@ CORS_ORIGINS: list = os.getenv(
     "CORS_ORIGINS",
     "http://localhost:3000,http://127.0.0.1:3000"
 ).split(",")
+
+# Admin API Key for destructive operations
+API_ADMIN_KEY: str = os.getenv("API_ADMIN_KEY", "")

@@ -44,7 +44,7 @@ install-dev:
 # =============================================================================
 
 run-backend:
-	cd backend && uvicorn app:app --reload --host 0.0.0.0 --port 8000
+	uvicorn backend.app:app --reload --host 0.0.0.0 --port 8000
 
 run-frontend:
 	cd frontend && npm start
@@ -68,16 +68,16 @@ format:
 # =============================================================================
 
 docker-build:
-	docker-compose build
+	docker compose build
 
 docker-up:
-	docker-compose up -d
+	docker compose up -d --wait
 
 docker-down:
-	docker-compose down
+	docker compose down
 
 docker-logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 # =============================================================================
 # Cleanup

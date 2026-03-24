@@ -1,26 +1,44 @@
 stages:
+  - test
   - build
   - deploy
-  - test
-  - deploy_to_runner
   - push
 
 variables:
-  # Backend image variables
   DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/backend"
-  IMAGE_TAG: "latest"
+  IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
   FULL_IMAGE_PATH: "$DOCKER_IMAGE:$IMAGE_TAG"
-
-  # Frontend image variables
   FRONTEND_DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/frontend"
-  FRONTEND_IMAGE_TAG: "latest"
-  FRONTEND_FULL_IMAGE_PATH: "$FRONTEND_DOCKER_IMAGE:$FRONTEND_IMAGE_TAG"
-
-  NETWORK_NAME: "ci_pipeline_network"
+  FRONTEND_FULL_IMAGE_PATH: "$FRONTEND_DOCKER_IMAGE:$IMAGE_TAG"
   DOCKER_COMPOSE_FILE: "docker-compose.yml"
 
 before_script:
   - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+
+unit_tests:
+  stage: test
+  tags:
+    - docker
+  image: python:3.11-slim
+  before_script:
+    - pip install --no-cache-dir -r backend/requirements.txt
+  script:
+    - pytest tests/ -v --tb=short --junitxml=report.xml
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
+
+lint:
+  stage: test
+  tags:
+    - docker
+  image: python:3.11-slim
+  before_script:
+    - pip install --no-cache-dir ruff
+  script:
+    - ruff check backend/ utils/ tests/
+  allow_failure: true
 
 build_backend:
   stage: build
@@ -28,6 +46,7 @@ build_backend:
     - docker
   script:
     - docker build -t $FULL_IMAGE_PATH -f backend/Dockerfile .
+    - docker tag $FULL_IMAGE_PATH "$DOCKER_IMAGE:latest"
 
 build_frontend:
   stage: build
@@ -35,52 +54,27 @@ build_frontend:
     - docker
   script:
     - docker build -t $FRONTEND_FULL_IMAGE_PATH -f frontend/Dockerfile .
+    - docker tag $FRONTEND_FULL_IMAGE_PATH "$FRONTEND_DOCKER_IMAGE:latest"
 
 deploy_services:
   stage: deploy
   tags:
     - docker
   script:
-    - |
-      # Check if the Docker network exists, and create it if it doesn't
-      if ! docker network inspect "$NETWORK_NAME" >/dev/null 2>&1; then
-        docker network create "$NETWORK_NAME"
-      fi
     - docker compose -f $DOCKER_COMPOSE_FILE down --remove-orphans
-    - docker compose -f $DOCKER_COMPOSE_FILE up -d
+    - docker compose -f $DOCKER_COMPOSE_FILE up -d --wait
     - docker image prune -f
-    - docker volume prune -f
+  environment:
+    name: staging
 
-test_api:
-  stage: test
+smoke_test:
+  stage: deploy
   tags:
     - docker
+  needs: [deploy_services]
   script:
-    # Wait for the API to be ready
-    - sleep 15
-    # Test the API health
-    - curl --retry 5 --retry-delay 5 --retry-connrefused -s http://localhost:8000/health || exit 1
-  after_script:
-    - docker compose -f $DOCKER_COMPOSE_FILE down --remove-orphans
-    - docker network rm $NETWORK_NAME || true
-    - docker image prune -f
-    - docker volume prune -f
-
-deploy_to_runner:
-  stage: deploy_to_runner
-  tags:
-    - docker
-  script:
-    - |
-      # Deploy services permanently to the runner machine
-      if ! docker network inspect "$NETWORK_NAME" >/dev/null 2>&1; then
-        docker network create "$NETWORK_NAME"
-      fi
-    - docker compose -f $DOCKER_COMPOSE_FILE down --remove-orphans
-    - docker compose -f $DOCKER_COMPOSE_FILE up -d
-    - docker image prune -f
-    - docker volume prune -f
-    - echo "Services deployed permanently on the runner machine."
+    - curl --retry 10 --retry-delay 5 --retry-connrefused -sf http://localhost:8000/health
+    - curl --retry 5 --retry-delay 3 --retry-connrefused -sf http://localhost:3000/ > /dev/null
 
 push_backend:
   stage: push
@@ -88,8 +82,9 @@ push_backend:
     - docker
   script:
     - docker push $FULL_IMAGE_PATH
-  only:
-    - main
+    - docker push "$DOCKER_IMAGE:latest"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
 
 push_frontend:
   stage: push
@@ -97,5 +92,6 @@ push_frontend:
     - docker
   script:
     - docker push $FRONTEND_FULL_IMAGE_PATH
-  only:
-    - main
+    - docker push "$FRONTEND_DOCKER_IMAGE:latest"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

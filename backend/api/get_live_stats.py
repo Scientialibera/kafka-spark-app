@@ -5,6 +5,7 @@ from sse_starlette.sse import EventSourceResponse
 from fastapi import APIRouter, HTTPException, Query, Body
 import asyncio
 
+from backend.config.logging_config import logger
 from utils.spark_processor import (
     get_latest_stats,
     check_if_session_exists,
@@ -60,8 +61,6 @@ async def start_stream(
 
             if spark.catalog.tableExists(view_name):
                 return {"message": f"Streaming already running for device {device_id} and run {run_id}."}
-            else:
-                initialize_streaming(device_id, run_id, triggers, window_seconds, table_preappend, exclude_normal)
 
         initialize_streaming(device_id, run_id, triggers, window_seconds, table_preappend, exclude_normal)
         return {"message": f"Streaming started for device {device_id} and run {run_id}."}
@@ -235,7 +234,7 @@ async def get_notification(device_id: str, run_id: str, window: int = 1, table_p
 
                 except Exception as e:
                     # Log or handle error
-                    print(f"Error fetching data from view {view_name}: {str(e)}")
+                    logger.error("Error fetching data from view %s: %s", view_name, e)
 
                 # Wait for the specified interval before checking again
                 await asyncio.sleep(window)
@@ -326,8 +325,8 @@ async def get_team_instant_stats(
     if not valid_speeds or not valid_accels:
         raise HTTPException(status_code=500, detail="No valid speed or acceleration data retrieved.")
 
-    team_average_speed = (sum(valid_speeds) / len(valid_speeds))*10
-    team_average_accel = (sum(valid_accels) / len(valid_accels))*10
+    team_average_speed = sum(valid_speeds) / len(valid_speeds)
+    team_average_accel = sum(valid_accels) / len(valid_accels)
 
     return {
         "run_id": run_id,

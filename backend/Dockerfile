@@ -1,35 +1,35 @@
-# Base Image
-FROM python:3.9-slim
+FROM python:3.11-slim AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Install OS-level dependencies
-RUN apt-get update && apt-get install -y \
-    procps \
-    default-jdk \
-    iputils-ping \
-    netcat-openbsd \
-    nano && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    default-jre-headless \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set JAVA_HOME dynamically
-RUN update-alternatives --config java | grep '/usr/lib/jvm/' | awk '{print $NF}' | head -n 1 > /java_home.txt
-ENV JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+COPY backend/requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    default-jre-headless \
+    curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
-# Verify Java installation during build (for debugging purposes)
-RUN java -version
+COPY --from=builder /install /usr/local
 
-# Force no-cache for Python dependencies by invalidating the cache step
-ADD backend/requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/ /app/backend/
+COPY utils/ /app/utils/
+COPY pyproject.toml /app/
 
-# Copy the rest of the application files
-COPY . .
+RUN useradd -r -s /bin/false appuser && chown -R appuser:appuser /app
+USER appuser
 
-# Expose the FastAPI port
 EXPOSE 8000
 
-# Set the default command
-CMD ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]

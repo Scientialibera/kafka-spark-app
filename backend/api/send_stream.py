@@ -17,7 +17,9 @@ from utils.file_management import (
     validate_data
 )
 
-from backend.config.config import HISTORICAL_DATA_PATH, SCHEMA_DATA_PATH
+from backend.config.config import HISTORICAL_DATA_PATH, SCHEMA_DATA_PATH, API_HOST, API_PORT
+from backend.config.logging_config import logger
+
 router = APIRouter()
 
 # Constants
@@ -26,7 +28,7 @@ ENDPOINT_WEBSOCKET: str = "/send-stream/{device_id}/{run_id}"
 ENDPOINT_START_SYNTHETIC_DATA: str = "/start-synthetic-data"
 
 # Constants
-WEBSOCKET_ENDPOINT_TEMPLATE = "ws://localhost:8000/send-stream/{device_id}/{run_id}"
+WEBSOCKET_ENDPOINT_TEMPLATE = f"ws://{API_HOST}:{API_PORT}/send-stream/{{device_id}}/{{run_id}}"
 INTERVAL_SECONDS = 0.5
 OUT_OF_BOUNDS_INTERVAL = 100
 
@@ -92,9 +94,9 @@ async def send_stream(
                 break
 
     except WebSocketDisconnect:
-        print(f"WebSocket disconnected for device '{device_id}'.")
+        logger.info("WebSocket disconnected for device '%s'", device_id)
     except Exception as e:
-        print(f"Error in send_stream: {e}")
+        logger.error("Error in send_stream: %s", e)
         await websocket.close(code=1006)
     finally:
         if producer:
@@ -123,9 +125,9 @@ async def handle_websocket_disconnect(
             save_json_file(historical_file, existing_data)
         else:
             save_json_file(historical_file, data_list)
-        print(f"Historical data saved for device '{device_id}'.")
+        logger.info("Historical data saved for device '%s'", device_id)
     except Exception as e:
-        print(f"Failed to save historical data: {e}")
+        logger.error("Failed to save historical data: %s", e)
 
 
 async def process_received_data(
@@ -142,7 +144,7 @@ async def process_received_data(
     """
     if not validate_data(data, schema_fields):
         await websocket.send_text("Validation failed. Data does not match the schema.")
-        print(f"Validation failed for device {device_id}, run {run_id}. Data: {data}")
+        logger.warning("Validation failed for device %s, run %s. Data: %s", device_id, run_id, data)
         return False
 
     kafka_topic: str = f"{device_id}_{run_id}"
@@ -225,7 +227,7 @@ async def send_synthetic_data(device_id, run_id, schema_type, duration_seconds):
 
             data_str = json.dumps(data)
             await websocket.send(data_str)
-            print(f"Sent data from {device_id} (run {run_id}): {data_str}")
+            logger.debug("Sent data from %s (run %s): %s", device_id, run_id, data_str)
 
             message_count += 1
             await asyncio.sleep(INTERVAL_SECONDS)

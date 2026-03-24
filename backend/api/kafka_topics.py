@@ -1,13 +1,20 @@
 import os
 from typing import Optional, List, Dict, Union
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException
 from confluent_kafka.admin import AdminClient
 import asyncio
 
 from utils.file_management import device_exists, kafka_topic_name
 from utils.kafka_producer import get_kafka_messages
-from backend.config.config import KAFKA_BROKER_URL, SCHEMA_DATA_PATH
+from backend.config.config import KAFKA_BROKER_URL, SCHEMA_DATA_PATH, API_ADMIN_KEY
+from backend.config.logging_config import logger
+
+
+def require_admin_key(x_admin_key: str = Header(..., alias="X-Admin-Key")) -> str:
+    if not API_ADMIN_KEY or x_admin_key != API_ADMIN_KEY:
+        raise HTTPException(status_code=403, detail="Invalid or missing admin key")
+    return x_admin_key
 
 router = APIRouter()
 
@@ -67,7 +74,7 @@ async def get_topic_messages(
         raise HTTPException(status_code=500, detail=f"Failed to get messages: {str(e)}")
 
 
-@router.delete(DELETE_TOPIC_ENDPOINT)
+@router.delete(DELETE_TOPIC_ENDPOINT, dependencies=[Depends(require_admin_key)])
 async def delete_topic_by_device_name(device_id: str, run_id: str) -> Dict[str, str]:
     """
     Endpoint to delete a Kafka topic based on the device_id and run_id.
@@ -91,7 +98,7 @@ async def delete_topic_by_device_name(device_id: str, run_id: str) -> Dict[str, 
         raise HTTPException(status_code=500, detail=f"Failed to delete topic: {str(e)}")
 
 
-@router.delete(DELETE_ALL_TOPICS_ENDPOINT)
+@router.delete(DELETE_ALL_TOPICS_ENDPOINT, dependencies=[Depends(require_admin_key)])
 async def delete_all_topics() -> Dict[str, Union[str, Dict[str, Optional[None]]]]:
     """
     Endpoint to delete all Kafka topics in the cluster.
